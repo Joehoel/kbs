@@ -1,8 +1,10 @@
 package com.ictm2n2;
 
+import com.ictm2n2.interfaces.App;
+
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Joel Test!");
+        new App();
     }
 }
