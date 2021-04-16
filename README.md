@@ -4,6 +4,8 @@
 
 Stappen plan voor het werken aan de applicatie.
 
+> 💡 In elke directory staat in de `README.md` van die  directory wat voor bestanden daar in moeten
+
 ### Issue aanmaken
 Als eerst maak je een issue aan met informatie over wat je gaat doen. Bijvoorbeeld of je een bug gaat fixen of een feature toevoegen. Je kan ook aangeven wie de issue behandeld in het menu aan de rechter kant.
 
@@ -20,6 +22,25 @@ Vervolgens maak je voor die issue een nieuwe branch aan maken en ga je daar in a
 6. Klik op 'create pull request'
 7. Klik op 'merge pull request', 'confirm merge'
 
----
-In elke directory staat in de `README.md` van die directory wat voor bestanden daar in moeten
+### Programmeren
+Als je java componenten wil toevoegen aan de GUI dan is dat het handigst op het op deze manier te doen:
+```java
+public class Gui extends JFrame {
+    // Initialiseer de variabele als property
+    private JButton button;
 
+    public Gui() {
+        setSize(600, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Monitor | ICTm2n2");
+
+        // Allocate de waarde van de variable hier
+        button = new JButton("Button");
+
+        // Voeg hem toe
+        add(button);
+
+        setVisible(true);
+    }
+}
+```
