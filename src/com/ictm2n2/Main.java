@@ -1,6 +1,6 @@
 package com.ictm2n2;
 
-import com.ictm2n2.interfaces.App;
+import com.ictm2n2.frames.App;
 
 public class Main {
 
