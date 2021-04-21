@@ -3,6 +3,7 @@ package com.ictm2n2.frames;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -11,29 +12,44 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import com.ictm2n2.resources.Ontwerp;
 import com.ictm2n2.resources.OntwerpOverzicht;
 
 public class OntwerpOverzichtFrame extends JFrame {
     private JLabel jlOntwerpenOverzicht;
-    private JComboBox<String> jcbAanGemaakteOntwerpen;
+    private JComboBox<Object> jcbAanGemaakteOntwerpen;
     private JButton jbBewerkButton;
     private JButton jbVerwijderButton;
     private JButton jbNieuwOntwerpButton;
-    private JList<String> jkOntwerpList;
+    private JList<Object> jkOntwerpList;
     private JPanel jpContainer;
     private JPanel jpOverzichtPanel;
     private JButton jbTerugButton;
     private JPanel jpHeaderPanel;
 
+    private double gewensteBeschikbaarheid;
+    private OntwerpOverzicht ontwerpOverzicht;
+
     public OntwerpOverzichtFrame(OntwerpOverzicht ontwerpOverzicht) {
+        this.ontwerpOverzicht = ontwerpOverzicht;
+
+        Ontwerp o = new Ontwerp();
+        o.setNaam("WS1");
+        this.ontwerpOverzicht.voegToeOntwerp(o);
+
+        ArrayList<String> data = new ArrayList<String>();
+        for (Ontwerp ontwerp : ontwerpOverzicht.getOntwerpen()) {
+            data.add(ontwerp.getNaam());
+            System.out.println(ontwerp.getNaam());
+        }
+
         setSize(1600, 900);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Ontwerpen Overzicht");
 
-        jcbAanGemaakteOntwerpen = new JComboBox<String>(new String[] { "Test", "test" });
+        jcbAanGemaakteOntwerpen = new JComboBox<Object>(data.toArray());
         jlOntwerpenOverzicht = new JLabel("<html><h1>Ontwerp Overzicht</h1></html>", JLabel.CENTER);
         jbBewerkButton = new JButton("Bewerken");
         jbVerwijderButton = new JButton("Verwijderen");

@@ -3,7 +3,7 @@ package com.ictm2n2.resources;
 import java.util.ArrayList;
 
 public class Ontwerp {
-    private ArrayList<Component> componenten;
+    private ArrayList<Component> componenten = new ArrayList<Component>();
     private double beschikbaarheidOntwerp;
     private boolean actiefOntwerp;
     private String naam;
