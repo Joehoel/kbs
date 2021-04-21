@@ -13,8 +13,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import com.ictm2n2.frames.elements.Header;
 import com.ictm2n2.resources.Component;
 import com.ictm2n2.resources.Ontwerp;
 
@@ -22,14 +24,15 @@ public class OntwerpMakenFrame extends JFrame implements ActionListener {
 
     private Ontwerp ontwerp;
 
+    private Header header;
     private JComboBox<String> jcbDatabaseNaam;
     private JComboBox<String> jcbWebserverNaam;
     private JComboBox<String> jcbToegevoegdeComponenten;
 
     private JPanel jpContainer;
-    private JButton jbTerugButton;
-    private JPanel jpHeaderPanel;
-    private JLabel jlOntwerpMaken;
+    // private JButton jbTerugButton;
+    // private JPanel jpHeaderPanel;
+    // private JLabel jlOntwerpMaken;
     private JPanel jpMaken;
     private JLabel jlVoerBeschikbaarheidIn;
 
@@ -44,14 +47,13 @@ public class OntwerpMakenFrame extends JFrame implements ActionListener {
         setSize(900, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        jbTerugButton = new JButton("◀ Terug");
-        jpHeaderPanel = new JPanel();
+        // jbTerugButton = new JButton("◀ Terug");
+        // jpHeaderPanel = new JPanel();
         jpContainer = new JPanel();
-        jlOntwerpMaken = new JLabel("<html><h1>Ontwerp Maken</h1></html>");
+        // jlOntwerpMaken = new JLabel("<html><h1>Ontwerp Maken</h1></html>");
+        header = new Header("Ontwerp Maken");
         jpMaken = new JPanel();
         jcbDatabaseNaam = new JComboBox<String>();
-        jbTerugButton.setSize(50, 30);
-        jbTerugButton.setAlignmentX(LEFT_ALIGNMENT);
 
         jcbDatabaseNaam.setMaximumSize(new Dimension(200, 30));
 
@@ -59,18 +61,19 @@ public class OntwerpMakenFrame extends JFrame implements ActionListener {
         jpContainer.setPreferredSize(new Dimension(900, 600));
         jpContainer.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        jpHeaderPanel.setLayout(new FlowLayout());
+        // jpHeaderPanel.setLayout(new FlowLayout());
 
         jpMaken.setLayout(new BoxLayout(jpMaken, BoxLayout.Y_AXIS));
         jlVoerBeschikbaarheidIn.setAlignmentX(LEFT_ALIGNMENT);
 
-        jpHeaderPanel.add(jbTerugButton);
-        jpHeaderPanel.add(jlOntwerpMaken);
+        // jpHeaderPanel.add(jbTerugButton);
+        // jpHeaderPanel.add(jlOntwerpMaken);
 
         jpMaken.add(jcbDatabaseNaam);
         jpMaken.add(jlVoerBeschikbaarheidIn);
 
-        jpContainer.add(jpHeaderPanel);
+        // jpContainer.add(jpHeaderPanel);
+        jpContainer.add(header, BorderLayout.NORTH);
         jpContainer.add(jpMaken);
 
         add(jpContainer);
@@ -80,7 +83,7 @@ public class OntwerpMakenFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == jbTerugButton) {
+        if (e.getSource() == header.jbTerugButton) {
             dispose();
         }
     }
