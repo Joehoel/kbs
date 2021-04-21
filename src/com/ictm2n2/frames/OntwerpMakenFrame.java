@@ -3,6 +3,8 @@ package com.ictm2n2.frames;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -16,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import com.ictm2n2.resources.Component;
 import com.ictm2n2.resources.Ontwerp;
 
-public class OntwerpMakenFrame extends JFrame {
+public class OntwerpMakenFrame extends JFrame implements ActionListener {
 
     private Ontwerp ontwerp;
 
@@ -48,9 +50,10 @@ public class OntwerpMakenFrame extends JFrame {
         jlOntwerpMaken = new JLabel("<html><h1>Ontwerp Maken</h1></html>");
         jpMaken = new JPanel();
         jcbDatabaseNaam = new JComboBox<String>();
-
         jbTerugButton.setSize(50, 30);
         jbTerugButton.setAlignmentX(LEFT_ALIGNMENT);
+
+        jcbDatabaseNaam.setMaximumSize(new Dimension(200, 30));
 
         jpContainer.setLayout(new BorderLayout());
         jpContainer.setPreferredSize(new Dimension(900, 600));
@@ -58,12 +61,14 @@ public class OntwerpMakenFrame extends JFrame {
 
         jpHeaderPanel.setLayout(new FlowLayout());
 
-        jpMaken.setLayout(new BoxLayout(jpMaken, BoxLayout.X_AXIS));
+        jpMaken.setLayout(new BoxLayout(jpMaken, BoxLayout.Y_AXIS));
+        jlVoerBeschikbaarheidIn.setAlignmentX(LEFT_ALIGNMENT);
 
         jpHeaderPanel.add(jbTerugButton);
         jpHeaderPanel.add(jlOntwerpMaken);
 
         jpMaken.add(jcbDatabaseNaam);
+        jpMaken.add(jlVoerBeschikbaarheidIn);
 
         jpContainer.add(jpHeaderPanel);
         jpContainer.add(jpMaken);
@@ -73,4 +78,10 @@ public class OntwerpMakenFrame extends JFrame {
         setVisible(true);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == jbTerugButton) {
+            dispose();
+        }
+    }
 }

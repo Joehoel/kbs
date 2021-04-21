@@ -57,7 +57,7 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
             data.add(ontwerp.getNaam());
         }
 
-        setSize(1600, 900);
+        setSize(900, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Ontwerpen Overzicht");
 
@@ -105,6 +105,7 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
         jbBewerkButton.addActionListener(this);
         jbVerwijderButton.addActionListener(this);
         jbNieuwOntwerpButton.addActionListener(this);
+        jbTerugButton.addActionListener(this);
 
         add(jpContainer);
 
@@ -114,17 +115,27 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Ontwerp o = ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
-        if (e.getSource() == jbBewerkButton) {
-            new OntwerpMakenFrame(o);
-        }
-        if (e.getSource() == jbVerwijderButton) {
-            int index = ontwerpOverzicht.getOntwerpen().indexOf(o);
-            ontwerpOverzicht.verwijderOntwerp(index);
-            jcbAanGemaakteOntwerpen.removeItemAt(index);
-        }
-        if (e.getSource() == jbNieuwOntwerpButton) {
-            new OntwerpMakenFrame(new Ontwerp());
+        try {
+            if (e.getSource() == jbBewerkButton) {
+                Ontwerp o = ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
+                new OntwerpMakenFrame(o);
+            }
+            if (e.getSource() == jbVerwijderButton) {
+                Ontwerp o = ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
+                int index = ontwerpOverzicht.getOntwerpen().indexOf(o);
+
+                ontwerpOverzicht.verwijderOntwerp(index);
+                jcbAanGemaakteOntwerpen.removeItemAt(index);
+
+            }
+            if (e.getSource() == jbNieuwOntwerpButton) {
+                new OntwerpMakenFrame(new Ontwerp());
+            }
+            if (e.getSource() == jbTerugButton) {
+                dispose();
+            }
+        } catch (NullPointerException exception) {
+            System.err.println(exception.getMessage());
         }
 
     }
