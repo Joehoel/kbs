@@ -5,6 +5,14 @@ import java.util.ArrayList;
 public class OntwerpOverzicht {
     private ArrayList<Ontwerp> ontwerpen = new ArrayList<Ontwerp>();
 
+    public Ontwerp vindOntwerp(String naam) {
+        for (Ontwerp ontwerp : ontwerpen) {
+            if (ontwerp.getNaam().equals(naam))
+                return ontwerp;
+        }
+        return null;
+    }
+
     public void verwijderOntwerp(int index) {
         this.ontwerpen.remove(index);
     }

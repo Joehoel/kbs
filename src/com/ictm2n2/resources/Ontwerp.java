@@ -8,6 +8,14 @@ public class Ontwerp {
     private boolean actiefOntwerp;
     private String naam;
 
+    public Ontwerp(String naam) {
+        this.naam = naam;
+    }
+
+    public Ontwerp() {
+        this("Geen naam");
+    }
+
     public String getNaam() {
         return naam;
     }
@@ -84,6 +92,18 @@ public class Ontwerp {
 
         for (Component component : componenten) {
             str += component.getType();
+        }
+
+        return str;
+    }
+
+    public String printAangeslotenComponenten() {
+        String str = "";
+
+        for (Component component : componenten) {
+            if (component.isAangesloten()) {
+                str += component.getType();
+            }
         }
 
         return str;

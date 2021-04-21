@@ -3,6 +3,8 @@ package com.ictm2n2.frames;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -17,7 +19,8 @@ import javax.swing.border.EmptyBorder;
 import com.ictm2n2.resources.Ontwerp;
 import com.ictm2n2.resources.OntwerpOverzicht;
 
-public class OntwerpOverzichtFrame extends JFrame {
+public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
+
     private JLabel jlOntwerpenOverzicht;
     private JComboBox<Object> jcbAanGemaakteOntwerpen;
     private JButton jbBewerkButton;
@@ -35,14 +38,23 @@ public class OntwerpOverzichtFrame extends JFrame {
     public OntwerpOverzichtFrame(OntwerpOverzicht ontwerpOverzicht) {
         this.ontwerpOverzicht = ontwerpOverzicht;
 
-        Ontwerp o = new Ontwerp();
-        o.setNaam("WS1");
+        Ontwerp o = new Ontwerp("WS1");
+        Ontwerp o1 = new Ontwerp("WS2");
+        Ontwerp o2 = new Ontwerp("WS3");
+        Ontwerp o3 = new Ontwerp("WS4");
+        Ontwerp o4 = new Ontwerp("WS5");
+        Ontwerp o5 = new Ontwerp("WS6");
         this.ontwerpOverzicht.voegToeOntwerp(o);
+        this.ontwerpOverzicht.voegToeOntwerp(o1);
+        this.ontwerpOverzicht.voegToeOntwerp(o2);
+        this.ontwerpOverzicht.voegToeOntwerp(o3);
+        this.ontwerpOverzicht.voegToeOntwerp(o4);
+        this.ontwerpOverzicht.voegToeOntwerp(o5);
 
+        // Dropdown data list
         ArrayList<String> data = new ArrayList<String>();
         for (Ontwerp ontwerp : ontwerpOverzicht.getOntwerpen()) {
             data.add(ontwerp.getNaam());
-            System.out.println(ontwerp.getNaam());
         }
 
         setSize(1600, 900);
@@ -56,8 +68,8 @@ public class OntwerpOverzichtFrame extends JFrame {
         jbNieuwOntwerpButton = new JButton("Nieuw ontwerp");
         jpContainer = new JPanel();
         jpOverzichtPanel = new JPanel();
-        jpHeaderPanel = new JPanel();
         jbTerugButton = new JButton("◀ Terug");
+        jpHeaderPanel = new JPanel();
         jbTerugButton.setSize(50, 30);
         jbTerugButton.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -90,8 +102,30 @@ public class OntwerpOverzichtFrame extends JFrame {
         jpOverzichtPanel.add(jbNieuwOntwerpButton);
         // overzichtPanel.add(ontwerpList);
 
+        jbBewerkButton.addActionListener(this);
+        jbVerwijderButton.addActionListener(this);
+        jbNieuwOntwerpButton.addActionListener(this);
+
         add(jpContainer);
 
         setVisible(true);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Ontwerp o = ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
+        if (e.getSource() == jbBewerkButton) {
+            new OntwerpMakenFrame(o);
+        }
+        if (e.getSource() == jbVerwijderButton) {
+            int index = ontwerpOverzicht.getOntwerpen().indexOf(o);
+            ontwerpOverzicht.verwijderOntwerp(index);
+            jcbAanGemaakteOntwerpen.removeItemAt(index);
+        }
+        if (e.getSource() == jbNieuwOntwerpButton) {
+            new OntwerpMakenFrame(new Ontwerp());
+        }
+
     }
 }
