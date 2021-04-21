@@ -2,15 +2,13 @@ package com.ictm2n2.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -20,6 +18,7 @@ public class OntwerpOverzichtFrame extends JFrame {
     private JButton bewerkButton;
     private JButton verwijderButton;
     private JButton nieuwOntwerpButton;
+    private JList<String> ontwerpList;
     private JPanel container;
     private JPanel overzichtPanel;
 
@@ -36,6 +35,13 @@ public class OntwerpOverzichtFrame extends JFrame {
         container = new JPanel();
         overzichtPanel = new JPanel();
 
+        // ontwerpList = new JList<String>(new String[] { "Test", "test", "Test" }); //
+        // ontwerpList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        // ontwerpList.setLayoutOrientation(JList.VERTICAL);
+        // ontwerpList.setVisibleRowCount(-1);
+        // JScrollPane listScroller = new JScrollPane(ontwerpList);
+        // listScroller.setPreferredSize(new Dimension(250, 80));
+
         aanGemaakteOntwerpenDropdown.setMaximumSize(new Dimension(100, 30));
 
         container.setLayout(new BorderLayout());
@@ -51,6 +57,7 @@ public class OntwerpOverzichtFrame extends JFrame {
         overzichtPanel.add(bewerkButton);
         overzichtPanel.add(verwijderButton);
         overzichtPanel.add(nieuwOntwerpButton);
+        overzichtPanel.add(ontwerpList);
 
         add(container);
 
