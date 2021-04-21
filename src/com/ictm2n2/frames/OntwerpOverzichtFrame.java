@@ -72,7 +72,7 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
         jpOverzichtPanel = new JPanel();
         jbTerugButton = new JButton("◀ Terug");
         jpHeaderPanel = new JPanel();
-        header = new Header(this, "Ontwerp Overzicht");
+        header = new Header("Ontwerp Overzicht");
         jbTerugButton.setSize(50, 30);
         jbTerugButton.setAlignmentX(LEFT_ALIGNMENT);
 
