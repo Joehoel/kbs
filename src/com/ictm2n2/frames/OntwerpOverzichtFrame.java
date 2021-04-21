@@ -16,11 +16,13 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.ictm2n2.frames.elements.Header;
 import com.ictm2n2.resources.Ontwerp;
 import com.ictm2n2.resources.OntwerpOverzicht;
 
 public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
 
+    private Header header;
     private JLabel jlOntwerpenOverzicht;
     private JComboBox<Object> jcbAanGemaakteOntwerpen;
     private JButton jbBewerkButton;
@@ -70,6 +72,7 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
         jpOverzichtPanel = new JPanel();
         jbTerugButton = new JButton("◀ Terug");
         jpHeaderPanel = new JPanel();
+        header = new Header(this, "Ontwerp Overzicht");
         jbTerugButton.setSize(50, 30);
         jbTerugButton.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -93,7 +96,7 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
         jpHeaderPanel.add(jbTerugButton);
         jpHeaderPanel.add(jlOntwerpenOverzicht);
 
-        jpContainer.add(jpHeaderPanel, BorderLayout.NORTH);
+        jpContainer.add(header, BorderLayout.NORTH);
         jpContainer.add(jpOverzichtPanel, BorderLayout.CENTER);
 
         jpOverzichtPanel.add(jcbAanGemaakteOntwerpen);
@@ -105,7 +108,7 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
         jbBewerkButton.addActionListener(this);
         jbVerwijderButton.addActionListener(this);
         jbNieuwOntwerpButton.addActionListener(this);
-        jbTerugButton.addActionListener(this);
+        header.jbTerugButton.addActionListener(this);
 
         add(jpContainer);
 
@@ -131,7 +134,7 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
             if (e.getSource() == jbNieuwOntwerpButton) {
                 new OntwerpMakenFrame(new Ontwerp());
             }
-            if (e.getSource() == jbTerugButton) {
+            if (e.getSource() == header.jbTerugButton) {
                 dispose();
             }
         } catch (NullPointerException exception) {
