@@ -2,6 +2,7 @@ package com.ictm2n2.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -10,32 +11,39 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import com.ictm2n2.resources.OntwerpOverzicht;
 
 public class OntwerpOverzichtFrame extends JFrame {
-    private JLabel ontwerpenOverzichtTitle;
-    private JComboBox<String> aanGemaakteOntwerpenDropdown;
-    private JButton bewerkButton;
-    private JButton verwijderButton;
-    private JButton nieuwOntwerpButton;
-    private JList<String> ontwerpList;
-    private JPanel container;
-    private JPanel overzichtPanel;
+    private JLabel jlOntwerpenOverzicht;
+    private JComboBox<String> jcbAanGemaakteOntwerpen;
+    private JButton jbBewerkButton;
+    private JButton jbVerwijderButton;
+    private JButton jbNieuwOntwerpButton;
+    private JList<String> jkOntwerpList;
+    private JPanel jpContainer;
+    private JPanel jpOverzichtPanel;
+    private JButton jbTerugButton;
+    private JPanel jpHeaderPanel;
 
     public OntwerpOverzichtFrame(OntwerpOverzicht ontwerpOverzicht) {
         setSize(1600, 900);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Ontwerpen Overzicht");
 
-        aanGemaakteOntwerpenDropdown = new JComboBox<String>(new String[] { "Test", "test" });
-        ontwerpenOverzichtTitle = new JLabel("<html><h1>Ontwerp Overzicht</h1></html>", JLabel.CENTER);
-        bewerkButton = new JButton("Bewerken");
-        verwijderButton = new JButton("Verwijderen");
-        nieuwOntwerpButton = new JButton("Nieuw ontwerp");
-        container = new JPanel();
-        overzichtPanel = new JPanel();
+        jcbAanGemaakteOntwerpen = new JComboBox<String>(new String[] { "Test", "test" });
+        jlOntwerpenOverzicht = new JLabel("<html><h1>Ontwerp Overzicht</h1></html>", JLabel.CENTER);
+        jbBewerkButton = new JButton("Bewerken");
+        jbVerwijderButton = new JButton("Verwijderen");
+        jbNieuwOntwerpButton = new JButton("Nieuw ontwerp");
+        jpContainer = new JPanel();
+        jpOverzichtPanel = new JPanel();
+        jpHeaderPanel = new JPanel();
+        jbTerugButton = new JButton("◀ Terug");
+        jbTerugButton.setSize(50, 30);
+        jbTerugButton.setAlignmentX(LEFT_ALIGNMENT);
 
         // ontwerpList = new JList<String>(new String[] { "Test", "test", "Test" }); //
         // ontwerpList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -44,24 +52,29 @@ public class OntwerpOverzichtFrame extends JFrame {
         // JScrollPane listScroller = new JScrollPane(ontwerpList);
         // listScroller.setPreferredSize(new Dimension(250, 80));
 
-        aanGemaakteOntwerpenDropdown.setMaximumSize(new Dimension(100, 30));
+        jcbAanGemaakteOntwerpen.setMaximumSize(new Dimension(100, 30));
 
-        container.setLayout(new BorderLayout());
-        container.setPreferredSize(new Dimension(900, 600));
-        container.setBorder(new EmptyBorder(20, 20, 20, 20));
+        jpHeaderPanel.setLayout(new FlowLayout());
 
-        overzichtPanel.setLayout(new BoxLayout(overzichtPanel, BoxLayout.X_AXIS));
+        jpContainer.setLayout(new BorderLayout());
+        jpContainer.setPreferredSize(new Dimension(900, 600));
+        jpContainer.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        container.add(ontwerpenOverzichtTitle, BorderLayout.NORTH);
-        container.add(overzichtPanel, BorderLayout.CENTER);
+        jpOverzichtPanel.setLayout(new BoxLayout(jpOverzichtPanel, BoxLayout.X_AXIS));
 
-        overzichtPanel.add(aanGemaakteOntwerpenDropdown);
-        overzichtPanel.add(bewerkButton);
-        overzichtPanel.add(verwijderButton);
-        overzichtPanel.add(nieuwOntwerpButton);
+        jpHeaderPanel.add(jbTerugButton);
+        jpHeaderPanel.add(jlOntwerpenOverzicht);
+
+        jpContainer.add(jpHeaderPanel, BorderLayout.NORTH);
+        jpContainer.add(jpOverzichtPanel, BorderLayout.CENTER);
+
+        jpOverzichtPanel.add(jcbAanGemaakteOntwerpen);
+        jpOverzichtPanel.add(jbBewerkButton);
+        jpOverzichtPanel.add(jbVerwijderButton);
+        jpOverzichtPanel.add(jbNieuwOntwerpButton);
         // overzichtPanel.add(ontwerpList);
 
-        add(container);
+        add(jpContainer);
 
         setVisible(true);
     }

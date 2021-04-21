@@ -4,10 +4,33 @@ import java.util.ArrayList;
 
 public class Ontwerp {
     private ArrayList<Component> componenten;
+    private double beschikbaarheidOntwerp;
     private boolean actiefOntwerp;
+    private String naam;
+
+    public String getNaam() {
+        return naam;
+    }
+
+    public void setNaam(String naam) {
+        for (Component component : componenten) {
+            if (component.getNaam().equals(naam)) {
+                return;
+            }
+            this.naam = naam;
+        }
+    }
 
     public void setActief(boolean actiefOntwerp) {
         this.actiefOntwerp = actiefOntwerp;
+    }
+
+    public double getBeschikbaarheidOntwerp() {
+        return beschikbaarheidOntwerp;
+    }
+
+    public void setBeschikbaarheidOntwerp(double beschikbaarheidOntwerp) {
+        this.beschikbaarheidOntwerp = beschikbaarheidOntwerp;
     }
 
     public boolean isActief() {
@@ -18,11 +41,51 @@ public class Ontwerp {
         this.componenten.remove(index);
     }
 
-    public void voegComponentToe(Component component) {
+    public void voegToeComponent(Component component) {
         this.componenten.add(component);
     }
 
     public void vervangComponent(int index, Component component) {
         this.componenten.set(index, component);
+    }
+
+    public String printComponenten() {
+        String str = "";
+
+        for (Component component : componenten) {
+            str += component.getNaam();
+        }
+
+        return str;
+    }
+
+    public String printDBComponenten() {
+        String str = "";
+
+        for (Component component : componenten) {
+            str += component.getType();
+        }
+
+        return str;
+    }
+
+    public String printWSComponenten() {
+        String str = "";
+
+        for (Component component : componenten) {
+            str += component.getType();
+        }
+
+        return str;
+    }
+
+    public String printFWComponenten() {
+        String str = "";
+
+        for (Component component : componenten) {
+            str += component.getType();
+        }
+
+        return str;
     }
 }
