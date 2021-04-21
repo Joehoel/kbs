@@ -12,6 +12,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.ictm2n2.resources.OntwerpOverzicht;
+
 public class OntwerpOverzichtFrame extends JFrame {
     private JLabel ontwerpenOverzichtTitle;
     private JComboBox<String> aanGemaakteOntwerpenDropdown;
@@ -22,7 +24,7 @@ public class OntwerpOverzichtFrame extends JFrame {
     private JPanel container;
     private JPanel overzichtPanel;
 
-    public OntwerpOverzichtFrame() {
+    public OntwerpOverzichtFrame(OntwerpOverzicht ontwerpOverzicht) {
         setSize(1600, 900);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Ontwerpen Overzicht");
@@ -57,7 +59,7 @@ public class OntwerpOverzichtFrame extends JFrame {
         overzichtPanel.add(bewerkButton);
         overzichtPanel.add(verwijderButton);
         overzichtPanel.add(nieuwOntwerpButton);
-        overzichtPanel.add(ontwerpList);
+        // overzichtPanel.add(ontwerpList);
 
         add(container);
 

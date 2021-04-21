@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import com.ictm2n2.resources.OntwerpOverzicht;
+
 public class App extends JFrame implements ActionListener {
     private JButton ontwerpOverzichtButton;
 
@@ -26,7 +28,7 @@ public class App extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ontwerpOverzichtButton) {
-            new OntwerpOverzichtFrame();
+            new OntwerpOverzichtFrame(new OntwerpOverzicht());
         }
     }
 }
