@@ -51,7 +51,7 @@ public class OntwerpMakenFrame extends JFrame implements ActionListener {
         // jpHeaderPanel = new JPanel();
         jpContainer = new JPanel();
         // jlOntwerpMaken = new JLabel("<html><h1>Ontwerp Maken</h1></html>");
-        header = new Header(this, "Ontwerp Maken");
+        header = new Header("Ontwerp Maken");
         jpMaken = new JPanel();
         jcbDatabaseNaam = new JComboBox<String>();
 
@@ -81,10 +81,10 @@ public class OntwerpMakenFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    // @Override
-    // public void actionPerformed(ActionEvent e) {
-    // if (e.getSource() == header.jbTerugButton) {
-    // dispose();
-    // }
-    // }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == header.jbTerugButton) {
+            dispose();
+        }
+    }
 }
