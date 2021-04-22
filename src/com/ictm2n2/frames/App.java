@@ -13,16 +13,21 @@ public class App extends JFrame implements ActionListener {
     private JButton ontwerpOverzichtButton;
 
     public App() {
-        setSize(900, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("NerdyGadgets | ICTm2n2");
-        setLayout(new FlowLayout());
+        try {
+            setSize(900, 600);
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setTitle("NerdyGadgets | ICTm2n2");
+            setLayout(new FlowLayout());
 
-        ontwerpOverzichtButton = new JButton("Ontwerpen Overzicht");
-        add(ontwerpOverzichtButton);
-        ontwerpOverzichtButton.addActionListener(this);
+            ontwerpOverzichtButton = new JButton("Ontwerpen Overzicht");
+            add(ontwerpOverzichtButton);
+            ontwerpOverzichtButton.addActionListener(this);
 
-        setVisible(true);
+            setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
