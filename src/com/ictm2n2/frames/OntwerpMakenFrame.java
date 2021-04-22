@@ -22,8 +22,8 @@ public class OntwerpMakenFrame extends JFrame implements ActionListener {
 
     private Header header;
     private JComboBox<String> jcbDatabaseNaam;
-    private JComboBox<String> jcbWebserverNaam;
-    private JComboBox<String> jcbToegevoegdeComponenten;
+    // private JComboBox<String> jcbWebserverNaam;
+    // private JComboBox<String> jcbToegevoegdeComponenten;
 
     private JPanel jpContainer;
     private JButton jbVoegToeDatabase;

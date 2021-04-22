@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -28,13 +27,13 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
     private JButton jbBewerkButton;
     private JButton jbVerwijderButton;
     private JButton jbNieuwOntwerpButton;
-    private JList<Object> jkOntwerpList;
+    // private JList<Object> jkOntwerpList;
     private JPanel jpContainer;
     private JPanel jpOverzichtPanel;
     private JButton jbTerugButton;
     private JPanel jpHeaderPanel;
 
-    private double gewensteBeschikbaarheid;
+    // private double gewensteBeschikbaarheid;
     private OntwerpOverzicht ontwerpOverzicht;
 
     public OntwerpOverzichtFrame(OntwerpOverzicht ontwerpOverzicht) {
