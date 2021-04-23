@@ -1,5 +1,7 @@
 package com.ictm2n2.frames.elements;
 
-public class Container {
+import javax.swing.JPanel;
 
+public class Container extends JPanel {
+    
 }

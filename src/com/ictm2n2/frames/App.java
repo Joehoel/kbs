@@ -35,7 +35,8 @@ public class App extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ontwerpOverzichtButton) {
-            new OntwerpOverzichtFrame(new OntwerpOverzicht());
+            new OntwerpOverzichtFrame(this, new OntwerpOverzicht());
+            setVisible(false);
         }
     }
 }

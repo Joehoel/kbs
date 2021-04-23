@@ -57,11 +57,23 @@ public class Ontwerp {
         this.componenten.set(index, component);
     }
 
+    public ArrayList<Component> getComponenten() {
+        return componenten;
+    }
+
+    public Object[] getComponentenNamen() {
+        ArrayList<String> namen = new ArrayList<String>();
+        for (Component component : componenten) {
+            namen.add(component.getNaam());
+        }
+        return namen.toArray();
+    }
+
     public String printComponenten() {
         String str = "";
 
         for (Component component : componenten) {
-            str += component.getNaam();
+            str += component.getNaam() + "\n";
         }
 
         return str;

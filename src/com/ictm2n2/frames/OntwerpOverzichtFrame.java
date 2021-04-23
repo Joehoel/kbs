@@ -8,18 +8,28 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import com.ictm2n2.frames.elements.Header;
+import com.ictm2n2.frames.elements.List;
+import com.ictm2n2.frames.elements.Table;
 import com.ictm2n2.resources.Ontwerp;
 import com.ictm2n2.resources.OntwerpOverzicht;
+import com.ictm2n2.resources.Webserver;
 
 public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
+
+    private App parent;
 
     private Header header;
     private JLabel jlOntwerpenOverzicht;
@@ -27,7 +37,8 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
     private JButton jbBewerkButton;
     private JButton jbVerwijderButton;
     private JButton jbNieuwOntwerpButton;
-    // private JList<Object> jkOntwerpList;
+    private List<Object> jlOntwerpList;
+    private Table jtOntwerpTable;
     private JPanel jpContainer;
     private JPanel jpOverzichtPanel;
     private JButton jbTerugButton;
@@ -36,21 +47,18 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
     // private double gewensteBeschikbaarheid;
     private OntwerpOverzicht ontwerpOverzicht;
 
-    public OntwerpOverzichtFrame(OntwerpOverzicht ontwerpOverzicht) {
+    private Ontwerp actiefOntwerp;
+
+    public OntwerpOverzichtFrame(App parent, OntwerpOverzicht ontwerpOverzicht) {
+        this.parent = parent;
         this.ontwerpOverzicht = ontwerpOverzicht;
 
-        Ontwerp o = new Ontwerp("WS1");
-        Ontwerp o1 = new Ontwerp("WS2");
-        Ontwerp o2 = new Ontwerp("WS3");
-        Ontwerp o3 = new Ontwerp("WS4");
-        Ontwerp o4 = new Ontwerp("WS5");
-        Ontwerp o5 = new Ontwerp("WS6");
+        Ontwerp o = new Ontwerp("Ontwerp 1");
+        Ontwerp o1 = new Ontwerp("Ontwerp 2");
+        Webserver ws1 = new Webserver("Webserver 1", true, 20.00, 99.99);
+        o.voegToeComponent(ws1);
         this.ontwerpOverzicht.voegToeOntwerp(o);
         this.ontwerpOverzicht.voegToeOntwerp(o1);
-        this.ontwerpOverzicht.voegToeOntwerp(o2);
-        this.ontwerpOverzicht.voegToeOntwerp(o3);
-        this.ontwerpOverzicht.voegToeOntwerp(o4);
-        this.ontwerpOverzicht.voegToeOntwerp(o5);
 
         // Dropdown data list
         ArrayList<String> data = new ArrayList<String>();
@@ -75,12 +83,11 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
         jbTerugButton.setSize(50, 30);
         jbTerugButton.setAlignmentX(LEFT_ALIGNMENT);
 
-        // ontwerpList = new JList<String>(new String[] { "Test", "test", "Test" }); //
-        // ontwerpList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        // ontwerpList.setLayoutOrientation(JList.VERTICAL);
-        // ontwerpList.setVisibleRowCount(-1);
-        // JScrollPane listScroller = new JScrollPane(ontwerpList);
-        // listScroller.setPreferredSize(new Dimension(250, 80));
+        this.actiefOntwerp = this.ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
+
+        jlOntwerpList = new List<Object>(this.actiefOntwerp.getComponentenNamen());
+
+        jtOntwerpTable = new Table(new Object[][] { { "Webserver 1", 123123 } }, new String[] { "naam", "prijs" });
 
         jcbAanGemaakteOntwerpen.setMaximumSize(new Dimension(100, 30));
 
@@ -95,18 +102,21 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
         jpHeaderPanel.add(jbTerugButton);
         jpHeaderPanel.add(jlOntwerpenOverzicht);
 
-        jpContainer.add(header, BorderLayout.NORTH);
-        jpContainer.add(jpOverzichtPanel, BorderLayout.CENTER);
-
         jpOverzichtPanel.add(jcbAanGemaakteOntwerpen);
         jpOverzichtPanel.add(jbBewerkButton);
         jpOverzichtPanel.add(jbVerwijderButton);
         jpOverzichtPanel.add(jbNieuwOntwerpButton);
-        // overzichtPanel.add(ontwerpList);
+        jpOverzichtPanel.add(jlOntwerpList);
+        // jpOverzichtPanel.add(jtOntwerpTable.getTableHeader());
+        jpOverzichtPanel.add(jtOntwerpTable);
+
+        jpContainer.add(header, BorderLayout.NORTH);
+        jpContainer.add(jpOverzichtPanel, BorderLayout.CENTER);
 
         jbBewerkButton.addActionListener(this);
         jbVerwijderButton.addActionListener(this);
         jbNieuwOntwerpButton.addActionListener(this);
+        jcbAanGemaakteOntwerpen.addActionListener(this);
         header.jbTerugButton.addActionListener(this);
 
         add(jpContainer);
@@ -118,13 +128,19 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
+            this.actiefOntwerp = ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
+            DefaultListModel<Object> model = new DefaultListModel<Object>();
+            for (Object string : this.actiefOntwerp.getComponentenNamen()) {
+                model.addElement(string);
+            }
+            jlOntwerpList.setModel(model);
             if (e.getSource() == jbBewerkButton) {
-                Ontwerp o = ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
-                new OntwerpMakenFrame(o);
+                new OntwerpMakenFrame(this.actiefOntwerp);
             }
             if (e.getSource() == jbVerwijderButton) {
-                Ontwerp o = ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
-                int index = ontwerpOverzicht.getOntwerpen().indexOf(o);
+                // Ontwerp o =
+                // ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
+                int index = ontwerpOverzicht.getOntwerpen().indexOf(this.actiefOntwerp);
 
                 ontwerpOverzicht.verwijderOntwerp(index);
                 jcbAanGemaakteOntwerpen.removeItemAt(index);
@@ -135,7 +151,10 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
             }
             if (e.getSource() == header.jbTerugButton) {
                 dispose();
+                this.parent.setVisible(true);
+
             }
+            repaint();
         } catch (NullPointerException exception) {
             System.err.println(exception.getMessage());
         }

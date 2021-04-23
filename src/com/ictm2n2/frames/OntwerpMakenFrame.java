@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.ictm2n2.frames.elements.Header;
+import com.ictm2n2.resources.DatabaseServer;
 import com.ictm2n2.resources.Ontwerp;
 
 public class OntwerpMakenFrame extends JFrame implements ActionListener {
@@ -35,14 +37,19 @@ public class OntwerpMakenFrame extends JFrame implements ActionListener {
 
         jlVoerBeschikbaarheidIn = new JLabel("Voer gewenste beschikbaarheid in:");
 
+        // Dropdown data list
+        // ArrayList<String> data = new ArrayList<String>();
+        // for (Ontwerp o : this.ontwerp.) {
+        // data.add(o.getNaam());
+        // }
+
+        System.out.println(this.ontwerp.printComponenten());
+
         setTitle("Ontwerp Maken | " + this.ontwerp.getNaam());
         setSize(900, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        // jbTerugButton = new JButton("◀ Terug");
-        // jpHeaderPanel = new JPanel();
         jpContainer = new JPanel();
-        // jlOntwerpMaken = new JLabel("<html><h1>Ontwerp Maken</h1></html>");
         header = new Header("Ontwerp Maken");
         jpMaken = new JPanel();
         jbVoegToeDatabase = new JButton("➕");
