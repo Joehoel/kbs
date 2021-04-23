@@ -20,6 +20,7 @@ public class Table extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(jpTable.getTableHeader());
         add(jpTable);
+        jpTable.revalidate();
     }
 
 }

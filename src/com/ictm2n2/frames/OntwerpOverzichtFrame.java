@@ -8,21 +8,17 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import com.ictm2n2.frames.elements.Header;
-import com.ictm2n2.frames.elements.List;
 import com.ictm2n2.frames.elements.Table;
+import com.ictm2n2.resources.Component;
+import com.ictm2n2.resources.DatabaseServer;
 import com.ictm2n2.resources.Ontwerp;
 import com.ictm2n2.resources.OntwerpOverzicht;
 import com.ictm2n2.resources.Webserver;
@@ -37,7 +33,7 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
     private JButton jbBewerkButton;
     private JButton jbVerwijderButton;
     private JButton jbNieuwOntwerpButton;
-    private List<Object> jlOntwerpList;
+    // private List<Object> jlOntwerpList;
     private Table jtOntwerpTable;
     private JPanel jpContainer;
     private JPanel jpOverzichtPanel;
@@ -56,7 +52,9 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
         Ontwerp o = new Ontwerp("Ontwerp 1");
         Ontwerp o1 = new Ontwerp("Ontwerp 2");
         Webserver ws1 = new Webserver("Webserver 1", true, 20.00, 99.99);
+        DatabaseServer ws2 = new DatabaseServer("Webserver 1", true, 20.00, 99.99);
         o.voegToeComponent(ws1);
+        o.voegToeComponent(ws2);
         this.ontwerpOverzicht.voegToeOntwerp(o);
         this.ontwerpOverzicht.voegToeOntwerp(o1);
 
@@ -85,9 +83,22 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
 
         this.actiefOntwerp = this.ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
 
-        jlOntwerpList = new List<Object>(this.actiefOntwerp.getComponentenNamen());
+        // jlOntwerpList = new List<Object>(this.actiefOntwerp.getComponentenNamen());
 
-        jtOntwerpTable = new Table(new Object[][] { { "Webserver 1", 123123 } }, new String[] { "naam", "prijs" });
+        Object[][] ontwerpData = new Object[this.actiefOntwerp.getComponenten().size()][2];
+
+        int i = 0;
+        int j = 0;
+        for (Component c : this.actiefOntwerp.getComponenten()) {
+            ontwerpData[i][j] = c.getNaam();
+            ontwerpData[i][j + 1] = c.getPrijs();
+            System.out.println(c.getNaam());
+            System.out.println(c.getPrijs());
+            i++;
+            j++;
+        }
+
+        jtOntwerpTable = new Table(ontwerpData, new String[] { "naam", "prijs" });
 
         jcbAanGemaakteOntwerpen.setMaximumSize(new Dimension(100, 30));
 
@@ -106,7 +117,7 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
         jpOverzichtPanel.add(jbBewerkButton);
         jpOverzichtPanel.add(jbVerwijderButton);
         jpOverzichtPanel.add(jbNieuwOntwerpButton);
-        jpOverzichtPanel.add(jlOntwerpList);
+        // jpOverzichtPanel.add(jlOntwerpList);
         // jpOverzichtPanel.add(jtOntwerpTable.getTableHeader());
         jpOverzichtPanel.add(jtOntwerpTable);
 
@@ -129,11 +140,11 @@ public class OntwerpOverzichtFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             this.actiefOntwerp = ontwerpOverzicht.vindOntwerp(jcbAanGemaakteOntwerpen.getSelectedItem().toString());
-            DefaultListModel<Object> model = new DefaultListModel<Object>();
-            for (Object string : this.actiefOntwerp.getComponentenNamen()) {
-                model.addElement(string);
-            }
-            jlOntwerpList.setModel(model);
+            // DefaultListModel<Object> model = new DefaultListModel<Object>();
+            // for (Object string : this.actiefOntwerp.getComponentenNamen()) {
+            // model.addElement(string);
+            // }
+            // jlOntwerpList.setModel(model);
             if (e.getSource() == jbBewerkButton) {
                 new OntwerpMakenFrame(this.actiefOntwerp);
             }
