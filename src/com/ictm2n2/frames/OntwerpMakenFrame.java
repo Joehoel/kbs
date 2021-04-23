@@ -1,8 +1,6 @@
 package com.ictm2n2.frames;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -26,7 +24,8 @@ public class OntwerpMakenFrame extends JFrame {
 
     private JPanel jpContainer;
     private JButton jbTerugButton;
-    private JPanel jpHeaderPanel;
+    private JPanel jpComponent = new JPanel();
+    private JPanel jpWerkveld = new JPanel();
     private JLabel jlOntwerpMaken;
     private JPanel jpMaken;
     private JLabel jlVoerBeschikbaarheidIn;
@@ -39,36 +38,43 @@ public class OntwerpMakenFrame extends JFrame {
         jlVoerBeschikbaarheidIn = new JLabel("Voer gewenste beschikbaarheid in:");
 
         setTitle("Ontwerp Maken | " + this.ontwerp.getNaam());
-        setSize(900, 600);
+        setSize(1000, 1000);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-        jbTerugButton = new JButton("◀ Terug");
-        jpHeaderPanel = new JPanel();
-        jpContainer = new JPanel();
-        jlOntwerpMaken = new JLabel("<html><h1>Ontwerp Maken</h1></html>");
-        jpMaken = new JPanel();
-        jcbDatabaseNaam = new JComboBox<String>();
+        jpComponent.setPreferredSize(new Dimension(250, 1000));
+        add(jpComponent, BorderLayout.LINE_START);
 
-        jbTerugButton.setSize(50, 30);
-        jbTerugButton.setAlignmentX(LEFT_ALIGNMENT);
-
-        jpContainer.setLayout(new BorderLayout());
-        jpContainer.setPreferredSize(new Dimension(900, 600));
-        jpContainer.setBorder(new EmptyBorder(20, 20, 20, 20));
-
-        jpHeaderPanel.setLayout(new FlowLayout());
-
-        jpMaken.setLayout(new BoxLayout(jpMaken, BoxLayout.X_AXIS));
-
-        jpHeaderPanel.add(jbTerugButton);
-        jpHeaderPanel.add(jlOntwerpMaken);
-
-        jpMaken.add(jcbDatabaseNaam);
-
-        jpContainer.add(jpHeaderPanel);
-        jpContainer.add(jpMaken);
-
-        add(jpContainer);
+        jpWerkveld.setPreferredSize(new Dimension(750, 1000));
+        jpWerkveld.setBackground(Color.WHITE);
+        add(jpWerkveld, BorderLayout.LINE_END);
+//        jbTerugButton = new JButton("◀ Terug");
+//        jpHeaderPanel = new JPanel();
+//        jpContainer = new JPanel();
+//        jlOntwerpMaken = new JLabel("<html><h1>Ontwerp Maken</h1></html>");
+//        jpMaken = new JPanel();
+//        jcbDatabaseNaam = new JComboBox<String>();
+//
+//        jbTerugButton.setSize(50, 30);
+//        jbTerugButton.setAlignmentX(LEFT_ALIGNMENT);
+//
+//        jpContainer.setLayout(new BorderLayout());
+////        jpContainer.setPreferredSize(new Dimension(900, 600));
+//        jpContainer.setBorder(new EmptyBorder(20, 20, 20, 20));
+//
+//        jpHeaderPanel.setLayout(new FlowLayout());
+//
+//        jpMaken.setLayout(new BoxLayout(jpMaken, BoxLayout.X_AXIS));
+//
+//        jpHeaderPanel.add(jbTerugButton);
+//        jpHeaderPanel.add(jlOntwerpMaken);
+//
+//        jpMaken.add(jcbDatabaseNaam);
+//
+//        jpContainer.add(jpHeaderPanel);
+//        jpContainer.add(jpMaken);
+//
+//        add(jpContainer);
 
         setVisible(true);
     }
