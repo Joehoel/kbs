@@ -7,9 +7,14 @@ public class Ontwerp {
     private double beschikbaarheidOntwerp;
     private boolean actiefOntwerp;
     private String naam;
+    private double prijs;
+    private int id;
+    private static int idTeller=0;
 
     public Ontwerp(String naam) {
         this.naam = naam;
+        this.id = this.idTeller+1;
+        idTeller++;
     }
 
     public Ontwerp() {
@@ -33,12 +38,24 @@ public class Ontwerp {
         this.actiefOntwerp = actiefOntwerp;
     }
 
+    public double getPrijs() {
+        return prijs;
+    }
+
+    public void setPrijs(double prijs) {
+        this.prijs = prijs;
+    }
+
     public double getBeschikbaarheidOntwerp() {
         return beschikbaarheidOntwerp;
     }
 
     public void setBeschikbaarheidOntwerp(double beschikbaarheidOntwerp) {
         this.beschikbaarheidOntwerp = beschikbaarheidOntwerp;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public boolean isActief() {

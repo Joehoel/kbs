@@ -1,7 +1,11 @@
 package com.ictm2n2.frames;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -10,12 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ictm2n2.resources.Component;
-import com.ictm2n2.resources.Componenten;
-import com.ictm2n2.resources.Configuratie;
-import com.ictm2n2.resources.DatabaseServer;
-import com.ictm2n2.resources.Firewall;
-import com.ictm2n2.resources.Webserver;
+import com.ictm2n2.resources.*;
+import com.ictm2n2.resources.database.Database;
+import com.ictm2n2.resources.database.Query;
 
 public class ConfigureerPanel extends JPanel implements ActionListener {
 
@@ -179,6 +180,48 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+
+
+
+        if (e.getSource() == jbOpslaan) {
+            // opslaan als ontwerp??
+            String naamOntwerp = JOptionPane.showInputDialog(this,
+                    "Geef dit ontwerp een naam", null);
+            Ontwerp ontwerp = new Ontwerp(naamOntwerp);
+
+            for (int i=0;i<this.configuratie.getComponenten().size();i++) {
+                ontwerp.voegToeComponent(this.configuratie.getComponenten().get(i));
+            }
+            ontwerp.setBeschikbaarheidOntwerp(this.configuratie.berekenBeschikbaarheid());
+            ontwerp.setPrijs(this.configuratie.berekenTotalePrijsDouble());
+            // opslaan in database??
+            try {
+                Database db = new Database("nerdygadgets_1", "root", "");
+
+                Query q = new Query();
+
+                java.util.Date date=new java.util.Date();
+
+                java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+                //java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
+
+                String [] columns = {"id", "datum", "beschikbaarheidspercentage", "naam", "prijs"};
+                String [] values = {String.valueOf(ontwerp.getId()), String.valueOf(sqlDate), String.valueOf(ontwerp.getBeschikbaarheidOntwerp()), naamOntwerp, String.valueOf(ontwerp.getPrijs())};
+                for (String value : values) {
+                    System.out.println(value);
+                }
+                q.insert("configuratie").columns(columns).values(values);
+                ResultSet rs = db.select(q);
+
+            } catch (Exception a) {
+                a.printStackTrace();
+            }
+
+        }
+
+
+
+
         jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
         jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
 

@@ -13,6 +13,14 @@ public class OntwerpOverzicht {
         return null;
     }
 
+    public Ontwerp vindActiefOntwerp() {
+        for (Ontwerp ontwerp : ontwerpen) {
+            if (ontwerp.isActief())
+                return ontwerp;
+        }
+        return null;
+    }
+
     public void verwijderOntwerp(int index) {
         this.ontwerpen.remove(index);
     }

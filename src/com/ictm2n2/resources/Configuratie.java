@@ -50,6 +50,18 @@ public class Configuratie {
         return "$" + totalePrijs;
     }
 
+    public double berekenTotalePrijsDouble() {
+        int totalePrijs = 0;
+        try {
+            for (Component component : getComponenten()) {
+                totalePrijs += component.getPrijs();
+            }
+        } catch (NullPointerException npe) {
+            System.out.println(npe);
+        }
+        return totalePrijs;
+    }
+
     public double berekenBeschikbaarheid() {
         return (berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
                 * berekenComponent(DatabaseServer.class);
