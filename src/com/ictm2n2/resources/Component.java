@@ -10,9 +10,8 @@ public abstract class Component {
     private double prijs;
     private boolean aangesloten;
 
-    public Component(String naam, boolean aangesloten, double prijs, double beschikbaarheidsPercentage) {
+    public Component(String naam, double prijs, double beschikbaarheidsPercentage) {
         this.naam = naam;
-        this.aangesloten = aangesloten;
         this.prijs = prijs;
         this.beschikbaarheidsPercentage = beschikbaarheidsPercentage;
     }
