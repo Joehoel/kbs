@@ -167,10 +167,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
                     JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    System.out.println(configuratie.getComponenten().isEmpty());
                     configuratie.optimaliseer(gewenstPercentage);
-                    for (Component component : configuratie.getComponenten()) {
-                        System.out.println(component.getType());
+                    jcbToegevoegd.removeAll();
+                    for (Object naam : configuratie.getComponentenNamen()) {
+                        System.out.println(naam);
+                        jcbToegevoegd.addItem(naam);
                     }
                 }
                 // this.componenten = configuratie.getComponenten();

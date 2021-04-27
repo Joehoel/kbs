@@ -37,8 +37,8 @@ public class Backtracking {
 
         while (!wsDoorlopen && !dbDoorlopen) {
             for (int i = 0; i < componenten.webServers.size() - 1; i++) {
-                Component goedkoopsteWs = componenten.webServers.get(0);
-                Component duurdereWs = componenten.webServers.get(componenten.webServers.indexOf(goedkoopsteWs) + 1);
+                Webserver goedkoopsteWs = componenten.webServers.get(0);
+                Webserver duurdereWs = componenten.webServers.get(componenten.webServers.indexOf(goedkoopsteWs) + 1);
 
                 for (int j = 0; j < hoeveelVan(goedkoopsteWs, configuratie); j++) {
                     configuratie.vervangComponent(configuratie.getComponenten().lastIndexOf(goedkoopsteWs), duurdereWs);
@@ -51,7 +51,7 @@ public class Backtracking {
 
                 for (int j = 0; j < hoeveelVan(duurdereWs, configuratie); j++) {
                     if (kosten < berekenTotalePrijs(configuratie)) {
-                        configuratie.verwijderComponent(componenten.webServers.indexOf(duurdereWs));
+                        configuratie.verwijderComponent(duurdereWs);
                     } else if (isVoldaan(percentage, configuratie)) {
                         kosten = berekenTotalePrijs(configuratie);
                     }
@@ -64,8 +64,8 @@ public class Backtracking {
             }
             wsDoorlopen = true;
             for (int i = 0; i < componenten.dbServers.size() - 1; i++) {
-                Component goedkoopsteDb = componenten.dbServers.get(0);
-                Component duurdereDb = componenten.dbServers.get(componenten.dbServers.indexOf(goedkoopsteDb) + 1);
+                DatabaseServer goedkoopsteDb = componenten.dbServers.get(0);
+                DatabaseServer duurdereDb = componenten.dbServers.get(componenten.dbServers.indexOf(goedkoopsteDb) + 1);
 
                 for (int j = 0; j < hoeveelVan(goedkoopsteDb, configuratie); j++) {
                     configuratie.vervangComponent(configuratie.getComponenten().lastIndexOf(goedkoopsteDb), duurdereDb);
