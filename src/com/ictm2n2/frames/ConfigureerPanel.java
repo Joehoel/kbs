@@ -35,6 +35,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JButton jbWsVoegToe;
     private JButton jbFwVoegToe;
 
+    private JLabel jlTotaleBeschikbaarheid;
+    private JLabel jlTotalePrijs;
+
+    private JButton jbOpslaan;
+
     private TekenPanel tp = new TekenPanel();
 
     private Configuratie configuratie;
@@ -65,6 +70,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jtPercentage = new JTextField(4);
         jbOptimaliseer = new JButton("▶");
 
+        jlTotaleBeschikbaarheid = new JLabel("Totale Beschikbaarheid");
+        jlTotalePrijs = new JLabel("Totale Prijs");
+
+        jbOpslaan = new JButton("Opslaan");
+
         jcbWebServers.setBounds(10, 10, 200, 30);
         jcbDbServers.setBounds(10, 45, 200, 30);
         jcbFirewalls.setBounds(10, 80, 200, 30);
@@ -80,6 +90,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         // jlPercentage.setBounds(10, 140, 130, 30);
         // jtPercentage.setBounds(10, 170, 45, 25);
         // jbOptimaliseer.setBounds(65, 170, 100, 25);
+
+        jlTotaleBeschikbaarheid.setBounds(10, 180, 200, 30);
+        jlTotalePrijs.setBounds(10, 200, 200, 30);
+
+        jbOpslaan.setBounds(10, 505, 100, 30);
 
         int width = 605;
         int height = 525;
@@ -99,6 +114,9 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         add(jcbToegevoegd);
         add(jlToegevoegd);
         add(jbVerwijder);
+        add(jlTotaleBeschikbaarheid);
+        add(jlTotalePrijs);
+        add(jbOpslaan);
         add(tp);
 
         jbDbVoegToe.addActionListener(this);
@@ -106,6 +124,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbFwVoegToe.addActionListener(this);
         jbOptimaliseer.addActionListener(this);
         jbVerwijder.addActionListener(this);
+        jbOpslaan.addActionListener(this);
     }
 
     @Override
