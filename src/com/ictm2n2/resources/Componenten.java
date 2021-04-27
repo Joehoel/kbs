@@ -39,6 +39,30 @@ public class Componenten {
 
     }
 
+    public ArrayList<DatabaseServer> getDbServers() {
+        return dbServers;
+    }
+
+    public void setDbServers(ArrayList<DatabaseServer> dbServers) {
+        this.dbServers = dbServers;
+    }
+
+    public ArrayList<Webserver> getWebServers() {
+        return webServers;
+    }
+
+    public void setWebServers(ArrayList<Webserver> webServers) {
+        this.webServers = webServers;
+    }
+
+    public ArrayList<Firewall> getFirewalls() {
+        return firewalls;
+    }
+
+    public void setFirewalls(ArrayList<Firewall> firewalls) {
+        this.firewalls = firewalls;
+    }
+
     public String[] get(Class<?> type) {
         ArrayList<String> data = new ArrayList<String>();
         if (type.getSimpleName().equals("Webserver")) {

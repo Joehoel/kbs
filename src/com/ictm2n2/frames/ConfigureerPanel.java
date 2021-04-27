@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ictm2n2.resources.Componenten;
+import com.ictm2n2.resources.Configuratie;
 import com.ictm2n2.resources.DatabaseServer;
 import com.ictm2n2.resources.Firewall;
 import com.ictm2n2.resources.Webserver;
@@ -24,20 +25,35 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JComboBox<Object> jcbWebServers;
     private JComboBox<Object> jcbFirewalls;
 
+    private JLabel jlToegevoegd;
+    private JComboBox<Object> jcbToegevoegd;
+    private JButton jbVerwijder;
+
     private JButton jbDbVoegToe;
     private JButton jbWsVoegToe;
     private JButton jbFwVoegToe;
 
     private TekenPanel tp = new TekenPanel();
 
+    private Configuratie configuratie;
+    private Componenten componenten;
+
     public ConfigureerPanel() {
         setLayout(null);
 
-        Componenten c = new Componenten();
+        Componenten componenten = new Componenten();
+        Configuratie configuratie = new Configuratie();
 
-        jcbDbServers = new JComboBox<Object>(c.get(DatabaseServer.class));
-        jcbWebServers = new JComboBox<Object>(c.get(Webserver.class));
-        jcbFirewalls = new JComboBox<Object>(c.get(Firewall.class));
+        this.componenten = componenten;
+        this.configuratie = configuratie;
+
+        jcbDbServers = new JComboBox<Object>(componenten.get(DatabaseServer.class));
+        jcbWebServers = new JComboBox<Object>(componenten.get(Webserver.class));
+        jcbFirewalls = new JComboBox<Object>(componenten.get(Firewall.class));
+
+        jlToegevoegd = new JLabel("Toegevoegd:");
+        jcbToegevoegd = new JComboBox<Object>(configuratie.getComponentenNamen());
+        jbVerwijder = new JButton("x");
 
         jbDbVoegToe = new JButton("+");
         jbWsVoegToe = new JButton("+");
@@ -47,21 +63,21 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jtPercentage = new JTextField(4);
         jbOptimaliseer = new JButton("▶");
 
-        jbDbVoegToe.addActionListener(this);
-        jbWsVoegToe.addActionListener(this);
-        jbFwVoegToe.addActionListener(this);
-
         jcbWebServers.setBounds(10, 10, 100, 30);
         jcbDbServers.setBounds(10, 45, 100, 30);
         jcbFirewalls.setBounds(10, 80, 100, 30);
+
+        jlToegevoegd.setBounds(10, 115, 100, 30);
+        jcbToegevoegd.setBounds(10, 145, 100, 30);
+        jbVerwijder.setBounds(120, 145, 45, 30);
 
         jbDbVoegToe.setBounds(120, 10, 45, 30);
         jbWsVoegToe.setBounds(120, 45, 45, 30);
         jbFwVoegToe.setBounds(120, 80, 45, 30);
 
-        jlPercentage.setBounds(10, 110, 130, 30);
-        jtPercentage.setBounds(10, 140, 45, 25);
-        jbOptimaliseer.setBounds(65, 140, 100, 25);
+        // jlPercentage.setBounds(10, 140, 130, 30);
+        // jtPercentage.setBounds(10, 170, 45, 25);
+        // jbOptimaliseer.setBounds(65, 170, 100, 25);
 
         int width = 695;
         int height = 515;
@@ -78,11 +94,24 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         add(jlPercentage);
         add(jtPercentage);
         add(jbOptimaliseer);
+        add(jcbToegevoegd);
+        add(jlToegevoegd);
+        add(jbVerwijder);
         add(tp);
 
+        jbDbVoegToe.addActionListener(this);
+        jbWsVoegToe.addActionListener(this);
+        jbFwVoegToe.addActionListener(this);
+        jbOptimaliseer.addActionListener(this);
+        jbVerwijder.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        Object selectedIndex = jcbDbServers.getSelectedIndex();
+        if (e.getSource() == jbDbVoegToe) {
+            configuratie.voegToeComponent(componenten.getDbServers().get((int) selectedIndex));
+            jcbToegevoegd.addItem(componenten.getDbServers().get((int) selectedIndex).getNaam());
+        }
     }
 }

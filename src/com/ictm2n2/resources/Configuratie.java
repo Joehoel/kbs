@@ -24,4 +24,13 @@ public class Configuratie {
     public ArrayList<Component> getComponenten() {
         return componenten;
     }
+
+    public Object[] getComponentenNamen() {
+        ArrayList<String> namen = new ArrayList<String>();
+        for (Component component : componenten) {
+            namen.add(component.getNaam());
+        }
+        return namen.toArray();
+    }
+
 }
