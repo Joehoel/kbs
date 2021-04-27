@@ -1,0 +1,87 @@
+package com.ictm2n2.resources;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import com.ictm2n2.resources.database.Database;
+import com.ictm2n2.resources.database.Query;
+
+public class Componenten {
+    ArrayList<DatabaseServer> dbServers = new ArrayList<DatabaseServer>();
+    ArrayList<Webserver> webServers = new ArrayList<Webserver>();
+    ArrayList<Firewall> firewalls = new ArrayList<Firewall>();
+
+    public Componenten() {
+        try {
+            Database db = new Database("nerdygadgets_1", "root", "");
+
+            Query q = new Query();
+            q.select(null).from("componenten");
+            ResultSet rs = db.select(q);
+            while (rs.next()) {
+                String type = rs.getString("type");
+
+                String naam = rs.getString("hostname");
+                int prijs = rs.getInt("prijs");
+                int beschikbaarheid = rs.getInt("beschikbaarheid");
+                if (type.equals("DBserver")) {
+                    dbServers.add(new DatabaseServer(naam, prijs, beschikbaarheid));
+                } else if (type.equals("Webserver")) {
+                    webServers.add(new Webserver(naam, prijs, beschikbaarheid));
+                } else if (type.equals("firewall")) {
+                    firewalls.add(new Firewall(naam, prijs, beschikbaarheid));
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public ArrayList<DatabaseServer> getDbServers() {
+        return dbServers;
+    }
+
+    public void setDbServers(ArrayList<DatabaseServer> dbServers) {
+        this.dbServers = dbServers;
+    }
+
+    public ArrayList<Webserver> getWebServers() {
+        return webServers;
+    }
+
+    public void setWebServers(ArrayList<Webserver> webServers) {
+        this.webServers = webServers;
+    }
+
+    public ArrayList<Firewall> getFirewalls() {
+        return firewalls;
+    }
+
+    public void setFirewalls(ArrayList<Firewall> firewalls) {
+        this.firewalls = firewalls;
+    }
+
+    public String[] get(Class<?> type) {
+        ArrayList<String> data = new ArrayList<String>();
+        if (type.getSimpleName().equals("Webserver")) {
+            for (Webserver s : webServers) {
+                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                data.add(str);
+            }
+        } else if (type.getSimpleName().equals("DatabaseServer")) {
+            for (DatabaseServer s : dbServers) {
+                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                data.add(str);
+            }
+        } else if (type.getSimpleName().equals("Firewall")) {
+            for (Firewall s : firewalls) {
+                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                data.add(str);
+            }
+        }
+        return data.toArray(new String[] {});
+    }
+
+}

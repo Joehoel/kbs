@@ -27,7 +27,7 @@ Als je java componenten wil toevoegen aan de GUI dan is dat het handigst op het 
 ```java
 public class Gui extends JFrame {
     // Initialiseer de variabele als property
-    private JButton button;
+    private JButton jbButton;
 
     public Gui() {
         setSize(600, 400);
@@ -35,10 +35,10 @@ public class Gui extends JFrame {
         setTitle("Monitor | ICTm2n2");
 
         // Allocate de waarde van de variable hier
-        button = new JButton("Button");
+        jbButton = new JButton("Button");
 
         // Voeg hem toe
-        add(button);
+        add(jbButton);
 
         setVisible(true);
     }
