@@ -5,13 +5,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ictm2n2.resources.Backtracking;
+import com.ictm2n2.resources.Component;
 import com.ictm2n2.resources.Componenten;
 import com.ictm2n2.resources.Configuratie;
 import com.ictm2n2.resources.DatabaseServer;
@@ -69,7 +68,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
         jlPercentage = new JLabel("Gewenst Percentage:");
         jtPercentage = new JTextField(4);
-        jbOptimaliseer = new JButton("▶");
+        jbOptimaliseer = new JButton("Optimaliseer");
 
         jlTotaleBeschikbaarheid = new JLabel("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
         jlTotalePrijs = new JLabel("Totale Prijs: " + configuratie.berekenTotalePrijs());
@@ -88,12 +87,12 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbDbVoegToe.setBounds(220, 45, 45, 30);
         jbFwVoegToe.setBounds(220, 80, 45, 30);
 
-        // jlPercentage.setBounds(10, 140, 130, 30);
-        // jtPercentage.setBounds(10, 170, 45, 25);
-        // jbOptimaliseer.setBounds(65, 170, 100, 25);
-
         jlTotaleBeschikbaarheid.setBounds(10, 180, 200, 30);
         jlTotalePrijs.setBounds(10, 200, 200, 30);
+
+        jlPercentage.setBounds(10, 240, 130, 30);
+        jtPercentage.setBounds(10, 270, 45, 25);
+        jbOptimaliseer.setBounds(65, 270, 200, 25);
 
         jbOpslaan.setBounds(10, 505, 100, 30);
 
@@ -160,6 +159,23 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
                         JOptionPane.ERROR_MESSAGE);
                 error.printStackTrace();
+            }
+        }
+        if (e.getSource() == jbOptimaliseer) {
+            try {
+                double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
+                if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
+                    JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    System.out.println(configuratie.getComponenten().isEmpty());
+                    configuratie.optimaliseer(gewenstPercentage);
+                    for (Component component : configuratie.getComponenten()) {
+                        System.out.println(component.getType());
+                    }
+                }
+                // this.componenten = configuratie.getComponenten();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");

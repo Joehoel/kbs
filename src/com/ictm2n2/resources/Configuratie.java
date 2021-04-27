@@ -4,13 +4,18 @@ import java.util.ArrayList;
 
 public class Configuratie {
 
-    private ArrayList<Component> componenten = new ArrayList<Component>();
+    private ArrayList<Component> componenten;
 
     public Configuratie() {
+        componenten = new ArrayList<Component>();
     }
 
     public void verwijderComponent(int index) {
         this.componenten.remove(index);
+    }
+
+    public void verwijderComponent(Component c) {
+        this.componenten.remove(c);
     }
 
     public void voegToeComponent(Component component) {
@@ -46,14 +51,29 @@ public class Configuratie {
     }
 
     public double berekenBeschikbaarheid() {
-        Backtracking bt = new Backtracking();
-        return (bt.berekenComponent(Firewall.class, this) / 100) * (bt.berekenComponent(Webserver.class, this) / 100)
-                * bt.berekenComponent(DatabaseServer.class, this);
+        return (berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
+                * berekenComponent(DatabaseServer.class);
+    }
+
+    private double berekenComponent(Class<?> type) {
+        double beschikbaarheid = 1;
+        // voor elke component wordt gekeken of het een webserver is.
+        // hierna wordt de formule uitgevoerd voor de beschikbaarheid.
+        for (Component component : getComponenten()) {
+            if (type.isAssignableFrom(component.getClass())) {
+                beschikbaarheid *= (1 - (component.getBeschikbaarheid() / 100));
+            }
+        }
+        return (1 - beschikbaarheid) * 100;
     }
 
     public void optimaliseer(double percentage) {
         Backtracking bt = new Backtracking();
-        this.componenten = bt.maakConfiguratie(percentage).getComponenten();
+        setComponenten(bt.maakConfiguratie(percentage).getComponenten());
+    }
+
+    public void setComponenten(ArrayList<Component> componenten) {
+        this.componenten = componenten;
     }
 
 }

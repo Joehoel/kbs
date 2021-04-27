@@ -22,8 +22,8 @@ public class Componenten {
                 String type = rs.getString("type");
 
                 String naam = rs.getString("hostname");
-                int prijs = rs.getInt("prijs");
-                int beschikbaarheid = rs.getInt("beschikbaarheid");
+                double prijs = rs.getDouble("prijs");
+                double beschikbaarheid = rs.getDouble("beschikbaarheid");
                 if (type.equals("DBserver")) {
                     dbServers.add(new DatabaseServer(naam, prijs, beschikbaarheid));
                 } else if (type.equals("Webserver")) {
@@ -32,7 +32,6 @@ public class Componenten {
                     firewalls.add(new Firewall(naam, prijs, beschikbaarheid));
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,17 +66,17 @@ public class Componenten {
         ArrayList<String> data = new ArrayList<String>();
         if (type.getSimpleName().equals("Webserver")) {
             for (Webserver s : webServers) {
-                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
                 data.add(str);
             }
         } else if (type.getSimpleName().equals("DatabaseServer")) {
             for (DatabaseServer s : dbServers) {
-                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
                 data.add(str);
             }
         } else if (type.getSimpleName().equals("Firewall")) {
             for (Firewall s : firewalls) {
-                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
                 data.add(str);
             }
         }

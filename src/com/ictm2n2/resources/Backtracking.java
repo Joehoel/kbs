@@ -10,9 +10,9 @@ public class Backtracking {
     public Configuratie maakConfiguratie(double percentage) {
 
         if (c.getComponenten().isEmpty()) {
+            c.voegToeComponent(componenten.firewalls.get(0));
             c.voegToeComponent(componenten.dbServers.get(0));
             c.voegToeComponent(componenten.webServers.get(0));
-            c.voegToeComponent(componenten.firewalls.get(0));
         } else {
             if (berekenComponent(Webserver.class, c) < berekenComponent(DatabaseServer.class, c)) {
                 voegVolgendeToe(Webserver.class);
@@ -20,15 +20,14 @@ public class Backtracking {
                 voegVolgendeToe(DatabaseServer.class);
             }
         }
-
-        if (isVoldaan(percentage, c)) {
+        if (!isVoldaan(percentage, c)) {
             maakConfiguratie(percentage);
         } else {
             kosten = berekenTotalePrijs(c);
-            c = maakGoedkoper(percentage, c);
+            c.setComponenten(maakGoedkoper(percentage, c).getComponenten());
         }
 
-        return new Configuratie();
+        return c;
     }
 
     private Configuratie maakGoedkoper(double percentage, Configuratie configuratie) {
@@ -38,12 +37,17 @@ public class Backtracking {
 
         while (!wsDoorlopen && !dbDoorlopen) {
             for (int i = 0; i < componenten.webServers.size() - 1; i++) {
-                Component goedKoopsteWs = componenten.webServers.get(0);
-                Component duurdereWs = componenten.webServers.get(componenten.webServers.indexOf(goedKoopsteWs) + 1);
+                Component goedkoopsteWs = componenten.webServers.get(0);
+                Component duurdereWs = componenten.webServers.get(componenten.webServers.indexOf(goedkoopsteWs) + 1);
 
-                for (int j = 0; j < hoeveelVan(goedKoopsteWs, configuratie); j++) {
-                    configuratie.vervangComponent(configuratie.getComponenten().lastIndexOf(goedKoopsteWs), duurdereWs);
+                for (int j = 0; j < hoeveelVan(goedkoopsteWs, configuratie); j++) {
+                    configuratie.vervangComponent(configuratie.getComponenten().lastIndexOf(goedkoopsteWs), duurdereWs);
                 }
+
+                // kijken of het goedkoper is en of het nog wel voldaan is aan het percentage
+                // als dit niet zo is dan gaan we eerst weer een goedkope webserver toevoegen
+                // als dat nog niet werkt gaan we helemaal terug naar de vorige stap en eindigt
+                // de loop
 
                 for (int j = 0; j < hoeveelVan(duurdereWs, configuratie); j++) {
                     if (kosten < berekenTotalePrijs(configuratie)) {
@@ -52,24 +56,49 @@ public class Backtracking {
                         kosten = berekenTotalePrijs(configuratie);
                     }
                     if (!isVoldaan(percentage, configuratie)) {
-                        configuratie.voegToeComponent(goedKoopsteWs);
+                        configuratie.voegToeComponent(goedkoopsteWs);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            wsDoorlopen = true;
+            for (int i = 0; i < componenten.dbServers.size() - 1; i++) {
+                Component goedkoopsteDb = componenten.dbServers.get(0);
+                Component duurdereDb = componenten.dbServers.get(componenten.dbServers.indexOf(goedkoopsteDb) + 1);
+
+                for (int j = 0; j < hoeveelVan(goedkoopsteDb, configuratie); j++) {
+                    configuratie.vervangComponent(configuratie.getComponenten().lastIndexOf(goedkoopsteDb), duurdereDb);
+                }
+
+                for (int j = 0; j < hoeveelVan(duurdereDb, configuratie); j++) {
+                    if (kosten < berekenTotalePrijs(configuratie)) {
+                        configuratie.verwijderComponent(duurdereDb);
+                    } else {
+                        kosten = berekenTotalePrijs(configuratie);
+                    }
+                    if (!isVoldaan(percentage, configuratie)) {
+                        configuratie.voegToeComponent(goedkoopsteDb);
                     } else {
                         break;
                     }
                 }
             }
         }
+        dbDoorlopen = true;
         return configuratie;
     }
 
     private boolean isVoldaan(double percentage, Configuratie configuratie) {
+        // Om te kijken of de percentage al behaald is in de configuratie.
         return (berekenComponent(Firewall.class, configuratie) / 100)
                 * (berekenComponent(Webserver.class, configuratie) / 100)
                 * berekenComponent(DatabaseServer.class, configuratie) >= percentage;
     }
 
     private void voegVolgendeToe(Class<?> type) {
-        if (type.isAssignableFrom(Webserver.class)) { // kijken of de volgende class een webserver of DBServer is
+        // Switchen tussen Webserver en Database server.
+        if (type.isAssignableFrom(Webserver.class)) {
             c.voegToeComponent(componenten.webServers.get(0));
         } else if (type.isAssignableFrom(DatabaseServer.class)) {
             c.voegToeComponent(componenten.dbServers.get(0));
@@ -77,6 +106,8 @@ public class Backtracking {
     }
 
     private int hoeveelVan(Component component, Configuratie configuratie) {
+        // Bereken hoeveel er van een component al in de configuratie zitten.
+
         int counter = 0;
         for (Component c : configuratie.getComponenten()) {
             if (c.equals(component)) {
