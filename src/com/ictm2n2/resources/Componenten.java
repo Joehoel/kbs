@@ -16,12 +16,12 @@ public class Componenten {
             Database db = new Database("nerdygadgets_1", "root", "");
 
             Query q = new Query();
-            q.select(null).from("leverancierslijst");
+            q.select(null).from("componenten");
             ResultSet rs = db.select(q);
             while (rs.next()) {
                 String type = rs.getString("type");
 
-                String naam = rs.getString("naam");
+                String naam = rs.getString("hostname");
                 int prijs = rs.getInt("prijs");
                 int beschikbaarheid = rs.getInt("beschikbaarheid");
                 if (type.equals("DBserver")) {

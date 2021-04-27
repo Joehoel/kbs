@@ -9,15 +9,15 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `nerdygadgets_1` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 /* componenten tabel maken en vullen met data van leverancier */
 CREATE TABLE `nerdygadgets_1`.`componenten` (
-  `itemID` INT NOT NULL AUTO_INCREMENT,
-  `naam` VARCHAR(45) NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `hostname` VARCHAR(45) NOT NULL,
   `type` VARCHAR(45) NOT NULL,
   `prijs` DOUBLE NOT NULL,
   `beschikbaarheid` DOUBLE NOT NULL,
-  PRIMARY KEY (`ItemID`)
+  PRIMARY KEY (`id`)
 );
 use nerdygadgets_1;
-INSERT INTO componenten (Naam, Type, Prijs, Beschikbaarheid)
+INSERT INTO componenten (hostname, type, prijs, beschikbaarheid)
 VALUES ("pfSense", "firewall", 2000.00, 99.999),
   (
     "DBloadbalancer",
@@ -36,67 +36,10 @@ CREATE USER 'MonitoringsApplicatie' @'localhost' IDENTIFIED BY 'VeiligWachtwoord
 GRANT SELECT,
   INSERT,
   DELETE ON nerdygadgets_1.* TO 'MonitoringsApplicatie' @'localhost';
-/*Component tabel maken, en vullen met data van ons PoC */
-CREATE TABLE `component` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `itemID` int(11) NOT NULL,
-  `hostname` varchar(45) NOT NULL UNIQUE,
-  `IPv4` varchar(45) NOT NULL UNIQUE,
-  `IPv6` varchar(45) NOT NULL UNIQUE,
-  `OS` varchar(45) NOT NULL,
-  FOREIGN KEY (itemID) REFERENCES componenten(itemID)
-);
-INSERT INTO component (ItemID, componentNaam, IPv4, IPv6, OS)
-VALUES (1, "pfSense", "192.168.1.1", "fd00::", "FreeBSD"),
-  (
-    6,
-    "web1",
-    "192.168.10.2",
-    "fd00:0:0:1::2",
-    "Ubuntu"
-  ),
-  (
-    7,
-    "web2",
-    "192.168.10.3",
-    "fd00:0:0:1::3",
-    "Ubuntu"
-  ),
-  (
-    2,
-    "dbl1",
-    "192.168.20.2",
-    "fd00:0:0:2::2",
-    "Ubuntu"
-  ),
-  (
-    3,
-    "db1",
-    "192.168.20.10",
-    "fd00:0:0:2::10",
-    "Ubuntu"
-  ),
-  (
-    4,
-    "db2",
-    "192.168.20.11",
-    "fd00:0:0:2::11",
-    "Ubuntu"
-  );
-/*Netwerk tabel maken, waar een configuratie en bijbehorende gegevens in staan */
-CREATE TABLE `netwerk` (
-  `netwerkID` int(11) NOT NULL PRIMARY KEY,
+CREATE TABLE `nerdygadgets_1`.`configuratie` (
+  `id` int(11) NOT NULL PRIMARY KEY,
   `datum` date NOT NULL,
   `beschikbaarheidspercentage` double NOT NULL,
   `naam` varchar(45) NOT NULL,
   `prijs` double NOT NULL
-);
-/*Netwerkregel tabel maken, waar voor iedere server in een netwerk een line in wordt toegeoegd */
-CREATE TABLE `netwerkregel` (
-  `netwerkregelID` int(11) NOT NULL AUTO_INCREMENT,
-  `netwerkID` int(11) NOT NULL,
-  `itemID` int(11) NOT NULL,
-  PRIMARY KEY (`netwerkregelID`),
-  FOREIGN KEY (itemID) REFERENCES componenten(itemID),
-  FOREIGN KEY (netwerkID) REFERENCES netwerk(netwerkID)
-);
+)
