@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -71,8 +73,8 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jcbToegevoegd.setBounds(10, 145, 100, 30);
         jbVerwijder.setBounds(120, 145, 45, 30);
 
-        jbDbVoegToe.setBounds(120, 10, 45, 30);
-        jbWsVoegToe.setBounds(120, 45, 45, 30);
+        jbWsVoegToe.setBounds(120, 10, 45, 30);
+        jbDbVoegToe.setBounds(120, 45, 45, 30);
         jbFwVoegToe.setBounds(120, 80, 45, 30);
 
         // jlPercentage.setBounds(10, 140, 130, 30);
@@ -108,10 +110,36 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Object selectedIndex = jcbDbServers.getSelectedIndex();
         if (e.getSource() == jbDbVoegToe) {
-            configuratie.voegToeComponent(componenten.getDbServers().get((int) selectedIndex));
-            jcbToegevoegd.addItem(componenten.getDbServers().get((int) selectedIndex).getNaam());
+            Object selectedIndex = jcbDbServers.getSelectedIndex();
+            DatabaseServer c = componenten.getDbServers().get((int) selectedIndex);
+            configuratie.voegToeComponent(c);
+            jcbToegevoegd.addItem(c.getNaam());
+        }
+        if (e.getSource() == jbWsVoegToe) {
+            Object selectedIndex = jcbWebServers.getSelectedIndex();
+            Webserver c = componenten.getWebServers().get((int) selectedIndex);
+            configuratie.voegToeComponent(c);
+            jcbToegevoegd.addItem(c.getNaam());
+        }
+        if (e.getSource() == jbFwVoegToe) {
+            Object selectedIndex = jcbFirewalls.getSelectedIndex();
+            Firewall c = componenten.getFirewalls().get((int) selectedIndex);
+            configuratie.voegToeComponent(c);
+            jcbToegevoegd.addItem(c.getNaam());
+        }
+        if (e.getSource() == jbVerwijder) {
+            try {
+                int index = jcbToegevoegd.getSelectedIndex();
+                Object name = jcbToegevoegd.getSelectedItem();
+                configuratie.verwijderComponent(index);
+                jcbToegevoegd.removeItem(name);
+
+            } catch (ArrayIndexOutOfBoundsException error) {
+                JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                error.printStackTrace();
+            }
         }
     }
 }
