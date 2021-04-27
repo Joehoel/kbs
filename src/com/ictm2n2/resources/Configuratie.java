@@ -33,4 +33,27 @@ public class Configuratie {
         return namen.toArray();
     }
 
+    public String berekenTotalePrijs() {
+        int totalePrijs = 0;
+        try {
+            for (Component component : getComponenten()) {
+                totalePrijs += component.getPrijs();
+            }
+        } catch (NullPointerException npe) {
+            System.out.println(npe);
+        }
+        return "$" + totalePrijs;
+    }
+
+    public double berekenBeschikbaarheid() {
+        Backtracking bt = new Backtracking();
+        return (bt.berekenComponent(Firewall.class, this) / 100) * (bt.berekenComponent(Webserver.class, this) / 100)
+                * bt.berekenComponent(DatabaseServer.class, this);
+    }
+
+    public void optimaliseer(double percentage) {
+        Backtracking bt = new Backtracking();
+        this.componenten = bt.maakConfiguratie(percentage).getComponenten();
+    }
+
 }

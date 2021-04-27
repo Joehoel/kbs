@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.ictm2n2.resources.Backtracking;
 import com.ictm2n2.resources.Componenten;
 import com.ictm2n2.resources.Configuratie;
 import com.ictm2n2.resources.DatabaseServer;
@@ -70,8 +71,8 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jtPercentage = new JTextField(4);
         jbOptimaliseer = new JButton("▶");
 
-        jlTotaleBeschikbaarheid = new JLabel("Totale Beschikbaarheid");
-        jlTotalePrijs = new JLabel("Totale Prijs");
+        jlTotaleBeschikbaarheid = new JLabel("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
+        jlTotalePrijs = new JLabel("Totale Prijs: " + configuratie.berekenTotalePrijs());
 
         jbOpslaan = new JButton("Opslaan");
 
@@ -125,6 +126,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbOptimaliseer.addActionListener(this);
         jbVerwijder.addActionListener(this);
         jbOpslaan.addActionListener(this);
+
     }
 
     @Override
@@ -160,5 +162,8 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 error.printStackTrace();
             }
         }
+        jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
+        jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
+
     }
 }
