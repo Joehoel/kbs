@@ -14,13 +14,15 @@ import com.ictm2n2.resources.Webserver;
 
 public class ConfigureerPanel extends JPanel implements ActionListener {
 
-    JComboBox<Object> jcbDbServers;
-    JComboBox<Object> jcbWebServers;
-    JComboBox<Object> jcbFirewalls;
+    private JComboBox<Object> jcbDbServers;
+    private JComboBox<Object> jcbWebServers;
+    private JComboBox<Object> jcbFirewalls;
 
-    JButton jbDbVoegToe;
-    JButton jbWsVoegToe;
-    JButton jbFwVoegToe;
+    private JButton jbDbVoegToe;
+    private JButton jbWsVoegToe;
+    private JButton jbFwVoegToe;
+
+    private TekenPanel tp = new TekenPanel();
 
     public ConfigureerPanel() {
         setLayout(null);
@@ -47,12 +49,19 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbWsVoegToe.setBounds(120, 45, 45, 30);
         jbFwVoegToe.setBounds(120, 80, 45, 30);
 
+        int width = 695;
+        int height = 515;
+
+        tp.setSize(width, height);
+        tp.setBounds(175, 10, width, height);
+
         add(jcbWebServers);
         add(jcbDbServers);
         add(jcbFirewalls);
         add(jbDbVoegToe);
         add(jbWsVoegToe);
         add(jbFwVoegToe);
+        add(tp);
 
     }
 
