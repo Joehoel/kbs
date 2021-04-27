@@ -67,15 +67,18 @@ public class Componenten {
         ArrayList<String> data = new ArrayList<String>();
         if (type.getSimpleName().equals("Webserver")) {
             for (Webserver s : webServers) {
-                data.add(s.getNaam());
+                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                data.add(str);
             }
         } else if (type.getSimpleName().equals("DatabaseServer")) {
             for (DatabaseServer s : dbServers) {
-                data.add(s.getNaam());
+                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                data.add(str);
             }
         } else if (type.getSimpleName().equals("Firewall")) {
             for (Firewall s : firewalls) {
-                data.add(s.getNaam());
+                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                data.add(str);
             }
         }
         return data.toArray(new String[] {});

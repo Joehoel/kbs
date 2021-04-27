@@ -65,27 +65,27 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jtPercentage = new JTextField(4);
         jbOptimaliseer = new JButton("▶");
 
-        jcbWebServers.setBounds(10, 10, 100, 30);
-        jcbDbServers.setBounds(10, 45, 100, 30);
-        jcbFirewalls.setBounds(10, 80, 100, 30);
+        jcbWebServers.setBounds(10, 10, 200, 30);
+        jcbDbServers.setBounds(10, 45, 200, 30);
+        jcbFirewalls.setBounds(10, 80, 200, 30);
 
         jlToegevoegd.setBounds(10, 115, 100, 30);
         jcbToegevoegd.setBounds(10, 145, 100, 30);
         jbVerwijder.setBounds(120, 145, 45, 30);
 
-        jbWsVoegToe.setBounds(120, 10, 45, 30);
-        jbDbVoegToe.setBounds(120, 45, 45, 30);
-        jbFwVoegToe.setBounds(120, 80, 45, 30);
+        jbWsVoegToe.setBounds(220, 10, 45, 30);
+        jbDbVoegToe.setBounds(220, 45, 45, 30);
+        jbFwVoegToe.setBounds(220, 80, 45, 30);
 
         // jlPercentage.setBounds(10, 140, 130, 30);
         // jtPercentage.setBounds(10, 170, 45, 25);
         // jbOptimaliseer.setBounds(65, 170, 100, 25);
 
-        int width = 695;
-        int height = 515;
+        int width = 605;
+        int height = 525;
 
         tp.setSize(width, height);
-        tp.setBounds(175, 10, width, height);
+        tp.setBounds(275, 10, width, height);
 
         add(jcbWebServers);
         add(jcbDbServers);
