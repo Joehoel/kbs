@@ -13,7 +13,7 @@ public class Componenten {
 
     public Componenten() {
         try {
-            Database db = new Database("nerdygadgets_1", "root", "");
+            Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
             Query q = new Query();
             q.select(null).from("componenten");
@@ -35,6 +35,7 @@ public class Componenten {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
     }
 

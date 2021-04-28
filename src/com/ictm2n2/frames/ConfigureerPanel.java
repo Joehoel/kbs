@@ -191,22 +191,17 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
             // opslaan in database??
             try {
-                Database db = new Database("nerdygadgets_1", "root", "");
-
-                Query q = new Query();
+                Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
                 java.util.Date date=new java.util.Date();
 
                 java.sql.Date sqlDate=new java.sql.Date(date.getTime());
-                //java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
 
-                String [] columns = {"id", "datum", "beschikbaarheidspercentage", "naam", "prijs"};
                 String [] values = {String.valueOf(primaryKey), String.valueOf(sqlDate), String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp, String.valueOf(configuratie.berekenTotalePrijsDouble())};
                 for (String value : values) {
                     System.out.println(value);
                 }
-                Database db1 = new Database("nerdygadgets_1", "root", "");
-                db1.insert("configuratie", values);
+                db.insert("configuratie", values);
                 primaryKey++;
 
             } catch (Exception a) {
