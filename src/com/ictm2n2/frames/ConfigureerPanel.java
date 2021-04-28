@@ -45,6 +45,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
     private Configuratie configuratie;
     private Componenten componenten;
+    private static int primaryKey=0;
 
     public ConfigureerPanel() {
         setLayout(null);
@@ -187,13 +188,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             // opslaan als ontwerp??
             String naamOntwerp = JOptionPane.showInputDialog(this,
                     "Geef dit ontwerp een naam", null);
-            Ontwerp ontwerp = new Ontwerp(naamOntwerp);
 
-            for (int i=0;i<this.configuratie.getComponenten().size();i++) {
-                ontwerp.voegToeComponent(this.configuratie.getComponenten().get(i));
-            }
-            ontwerp.setBeschikbaarheidOntwerp(this.configuratie.berekenBeschikbaarheid());
-            ontwerp.setPrijs(this.configuratie.berekenTotalePrijsDouble());
             // opslaan in database??
             try {
                 Database db = new Database("nerdygadgets_1", "root", "");
@@ -206,12 +201,13 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 //java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
 
                 String [] columns = {"id", "datum", "beschikbaarheidspercentage", "naam", "prijs"};
-                String [] values = {String.valueOf(ontwerp.getId()), String.valueOf(sqlDate), String.valueOf(ontwerp.getBeschikbaarheidOntwerp()), naamOntwerp, String.valueOf(ontwerp.getPrijs())};
+                String [] values = {String.valueOf(primaryKey), String.valueOf(sqlDate), String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp, String.valueOf(configuratie.berekenTotalePrijsDouble())};
                 for (String value : values) {
                     System.out.println(value);
                 }
-                q.insert("configuratie").columns(columns).values(values);
-                ResultSet rs = db.select(q);
+                Database db1 = new Database("nerdygadgets_1", "root", "");
+                db1.insert("configuratie", values);
+                primaryKey++;
 
             } catch (Exception a) {
                 a.printStackTrace();

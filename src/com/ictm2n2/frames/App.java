@@ -1,8 +1,5 @@
 package com.ictm2n2.frames;
 
-import com.ictm2n2.resources.Ontwerp;
-import com.ictm2n2.resources.OntwerpOverzicht;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
