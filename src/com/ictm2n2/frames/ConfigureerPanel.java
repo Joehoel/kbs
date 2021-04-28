@@ -173,7 +173,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                     jcbToegevoegd.removeAll();
                     jcbToegevoegd.removeAllItems();
                     for (Object naam : configuratie.getComponentenNamen()) {
-                        System.out.println(naam);
                         jcbToegevoegd.addItem(naam);
                     }
                 }
