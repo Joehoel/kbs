@@ -11,8 +11,8 @@ public class Backtracking {
 
         if (c.getComponenten().isEmpty()) {
             c.voegToeComponent(componenten.firewalls.get(0));
-            c.voegToeComponent(componenten.dbServers.get(0));
             c.voegToeComponent(componenten.webServers.get(0));
+            c.voegToeComponent(componenten.dbServers.get(0));
         } else {
             if (berekenComponent(Webserver.class, c) < berekenComponent(DatabaseServer.class, c)) {
                 voegVolgendeToe(Webserver.class);
