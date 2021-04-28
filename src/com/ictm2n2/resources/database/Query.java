@@ -127,6 +127,23 @@ public class Query {
     }
 
     /**
+     *
+     * @param columns
+     * @return
+     */
+    public Query columns(Object[] columns) {
+        query = new StringBuilder();
+        query.append(" (");
+        for (Object column : columns) {
+            query.append(column);
+            query.append(", ");
+        }
+        query.deleteCharAt(query.lastIndexOf(", "));
+        query.append(")");
+        return this;
+    }
+
+    /**
      * Returns the generated SQL query
      * 
      * @return query

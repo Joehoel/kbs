@@ -1,21 +1,22 @@
 package com.ictm2n2.frames;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ictm2n2.resources.Componenten;
-import com.ictm2n2.resources.Configuratie;
-import com.ictm2n2.resources.DatabaseServer;
-import com.ictm2n2.resources.Firewall;
-import com.ictm2n2.resources.Webserver;
+import com.ictm2n2.resources.*;
+import com.ictm2n2.resources.database.Database;
+import com.ictm2n2.resources.database.Query;
 
 public class ConfigureerPanel extends JPanel implements ActionListener {
 
@@ -44,6 +45,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
     private Configuratie configuratie;
     private Componenten componenten;
+    private static int primaryKey = 0;
 
     public ConfigureerPanel() {
         setLayout(null);
@@ -68,10 +70,10 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
         jlPercentage = new JLabel("Gewenst Percentage:");
         jtPercentage = new JTextField(4);
-        jbOptimaliseer = new JButton("▶");
+        jbOptimaliseer = new JButton("Optimaliseer");
 
-        jlTotaleBeschikbaarheid = new JLabel("Totale Beschikbaarheid");
-        jlTotalePrijs = new JLabel("Totale Prijs");
+        jlTotaleBeschikbaarheid = new JLabel("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
+        jlTotalePrijs = new JLabel("Totale Prijs: " + configuratie.berekenTotalePrijs());
 
         jbOpslaan = new JButton("Opslaan");
 
@@ -87,12 +89,12 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbDbVoegToe.setBounds(220, 45, 45, 30);
         jbFwVoegToe.setBounds(220, 80, 45, 30);
 
-        // jlPercentage.setBounds(10, 140, 130, 30);
-        // jtPercentage.setBounds(10, 170, 45, 25);
-        // jbOptimaliseer.setBounds(65, 170, 100, 25);
-
         jlTotaleBeschikbaarheid.setBounds(10, 180, 200, 30);
         jlTotalePrijs.setBounds(10, 200, 200, 30);
+
+        jlPercentage.setBounds(10, 240, 130, 30);
+        jtPercentage.setBounds(10, 270, 45, 25);
+        jbOptimaliseer.setBounds(65, 270, 200, 25);
 
         jbOpslaan.setBounds(10, 505, 100, 30);
 
@@ -125,6 +127,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbOptimaliseer.addActionListener(this);
         jbVerwijder.addActionListener(this);
         jbOpslaan.addActionListener(this);
+
     }
 
     @Override
@@ -160,5 +163,61 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 error.printStackTrace();
             }
         }
+        if (e.getSource() == jbOptimaliseer) {
+            try {
+                double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
+                if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
+                    JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    configuratie.optimaliseer(gewenstPercentage);
+                    jcbToegevoegd.removeAll();
+                    jcbToegevoegd.removeAllItems();
+                    for (Object naam : configuratie.getComponentenNamen()) {
+                        System.out.println(naam);
+                        jcbToegevoegd.addItem(naam);
+                    }
+                }
+                // this.componenten = configuratie.getComponenten();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        if (e.getSource() == jbOpslaan) {
+            // opslaan als ontwerp??
+            String naamOntwerp = JOptionPane.showInputDialog(this, "Geef dit ontwerp een naam", null);
+
+            // opslaan in database??
+            // try {
+            // Database db = new Database("nerdygadgets_1", "root", "");
+
+            // Query q = new Query();
+
+            // java.util.Date date = new java.util.Date();
+
+            // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            // // java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
+
+            // String[] columns = { "id", "datum", "beschikbaarheidspercentage", "naam",
+            // "prijs" };
+            // String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
+            // String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
+            // String.valueOf(configuratie.berekenTotalePrijsDouble()) };
+            // for (String value : values) {
+            // System.out.println(value);
+            // }
+            // Database db1 = new Database("nerdygadgets_1", "root", "");
+            // db1.insert("configuratie", values);
+            // primaryKey++;
+
+            // } catch (Exception a) {
+            // a.printStackTrace();
+            // }
+
+        }
+
+        jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
+        jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
+
     }
 }

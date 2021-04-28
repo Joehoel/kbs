@@ -13,17 +13,17 @@ public class Componenten {
 
     public Componenten() {
         try {
-            Database db = new Database("nerdygadgets_1", "root", "");
+            Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
             Query q = new Query();
-            q.select(null).from("componenten");
+            q.select(null).from("component_type");
             ResultSet rs = db.select(q);
             while (rs.next()) {
-                String type = rs.getString("type");
+                String type = rs.getString("type_soort");
 
-                String naam = rs.getString("hostname");
-                int prijs = rs.getInt("prijs");
-                int beschikbaarheid = rs.getInt("beschikbaarheid");
+                String naam = rs.getString("type_naam");
+                double prijs = rs.getDouble("type_prijs");
+                double beschikbaarheid = rs.getDouble("type_beschikbaarheid");
                 if (type.equals("DBserver")) {
                     dbServers.add(new DatabaseServer(naam, prijs, beschikbaarheid));
                 } else if (type.equals("Webserver")) {
@@ -32,7 +32,6 @@ public class Componenten {
                     firewalls.add(new Firewall(naam, prijs, beschikbaarheid));
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,17 +66,17 @@ public class Componenten {
         ArrayList<String> data = new ArrayList<String>();
         if (type.getSimpleName().equals("Webserver")) {
             for (Webserver s : webServers) {
-                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
                 data.add(str);
             }
         } else if (type.getSimpleName().equals("DatabaseServer")) {
             for (DatabaseServer s : dbServers) {
-                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
                 data.add(str);
             }
         } else if (type.getSimpleName().equals("Firewall")) {
             for (Firewall s : firewalls) {
-                String str = s.getNaam() + " - " + s.getBeschikbaarheidsPercentage() + "%" + " - $" + s.getPrijs();
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
                 data.add(str);
             }
         }
