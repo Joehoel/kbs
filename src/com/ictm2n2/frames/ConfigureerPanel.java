@@ -1,11 +1,7 @@
 package com.ictm2n2.frames;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,9 +10,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ictm2n2.resources.*;
-import com.ictm2n2.resources.database.Database;
-import com.ictm2n2.resources.database.Query;
+import com.ictm2n2.resources.Componenten;
+import com.ictm2n2.resources.Configuratie;
+import com.ictm2n2.resources.DatabaseServer;
+import com.ictm2n2.resources.Firewall;
+import com.ictm2n2.resources.Loadbalancer;
+import com.ictm2n2.resources.Webserver;
 
 public class ConfigureerPanel extends JPanel implements ActionListener {
 
@@ -27,6 +26,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JComboBox<Object> jcbDbServers;
     private JComboBox<Object> jcbWebServers;
     private JComboBox<Object> jcbFirewalls;
+    private JComboBox<Object> jcbLoadbalancers;
 
     private JLabel jlToegevoegd;
     private JComboBox<Object> jcbToegevoegd;
@@ -35,6 +35,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JButton jbDbVoegToe;
     private JButton jbWsVoegToe;
     private JButton jbFwVoegToe;
+    private JButton jbLbVoegToe;
 
     private JLabel jlTotaleBeschikbaarheid;
     private JLabel jlTotalePrijs;
@@ -59,6 +60,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jcbDbServers = new JComboBox<Object>(componenten.get(DatabaseServer.class));
         jcbWebServers = new JComboBox<Object>(componenten.get(Webserver.class));
         jcbFirewalls = new JComboBox<Object>(componenten.get(Firewall.class));
+        jcbLoadbalancers = new JComboBox<Object>(componenten.get(Loadbalancer.class));
 
         jlToegevoegd = new JLabel("Toegevoegd:");
         jcbToegevoegd = new JComboBox<Object>(configuratie.getComponentenNamen());
@@ -67,6 +69,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbDbVoegToe = new JButton("+");
         jbWsVoegToe = new JButton("+");
         jbFwVoegToe = new JButton("+");
+        jbLbVoegToe = new JButton("+");
 
         jlPercentage = new JLabel("Gewenst Percentage:");
         jtPercentage = new JTextField(4);
@@ -80,21 +83,23 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jcbWebServers.setBounds(10, 10, 200, 30);
         jcbDbServers.setBounds(10, 45, 200, 30);
         jcbFirewalls.setBounds(10, 80, 200, 30);
+        jcbLoadbalancers.setBounds(10, 115, 200, 30);
 
-        jlToegevoegd.setBounds(10, 115, 100, 30);
-        jcbToegevoegd.setBounds(10, 145, 100, 30);
-        jbVerwijder.setBounds(120, 145, 45, 30);
+        jlToegevoegd.setBounds(10, 150, 100, 30);
+        jcbToegevoegd.setBounds(10, 185, 100, 30);
+        jbVerwijder.setBounds(120, 185, 45, 30);
 
         jbWsVoegToe.setBounds(220, 10, 45, 30);
         jbDbVoegToe.setBounds(220, 45, 45, 30);
         jbFwVoegToe.setBounds(220, 80, 45, 30);
+        jbLbVoegToe.setBounds(220, 115, 45, 30);
 
-        jlTotaleBeschikbaarheid.setBounds(10, 180, 200, 30);
-        jlTotalePrijs.setBounds(10, 200, 200, 30);
+        jlTotaleBeschikbaarheid.setBounds(10, 220, 200, 30);
+        jlTotalePrijs.setBounds(10, 240, 200, 30);
 
-        jlPercentage.setBounds(10, 240, 130, 30);
-        jtPercentage.setBounds(10, 270, 45, 25);
-        jbOptimaliseer.setBounds(65, 270, 200, 25);
+        jlPercentage.setBounds(10, 270, 130, 30);
+        jtPercentage.setBounds(10, 300, 45, 25);
+        jbOptimaliseer.setBounds(65, 300, 200, 25);
 
         jbOpslaan.setBounds(10, 505, 100, 30);
 
@@ -120,10 +125,13 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         add(jlTotalePrijs);
         add(jbOpslaan);
         add(tp);
+        add(jcbLoadbalancers);
+        add(jbLbVoegToe);
 
         jbDbVoegToe.addActionListener(this);
         jbWsVoegToe.addActionListener(this);
         jbFwVoegToe.addActionListener(this);
+        jbLbVoegToe.addActionListener(this);
         jbOptimaliseer.addActionListener(this);
         jbVerwijder.addActionListener(this);
         jbOpslaan.addActionListener(this);
@@ -150,6 +158,12 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             configuratie.voegToeComponent(c);
             jcbToegevoegd.addItem(c.getNaam());
         }
+        if (e.getSource() == jbLbVoegToe) {
+            Object selectedIndex = jcbLoadbalancers.getSelectedIndex();
+            Loadbalancer c = componenten.getLoadbalancers().get((int) selectedIndex);
+            configuratie.voegToeComponent(c);
+            jcbToegevoegd.addItem(c.getNaam());
+        }
         if (e.getSource() == jbVerwijder) {
             try {
                 int index = jcbToegevoegd.getSelectedIndex();
@@ -167,7 +181,8 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             try {
                 double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
                 if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
-                    JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Geef een percentage tussen 0 en 99.99", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     configuratie.optimaliseer(gewenstPercentage);
                     jcbToegevoegd.removeAll();

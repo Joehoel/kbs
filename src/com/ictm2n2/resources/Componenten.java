@@ -7,9 +7,11 @@ import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
 
 public class Componenten {
+
     ArrayList<DatabaseServer> dbServers = new ArrayList<DatabaseServer>();
     ArrayList<Webserver> webServers = new ArrayList<Webserver>();
     ArrayList<Firewall> firewalls = new ArrayList<Firewall>();
+    ArrayList<Loadbalancer> loadbalancers = new ArrayList<Loadbalancer>();
 
     public Componenten() {
         try {
@@ -30,12 +32,22 @@ public class Componenten {
                     webServers.add(new Webserver(naam, prijs, beschikbaarheid));
                 } else if (type.equals("firewall")) {
                     firewalls.add(new Firewall(naam, prijs, beschikbaarheid));
+                } else if (type.equals("loadbalancer")) {
+                    loadbalancers.add(new Loadbalancer(naam, prijs, beschikbaarheid));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<Loadbalancer> getLoadbalancers() {
+        return loadbalancers;
+    }
+
+    public void setLoadbalancers(ArrayList<Loadbalancer> loadbalancers) {
+        this.loadbalancers = loadbalancers;
     }
 
     public ArrayList<DatabaseServer> getDbServers() {
@@ -76,6 +88,11 @@ public class Componenten {
             }
         } else if (type.getSimpleName().equals("Firewall")) {
             for (Firewall s : firewalls) {
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
+                data.add(str);
+            }
+        } else if (type.getSimpleName().equals("Loadbalancer")) {
+            for (Loadbalancer s : loadbalancers) {
                 String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
                 data.add(str);
             }

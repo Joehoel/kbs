@@ -63,8 +63,8 @@ public class Configuratie {
     }
 
     public double berekenBeschikbaarheid() {
-        return (berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
-                * berekenComponent(DatabaseServer.class);
+        return Math.round((berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
+                * berekenComponent(DatabaseServer.class) * 100.0) / 100.0;
     }
 
     private double berekenComponent(Class<?> type) {

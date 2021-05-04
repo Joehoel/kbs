@@ -15,6 +15,7 @@ public class Backtracking {
 
         if (c.getComponenten().isEmpty()) {
             c.voegToeComponent(componenten.firewalls.get(0));
+            c.voegToeComponent(componenten.loadbalancers.get(0));
             c.voegToeComponent(componenten.webServers.get(0));
             c.voegToeComponent(componenten.dbServers.get(0));
         } else {
@@ -96,6 +97,7 @@ public class Backtracking {
     private boolean isVoldaan(double percentage, Configuratie configuratie) {
         // Om te kijken of de percentage al behaald is in de configuratie.
         return (berekenComponent(Firewall.class, configuratie) / 100)
+                * (berekenComponent(Loadbalancer.class, configuratie) / 100)
                 * (berekenComponent(Webserver.class, configuratie) / 100)
                 * berekenComponent(DatabaseServer.class, configuratie) >= percentage;
     }
