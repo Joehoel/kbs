@@ -64,11 +64,8 @@ public class Configuratie {
 
     public double berekenBeschikbaarheid() {
         return (berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
-<<<<<<< Updated upstream
+                * berekenComponent(DatabaseServer.class) * (berekenComponent(Loadbalancer.class) / 100)
                 * berekenComponent(DatabaseServer.class);
-=======
-                * (berekenComponent(Loadbalancer.class) / 100) * berekenComponent(DatabaseServer.class);
->>>>>>> Stashed changes
     }
 
     private double berekenComponent(Class<?> type) {
@@ -85,7 +82,7 @@ public class Configuratie {
 
     public void optimaliseer(double percentage) {
         Backtracking bt = new Backtracking();
-        setComponenten(bt.berekenBesteConfiguratie(percentage).getComponenten());
+        setComponenten(bt.maakConfiguratie(percentage).getComponenten());
     }
 
     public void setComponenten(ArrayList<Component> componenten) {

@@ -22,19 +22,18 @@ public class MonitorPanel extends JPanel {
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setLayoutOrientation(JList.VERTICAL_WRAP);
 
-
         try {
             Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
             Query q = new Query();
-            String[] columns = {"hostname", "cpu", "opslag"};
+            String[] columns = { "hostname", "cpu", "opslag" };
             q.select(columns).from("component");
             ResultSet rs = db.select(q);
 
             try {
                 while (rs.next()) {
-                    String[] hostname = rs.getString("hostname");
-                    double[] cpu = rs.getDouble("cpu");
-                    double[] opslag = rs.getDouble("opslag");
+                    // String[] hostname = rs.getString("hostname");
+                    // double[] cpu = rs.getDouble("cpu");
+                    // double[] opslag = rs.getDouble("opslag");
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -44,16 +43,13 @@ public class MonitorPanel extends JPanel {
             a.printStackTrace();
         }
 
-//        for (int i=0; i<this.actiefOntwerp.getComponenten().size();i++) {
-//            String naam = this.actiefOntwerp.getComponenten().get(i).getNaam();
-//            String prijs = ""+this.actiefOntwerp.getComponenten().get(i).getPrijs()+"";
-//            dlModel.addElement("<html>"+naam+"<br>"+prijs+"</html>");
-//        }
-
-
+        // for (int i=0; i<this.actiefOntwerp.getComponenten().size();i++) {
+        // String naam = this.actiefOntwerp.getComponenten().get(i).getNaam();
+        // String prijs = ""+this.actiefOntwerp.getComponenten().get(i).getPrijs()+"";
+        // dlModel.addElement("<html>"+naam+"<br>"+prijs+"</html>");
+        // }
 
         add(list);
-
 
     }
 }

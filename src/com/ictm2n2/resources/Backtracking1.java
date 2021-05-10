@@ -9,25 +9,25 @@ public class Backtracking1 {
     private Componenten componenten;
     private double percentage;
 
-    public static void main(String[] args) {
-        new Backtracking1(new Configuratie(), 99.99);
-    }
+    // public static void main(String[] args) {
+    // new Backtracking1(new Configuratie(), 99.99);
+    // }
 
     public Backtracking1(Configuratie configuratie, double percentage) {
         this.configuratie = configuratie;
         this.percentage = percentage;
     }
 
-    public boolean backtrack() {
-
-        // if (configuratie.getComponenten().isEmpty()) {
-        // configuratie.voegToeComponent(componenten.firewalls.get(0));
-        // configuratie.voegToeComponent(componenten.loadbalancers.get(0));
-        // configuratie.voegToeComponent(componenten.webServers.get(0));
-        // configuratie.voegToeComponent(componenten.dbServers.get(0));
-        // }
-
-    }
+//    public boolean backtrack() {
+//
+//        // if (configuratie.getComponenten().isEmpty()) {
+//        // configuratie.voegToeComponent(componenten.firewalls.get(0));
+//        // configuratie.voegToeComponent(componenten.loadbalancers.get(0));
+//        // configuratie.voegToeComponent(componenten.webServers.get(0));
+//        // configuratie.voegToeComponent(componenten.dbServers.get(0));
+//        // }
+//
+//    }
 
     public double berekenComponent(Class<?> type, Configuratie configuratie) {
         double beschikbaarheid = 1;

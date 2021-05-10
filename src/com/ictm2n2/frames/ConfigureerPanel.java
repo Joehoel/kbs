@@ -166,7 +166,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         if (e.getSource() == jbOptimaliseer) {
             try {
                 double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
-                if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
+                if (gewenstPercentage > 99.99999 || gewenstPercentage < 0) {
                     JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     configuratie.optimaliseer(gewenstPercentage);
@@ -183,43 +183,41 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         }
 
         if (e.getSource() == jbOpslaan) {
-         
+
             String naamOntwerp = JOptionPane.showInputDialog(this, "Geef dit ontwerp een naam", null);
 
-      
-
             try {
-                Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+                // Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
+                // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-                java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+                // String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
+                // String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
+                // String.valueOf(configuratie.berekenTotalePrijsDouble()) };
+                // for (String value : values) {
+                // System.out.println(value);
+                // }
+                // db.insert("configuratie", values);
+                // primaryKey++;
 
-                String [] values = {String.valueOf(primaryKey), String.valueOf(sqlDate), String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp, String.valueOf(configuratie.berekenTotalePrijsDouble())};
-                for (String value : values) {
-                    System.out.println(value);
-                }
-                db.insert("configuratie", values);
-                primaryKey++;
+                // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                // // java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
 
-            // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            // // java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
+                // String[] columns = { "id", "datum", "beschikbaarheidspercentage", "naam",
+                // "prijs" };
+                // String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
+                // String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
+                // String.valueOf(configuratie.berekenTotalePrijsDouble()) };
+                // for (String value : values) {
+                // System.out.println(value);
+                // }
+                // Database db1 = new Database("nerdygadgets_1", "root", "");
+                // db1.insert("configuratie", values);
+                // primaryKey++;
 
-            // String[] columns = { "id", "datum", "beschikbaarheidspercentage", "naam",
-            // "prijs" };
-            // String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
-            // String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
-            // String.valueOf(configuratie.berekenTotalePrijsDouble()) };
-            // for (String value : values) {
-            // System.out.println(value);
-            // }
-            // Database db1 = new Database("nerdygadgets_1", "root", "");
-            // db1.insert("configuratie", values);
-            // primaryKey++;
-
-
-            // } catch (Exception a) {
-            // a.printStackTrace();
-            // }
+            } catch (Exception a) {
+                a.printStackTrace();
+            }
 
         }
 
