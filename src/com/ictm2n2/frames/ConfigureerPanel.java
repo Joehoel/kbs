@@ -191,6 +191,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             try {
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
+                java.util.Date date=new java.util.Date();
 
                 java.sql.Date sqlDate=new java.sql.Date(date.getTime());
 
@@ -217,9 +218,9 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             // primaryKey++;
 
 
-            // } catch (Exception a) {
-            // a.printStackTrace();
-            // }
+             } catch (Exception a) {
+             a.printStackTrace();
+             }
 
         }
 
