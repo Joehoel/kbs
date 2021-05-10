@@ -183,16 +183,23 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         }
 
         if (e.getSource() == jbOpslaan) {
-            // opslaan als ontwerp??
+         
             String naamOntwerp = JOptionPane.showInputDialog(this, "Geef dit ontwerp een naam", null);
 
-            // opslaan in database??
-            // try {
-            // Database db = new Database("nerdygadgets_1", "root", "");
+      
 
-            // Query q = new Query();
+            try {
+                Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
-            // java.util.Date date = new java.util.Date();
+
+                java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+
+                String [] values = {String.valueOf(primaryKey), String.valueOf(sqlDate), String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp, String.valueOf(configuratie.berekenTotalePrijsDouble())};
+                for (String value : values) {
+                    System.out.println(value);
+                }
+                db.insert("configuratie", values);
+                primaryKey++;
 
             // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
             // // java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
@@ -208,6 +215,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             // Database db1 = new Database("nerdygadgets_1", "root", "");
             // db1.insert("configuratie", values);
             // primaryKey++;
+
 
             // } catch (Exception a) {
             // a.printStackTrace();
