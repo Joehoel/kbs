@@ -36,6 +36,7 @@ public class Componenten {
             e.printStackTrace();
         }
 
+
     }
 
     public ArrayList<DatabaseServer> getDbServers() {

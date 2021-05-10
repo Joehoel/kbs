@@ -8,6 +8,10 @@ public class Backtracking {
     private int kosten = 0;
 
     public Configuratie maakConfiguratie(double percentage) {
+        /*
+         * Kijken of er al componenten in de huidige configuratie zitten. Als er niks in
+         * zit worden er 1 van elke soort in gezet.
+         */
 
         if (c.getComponenten().isEmpty()) {
             c.voegToeComponent(componenten.firewalls.get(0));
