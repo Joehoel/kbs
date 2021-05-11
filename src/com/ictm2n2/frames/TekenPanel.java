@@ -60,7 +60,7 @@ public class TekenPanel extends JPanel {
 //                }
 //            }
         }
-        Stream.of(VerbindingComponent)
+//        Stream.of(VerbindingComponent)
         setBackground(Color.WHITE);
         setVisible(true);
     }
