@@ -19,11 +19,11 @@ public class Componenten {
             q.select(null).from("component_type");
             ResultSet rs = db.select(q);
             while (rs.next()) {
+                String naam = rs.getString("type_naam");
                 String type = rs.getString("type_soort");
 
-                String naam = rs.getString("type_naam");
-                double prijs = rs.getDouble("type_prijs");
                 double beschikbaarheid = rs.getDouble("type_beschikbaarheid");
+                double prijs = rs.getDouble("type_prijs");
                 if (type.equals("DBserver")) {
                     dbServers.add(new DatabaseServer(naam, prijs, beschikbaarheid));
                 } else if (type.equals("Webserver")) {

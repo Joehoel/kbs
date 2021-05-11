@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -111,16 +113,20 @@ public class MonitorPanel extends JPanel {
 //        label.setBounds(585,310,100,100);
 //        System.out.println(icon);
 
-        BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("com/ictm2n2/assets/dbserver.png"));
+//            Path source = Paths.get("c:\\test\\mkyong.png");
+//            BufferedImage img = ImageIO.read(sourc.toFile("src/com/ictm2n2/assets/dbserver.png"));
+            Path source = Paths.get("src/com/ictm2n2/assets/dbserver.png");
+            BufferedImage img = ImageIO.read(source.toFile());
+            System.out.println(img);
+//            dlDbModel.add(img);
         } catch (IOException e) {
             System.out.println("image not found");
         }
-        JLabel label = new JLabel((Icon) img);
-        add(label);
-        label.setBounds(585,310,100,100);
-        System.out.println(img);
+//        JLabel label = new JLabel((Icon) img);
+//        add(label);
+//        label.setBounds(585,310,100,100);
+//        System.out.println(img);
 
         int i = 0;
         while (i < DbHostnames.size()) {

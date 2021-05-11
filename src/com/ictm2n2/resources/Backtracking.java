@@ -2,7 +2,7 @@ package com.ictm2n2.resources;
 
 public class Backtracking {
 
-    private Configuratie c = new Configuratie();
+    private Configuratie config = new Configuratie();
     private Componenten componenten = new Componenten();
 
     private int kosten = 0;
@@ -13,25 +13,25 @@ public class Backtracking {
          * zit worden er 1 van elke soort in gezet.
          */
 
-        if (c.getComponenten().isEmpty()) {
-            c.voegToeComponent(componenten.firewalls.get(0));
-            c.voegToeComponent(componenten.webServers.get(0));
-            c.voegToeComponent(componenten.dbServers.get(0));
+        if (config.getComponenten().isEmpty()) {
+            config.voegToeComponent(componenten.firewalls.get(0));
+            config.voegToeComponent(componenten.webServers.get(0));
+            config.voegToeComponent(componenten.dbServers.get(0));
         } else {
-            if (berekenComponent(Webserver.class, c) < berekenComponent(DatabaseServer.class, c)) {
+            if (berekenComponent(Webserver.class, config) < berekenComponent(DatabaseServer.class, config)) {
                 voegVolgendeToe(Webserver.class);
             } else {
                 voegVolgendeToe(DatabaseServer.class);
             }
         }
-        if (!isVoldaan(percentage, c)) {
+        if (!isVoldaan(percentage, config)) {
             maakConfiguratie(percentage);
         } else {
-            kosten = berekenTotalePrijs(c);
-            c.setComponenten(maakGoedkoper(percentage, c).getComponenten());
+            kosten = berekenTotalePrijs(config);
+            config.setComponenten(maakGoedkoper(percentage, config).getComponenten());
         }
 
-        return c;
+        return this.config;
     }
 
     private Configuratie maakGoedkoper(double percentage, Configuratie configuratie) {
@@ -55,7 +55,7 @@ public class Backtracking {
 
                 for (int j = 0; j < hoeveelVan(duurdereWs, configuratie); j++) {
                     if (kosten < berekenTotalePrijs(configuratie)) {
-                        configuratie.verwijderComponent(duurdereWs);
+                        configuratie.verwijderComponent(goedkoopsteWs);
                     } else if (isVoldaan(percentage, configuratie)) {
                         kosten = berekenTotalePrijs(configuratie);
                     }
@@ -95,17 +95,28 @@ public class Backtracking {
 
     private boolean isVoldaan(double percentage, Configuratie configuratie) {
         // Om te kijken of de percentage al behaald is in de configuratie.
-        return (berekenComponent(Firewall.class, configuratie) / 100)
-                * (berekenComponent(Webserver.class, configuratie) / 100)
-                * berekenComponent(DatabaseServer.class, configuratie) >= percentage;
+//        System.out.println("1");
+//        System.out.println(berekenComponent(Firewall.class, configuratie));
+//        System.out.println("2");
+//        System.out.println(berekenComponent(Webserver.class, configuratie));
+//        System.out.println("3");
+//        System.out.println(berekenComponent(DatabaseServer.class, configuratie));
+//        System.out.println((berekenComponent(Firewall.class, configuratie)/100) * (berekenComponent(Webserver.class, configuratie)/100) * (berekenComponent(DatabaseServer.class, configuratie)));
+//        System.out.println(((berekenComponent(Firewall.class, configuratie) / 100) *
+//                (berekenComponent(Webserver.class, configuratie) / 100) *
+//                (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100));
+
+        return ((berekenComponent(Firewall.class, configuratie) / 100) *
+                (berekenComponent(Webserver.class, configuratie) / 100) *
+                (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100) >= percentage;
     }
 
     private void voegVolgendeToe(Class<?> type) {
         // Switchen tussen Webserver en Database server.
         if (type.isAssignableFrom(Webserver.class)) {
-            c.voegToeComponent(componenten.webServers.get(0));
+            config.voegToeComponent(componenten.webServers.get(0));
         } else if (type.isAssignableFrom(DatabaseServer.class)) {
-            c.voegToeComponent(componenten.dbServers.get(0));
+            config.voegToeComponent(componenten.dbServers.get(0));
         }
     }
 
