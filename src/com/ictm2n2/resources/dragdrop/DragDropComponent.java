@@ -1,25 +1,30 @@
-package com.ictm2n2.resources;
+package com.ictm2n2.resources.dragdrop;
+
+import com.ictm2n2.frames.TekenPanel;
+import com.ictm2n2.resources.Component;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
 public class DragDropComponent extends JLabel {
     private Component component;
+    private ArrayList<VerbindingComponent> verbindingen = new ArrayList<VerbindingComponent>();
     private Point imageCorner = new Point(0, 0);
-    private Dimension panelSize;
-    private ImageIcon image;
+    private Dimension panelGrootte;
+    private ImageIcon plaatje;
 
     private Point previousPoint;
 
-    public DragDropComponent(Component component, ImageIcon image, Dimension panelSize) {
+    public DragDropComponent(Component component, ImageIcon plaatje, Dimension panelGrootte) {
         this.component = component;
-        this.image = image;
-        this.panelSize = panelSize;
+        this.plaatje = plaatje;
+        this.panelGrootte = panelGrootte;
 
-        setIcon(image);
+        setIcon(plaatje);
         setText(component.getNaam());
         setVerticalTextPosition(JLabel.BOTTOM);
         setHorizontalTextPosition(JLabel.CENTER);
@@ -46,7 +51,23 @@ public class DragDropComponent extends JLabel {
 
     private class ClickListener extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
-            previousPoint = e.getPoint();
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                previousPoint = e.getPoint();
+            }
+//            else if (e.getButton() == MouseEvent.BUTTON3) {
+//                if (TekenPanel.huidigComponent == null) {
+//                    verbindingen.add(new VerbindingComponent(component));
+//                    TekenPanel.huidigComponent = component;
+//                }
+//                else {
+//
+//                }
+//                System.out.println(verbindingen.size());
+////                else {
+////                    System.out.println(verbindingen.size());
+////                }
+//////                TekenPanel.voegToeHuidigComponent(component);
+//            }
         }
     }
 }

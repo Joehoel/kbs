@@ -1,7 +1,7 @@
 package com.ictm2n2.frames;
 
 import com.ictm2n2.resources.Component;
-import com.ictm2n2.resources.DragDropComponent;
+import com.ictm2n2.resources.dragdrop.DragDropComponent;
 
 import java.awt.*;
 
@@ -10,17 +10,16 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class TekenPanel extends JPanel {
-    private ImageIcon image;
-    private int getName;
     private ArrayList<DragDropComponent> componenten = new ArrayList<DragDropComponent>();
+    public static Component huidigComponent;
 
     public TekenPanel() {
         setLayout(null);
     }
 
     public void voegToeComponent(String type, Component component) {
-        ImageIcon image = new ImageIcon("src/com/ictm2n2/assets/" + type + ".png");
-        this.componenten.add(new DragDropComponent(component, image, getSize()));
+        ImageIcon plaatje = new ImageIcon("src/com/ictm2n2/assets/" + type + ".png");
+        this.componenten.add(new DragDropComponent(component, plaatje, getSize()));
 
         setLayout(new BorderLayout());
         setVisible(true);
@@ -28,6 +27,10 @@ public class TekenPanel extends JPanel {
 
     public void verwijderComponent(int index) {
         this.componenten.remove(index);
+    }
+
+    public static void voegToeHuidigComponent(Component component) {
+        huidigComponent = component;
     }
 
     public void paintComponent(Graphics g) {
