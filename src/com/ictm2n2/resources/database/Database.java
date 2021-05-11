@@ -1,6 +1,8 @@
 
 package com.ictm2n2.resources.database;
 
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -32,9 +34,13 @@ public class Database {
 
 
  //       connection = DriverManager.getConnection("jdbc:mysql://172.16.1.1:3306/" + db, userName, password);
-
-        connection = DriverManager.getConnection("jdbc:mysql://172.16.1.1/" + db, userName, password);
-
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://172.16.1.1/" + db, userName, password);
+        } catch (CommunicationsException ce) {
+            System.out.println("Chef misschien moet je de vpn aanzetten");
+            System.out.println("Of je internet werkt niet lol");
+            System.exit(0);
+        }
     }
     /**
      *
