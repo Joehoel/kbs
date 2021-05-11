@@ -1,8 +1,7 @@
 package com.ictm2n2.frames;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -137,18 +136,21 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             DatabaseServer c = componenten.getDbServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
             jcbToegevoegd.addItem(c.getNaam());
+            tp.voegToeComponent("dbserver", c);
         }
         if (e.getSource() == jbWsVoegToe) {
             Object selectedIndex = jcbWebServers.getSelectedIndex();
             Webserver c = componenten.getWebServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
             jcbToegevoegd.addItem(c.getNaam());
+            tp.voegToeComponent("webserver", c);
         }
         if (e.getSource() == jbFwVoegToe) {
             Object selectedIndex = jcbFirewalls.getSelectedIndex();
             Firewall c = componenten.getFirewalls().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
             jcbToegevoegd.addItem(c.getNaam());
+            tp.voegToeComponent("firewall", c);
         }
         if (e.getSource() == jbVerwijder) {
             try {
@@ -156,7 +158,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 Object name = jcbToegevoegd.getSelectedItem();
                 configuratie.verwijderComponent(index);
                 jcbToegevoegd.removeItem(name);
-
+                tp.verwijderComponent(index);
             } catch (ArrayIndexOutOfBoundsException error) {
                 JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -218,5 +220,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
         jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
 
+        repaint();
     }
 }

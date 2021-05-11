@@ -5,26 +5,7 @@ public class Backtracking {
     // private Configuratie c = new Configuratie();
     private Componenten componenten = new Componenten();
 
-<<<<<<< Updated upstream
-    private int kosten = 0;
 
-    public Configuratie maakConfiguratie(double percentage) {
-        /*
-         * Kijken of er al componenten in de huidige configuratie zitten. Als er niks in
-         * zit worden er 1 van elke soort in gezet.
-         */
-
-        if (c.getComponenten().isEmpty()) {
-            c.voegToeComponent(componenten.firewalls.get(0));
-            c.voegToeComponent(componenten.webServers.get(0));
-            c.voegToeComponent(componenten.dbServers.get(0));
-        } else {
-            if (berekenComponent(Webserver.class, c) < berekenComponent(DatabaseServer.class, c)) {
-                voegVolgendeToe(Webserver.class);
-            } else {
-                voegVolgendeToe(DatabaseServer.class);
-            }
-=======
     private double kosten = 0;
     private double prijsBesteOplossing = 0;
     private Configuratie besteConfiguratie = new Configuratie();
@@ -40,7 +21,6 @@ public class Backtracking {
             configuratie.voegToeComponent(componenten.loadbalancers.get(0));
             configuratie.voegToeComponent(componenten.webServers.get(0));
             configuratie.voegToeComponent(componenten.dbServers.get(0));
->>>>>>> Stashed changes
         }
 
         for (Component component : componenten.getComponenten()) {

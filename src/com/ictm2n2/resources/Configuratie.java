@@ -64,11 +64,7 @@ public class Configuratie {
 
     public double berekenBeschikbaarheid() {
         return (berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
-<<<<<<< Updated upstream
-                * berekenComponent(DatabaseServer.class);
-=======
                 * (berekenComponent(Loadbalancer.class) / 100) * berekenComponent(DatabaseServer.class);
->>>>>>> Stashed changes
     }
 
     private double berekenComponent(Class<?> type) {

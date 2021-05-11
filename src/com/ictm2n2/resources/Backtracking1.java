@@ -18,16 +18,16 @@ public class Backtracking1 {
         this.percentage = percentage;
     }
 
-    public boolean backtrack() {
-
-        // if (configuratie.getComponenten().isEmpty()) {
-        // configuratie.voegToeComponent(componenten.firewalls.get(0));
-        // configuratie.voegToeComponent(componenten.loadbalancers.get(0));
-        // configuratie.voegToeComponent(componenten.webServers.get(0));
-        // configuratie.voegToeComponent(componenten.dbServers.get(0));
-        // }
-
-    }
+//    public boolean backtrack() {
+//
+//        // if (configuratie.getComponenten().isEmpty()) {
+//        // configuratie.voegToeComponent(componenten.firewalls.get(0));
+//        // configuratie.voegToeComponent(componenten.loadbalancers.get(0));
+//        // configuratie.voegToeComponent(componenten.webServers.get(0));
+//        // configuratie.voegToeComponent(componenten.dbServers.get(0));
+//        // }
+//
+//    }
 
     public double berekenComponent(Class<?> type, Configuratie configuratie) {
         double beschikbaarheid = 1;
