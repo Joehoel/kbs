@@ -19,11 +19,11 @@ public class Componenten {
             q.select(null).from("component_type");
             ResultSet rs = db.select(q);
             while (rs.next()) {
+                String naam = rs.getString("type_naam");
                 String type = rs.getString("type_soort");
 
-                String naam = rs.getString("type_naam");
-                double prijs = rs.getDouble("type_prijs");
                 double beschikbaarheid = rs.getDouble("type_beschikbaarheid");
+                double prijs = rs.getDouble("type_prijs");
                 if (type.equals("DBserver")) {
                     dbServers.add(new DatabaseServer(naam, prijs, beschikbaarheid));
                 } else if (type.equals("Webserver")) {
@@ -67,17 +67,17 @@ public class Componenten {
         ArrayList<String> data = new ArrayList<String>();
         if (type.getSimpleName().equals("Webserver")) {
             for (Webserver s : webServers) {
-                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - €" + s.getPrijs();
                 data.add(str);
             }
         } else if (type.getSimpleName().equals("DatabaseServer")) {
             for (DatabaseServer s : dbServers) {
-                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - €" + s.getPrijs();
                 data.add(str);
             }
         } else if (type.getSimpleName().equals("Firewall")) {
             for (Firewall s : firewalls) {
-                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - $" + s.getPrijs();
+                String str = s.getNaam() + " - " + s.getBeschikbaarheid() + "%" + " - €" + s.getPrijs();
                 data.add(str);
             }
         }
