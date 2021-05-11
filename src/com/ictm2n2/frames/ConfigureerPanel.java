@@ -166,7 +166,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         if (e.getSource() == jbOptimaliseer) {
             try {
                 double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
-                if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
+                if (gewenstPercentage >= 99.995 || gewenstPercentage < 0) {
                     JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     configuratie.optimaliseer(gewenstPercentage);

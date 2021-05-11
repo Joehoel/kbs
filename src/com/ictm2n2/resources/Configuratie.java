@@ -47,7 +47,7 @@ public class Configuratie {
         } catch (NullPointerException npe) {
             System.out.println(npe);
         }
-        return "$" + totalePrijs;
+        return "€" + totalePrijs;
     }
 
     public double berekenTotalePrijsDouble() {

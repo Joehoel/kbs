@@ -20,8 +20,8 @@ public class App extends JFrame implements ActionListener {
             setLayout(null);
 
             jtpTabbedPane.setBounds(0, 0, 900, 600);
-            jtpTabbedPane.add("configureer", configureerPanel);
-            jtpTabbedPane.add("monitor", monitorPanel);
+            jtpTabbedPane.add("Configureer", configureerPanel);
+            jtpTabbedPane.add("Monitor", monitorPanel);
 
             add(jtpTabbedPane);
 
