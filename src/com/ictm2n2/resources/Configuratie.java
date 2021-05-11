@@ -63,8 +63,6 @@ public class Configuratie {
     }
 
     public double berekenBeschikbaarheid() {
-        System.out.println((berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
-                * berekenComponent(DatabaseServer.class));
         return (berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
                 * berekenComponent(DatabaseServer.class);
     }
@@ -88,6 +86,16 @@ public class Configuratie {
 
     public void setComponenten(ArrayList<Component> componenten) {
         this.componenten = componenten;
+    }
+
+    public void print() {
+        System.out.println("Componenten size=" + getComponenten().size());
+        for (Component component : getComponenten()) {
+            System.out.println("\t" + component);
+        }
+        if (getComponenten().size() == 0) {
+            System.out.println("\t This bitch empty, YEET!");
+        }
     }
 
 }

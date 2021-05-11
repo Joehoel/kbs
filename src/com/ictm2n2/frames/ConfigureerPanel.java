@@ -1,6 +1,5 @@
 package com.ictm2n2.frames;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -144,18 +143,21 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             DatabaseServer c = componenten.getDbServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
             jcbToegevoegd.addItem(c.getNaam());
+            tp.voegToeComponent("dbserver", c);
         }
         if (e.getSource() == jbWsVoegToe) {
             Object selectedIndex = jcbWebServers.getSelectedIndex();
             Webserver c = componenten.getWebServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
             jcbToegevoegd.addItem(c.getNaam());
+            tp.voegToeComponent("webserver", c);
         }
         if (e.getSource() == jbFwVoegToe) {
             Object selectedIndex = jcbFirewalls.getSelectedIndex();
             Firewall c = componenten.getFirewalls().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
             jcbToegevoegd.addItem(c.getNaam());
+            tp.voegToeComponent("firewall", c);
         }
         if (e.getSource() == jbVerwijder) {
             try {
@@ -163,7 +165,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 Object name = jcbToegevoegd.getSelectedItem();
                 configuratie.verwijderComponent(index);
                 jcbToegevoegd.removeItem(name);
-
+                tp.verwijderComponent(index);
             } catch (ArrayIndexOutOfBoundsException error) {
                 JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -176,7 +178,9 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
 
                 if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
-                    JOptionPane.showMessageDialog(this, "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this,
+                            "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     configuratie.optimaliseer(gewenstPercentage);
                     jcbToegevoegd.removeAll();
@@ -184,57 +188,63 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                     for (Object naam : configuratie.getComponentenNamen()) {
                         jcbToegevoegd.addItem(naam);
                     }
+                    for (Component component : configuratie.getComponenten()) {
+                        tp.voegToeComponent(component.getType(), component);
+                    }
+                    repaint();
                 }
                 // this.componenten = configuratie.getComponenten();
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
 
         if (e.getSource() == jbOpslaan) {
-         
-            String naamOntwerp = JOptionPane.showInputDialog(this, "Geef dit ontwerp een naam", null);
 
-      
+            String naamOntwerp = JOptionPane.showInputDialog(this, "Geef dit ontwerp een naam", null);
 
             try {
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
-                java.util.Date date=new java.util.Date();
+                java.util.Date date = new java.util.Date();
 
-                java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-                String [] values = {String.valueOf(primaryKey), String.valueOf(sqlDate), String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp, String.valueOf(configuratie.berekenTotalePrijsDouble())};
+                String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
+                        String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
+                        String.valueOf(configuratie.berekenTotalePrijsDouble()) };
                 for (String value : values) {
                     System.out.println(value);
                 }
                 db.insert("configuratie", values);
                 primaryKey++;
 
-            // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            // // java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
+                // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                // // java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
 
-            // String[] columns = { "id", "datum", "beschikbaarheidspercentage", "naam",
-            // "prijs" };
-            // String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
-            // String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
-            // String.valueOf(configuratie.berekenTotalePrijsDouble()) };
-            // for (String value : values) {
-            // System.out.println(value);
-            // }
-            // Database db1 = new Database("nerdygadgets_1", "root", "");
-            // db1.insert("configuratie", values);
-            // primaryKey++;
+                // String[] columns = { "id", "datum", "beschikbaarheidspercentage", "naam",
+                // "prijs" };
+                // String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
+                // String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
+                // String.valueOf(configuratie.berekenTotalePrijsDouble()) };
+                // for (String value : values) {
+                // System.out.println(value);
+                // }
+                // Database db1 = new Database("nerdygadgets_1", "root", "");
+                // db1.insert("configuratie", values);
+                // primaryKey++;
 
-
-             } catch (Exception a) {
-             a.printStackTrace();
-             }
+            } catch (Exception a) {
+                a.printStackTrace();
+            }
 
         }
 
         jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
         jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
 
+        repaint();
     }
 }

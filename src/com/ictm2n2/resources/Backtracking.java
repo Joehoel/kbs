@@ -3,9 +3,9 @@ package com.ictm2n2.resources;
 public class Backtracking {
 
     private Configuratie config = new Configuratie();
-    private Componenten componenten = new Componenten();
 
-    private int kosten = 0;
+    private double kosten = 0;
+    private Componenten componenten = new Componenten();
 
     public Configuratie maakConfiguratie(double percentage) {
         /*
@@ -29,10 +29,54 @@ public class Backtracking {
         } else {
             kosten = berekenTotalePrijs(config);
             config.setComponenten(maakGoedkoper(percentage, config).getComponenten());
+
         }
+        config.print();
 
         return this.config;
+
     }
+
+    public double berekenTotaleBeschikbaarheid(Configuratie configuratie) {
+        /* Loop over de componenten en bereken totale beschikbaarheid */
+        return (berekenComponent(Firewall.class, configuratie) / 100)
+                * (berekenComponent(Webserver.class, configuratie) / 100)
+                * (berekenComponent(Loadbalancer.class, configuratie) / 100)
+                * berekenComponent(DatabaseServer.class, configuratie);
+    }
+
+    // public Configuratie maakConfiguratie(double percentage) {
+    // /*
+    // * Kijken of er al componenten in de huidige configuratie zitten. Als er niks
+    // in
+    // * zit worden er 1 van elke soort in gezet.
+    // */
+    // if (c.getComponenten().isEmpty()) {
+    // c.voegToeComponent(componenten.firewalls.get(0));
+    // c.voegToeComponent(componenten.loadbalancers.get(0));
+    // c.voegToeComponent(componenten.webServers.get(0));
+    // c.voegToeComponent(componenten.dbServers.get(0));
+    // } else {
+    // if (berekenComponent(Webserver.class, c) <
+    // berekenComponent(DatabaseServer.class, c)) {
+    // voegVolgendeToe(Webserver.class);
+    // } else {
+    // voegVolgendeToe(DatabaseServer.class);
+    // }
+    // }
+    // if (isVoldaan(percentage, c)) {
+    // kosten = berekenTotalePrijs(c);
+    // c.setComponenten(maakGoedkoper(percentage, c).getComponenten());
+    // // System.out.println("Voldaan" + c.berekenTotalePrijsDouble());
+    // } else if (!isVoldaan(percentage, c)) {
+    // return maakConfiguratie(percentage);
+    // }
+
+    // System.out.println("Returned: " + c.berekenTotalePrijsDouble() + " - " +
+    // kosten);
+    // return c;
+
+    // }
 
     private Configuratie maakGoedkoper(double percentage, Configuratie configuratie) {
 
@@ -54,10 +98,12 @@ public class Backtracking {
                 // de loop
 
                 for (int j = 0; j < hoeveelVan(duurdereWs, configuratie); j++) {
+
                     if (kosten < berekenTotalePrijs(configuratie)) {
                         configuratie.verwijderComponent(goedkoopsteWs);
+
                     } else if (isVoldaan(percentage, configuratie)) {
-                        kosten = berekenTotalePrijs(configuratie);
+                        kosten = berekenTotalePrijsDouble(configuratie);
                     }
                     if (!isVoldaan(percentage, configuratie)) {
                         configuratie.voegToeComponent(goedkoopsteWs);
@@ -76,10 +122,10 @@ public class Backtracking {
                 }
 
                 for (int j = 0; j < hoeveelVan(duurdereDb, configuratie); j++) {
-                    if (kosten < berekenTotalePrijs(configuratie)) {
+                    if (kosten < berekenTotalePrijsDouble(configuratie)) {
                         configuratie.verwijderComponent(duurdereDb);
                     } else {
-                        kosten = berekenTotalePrijs(configuratie);
+                        kosten = berekenTotalePrijsDouble(configuratie);
                     }
                     if (!isVoldaan(percentage, configuratie)) {
                         configuratie.voegToeComponent(goedkoopsteDb);
@@ -94,29 +140,39 @@ public class Backtracking {
     }
 
     private boolean isVoldaan(double percentage, Configuratie configuratie) {
-        // Om te kijken of de percentage al behaald is in de configuratie.
-//        System.out.println("1");
-//        System.out.println(berekenComponent(Firewall.class, configuratie));
-//        System.out.println("2");
-//        System.out.println(berekenComponent(Webserver.class, configuratie));
-//        System.out.println("3");
-//        System.out.println(berekenComponent(DatabaseServer.class, configuratie));
-//        System.out.println((berekenComponent(Firewall.class, configuratie)/100) * (berekenComponent(Webserver.class, configuratie)/100) * (berekenComponent(DatabaseServer.class, configuratie)));
-//        System.out.println(((berekenComponent(Firewall.class, configuratie) / 100) *
-//                (berekenComponent(Webserver.class, configuratie) / 100) *
-//                (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100));
+        double b = (berekenComponent(Firewall.class, configuratie) / 100)
+                * (berekenComponent(Loadbalancer.class, configuratie) / 100)
+                * (berekenComponent(Webserver.class, configuratie) / 100)
+                * berekenComponent(DatabaseServer.class, configuratie);
 
-        return ((berekenComponent(Firewall.class, configuratie) / 100) *
-                (berekenComponent(Webserver.class, configuratie) / 100) *
-                (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100) >= percentage;
+        System.out.println(String.format("%s >= %s ---- %s", b, percentage, b >= percentage));
+        // Om te kijken of de percentage al behaald is in de configuratie.
+        // System.out.println("1");
+        // System.out.println(berekenComponent(Firewall.class, configuratie));
+        // System.out.println("2");
+        // System.out.println(berekenComponent(Webserver.class, configuratie));
+        // System.out.println("3");
+        // System.out.println(berekenComponent(DatabaseServer.class, configuratie));
+        // System.out.println((berekenComponent(Firewall.class, configuratie)/100) *
+        // (berekenComponent(Webserver.class, configuratie)/100) *
+        // (berekenComponent(DatabaseServer.class, configuratie)));
+        // System.out.println(((berekenComponent(Firewall.class, configuratie) / 100) *
+        // (berekenComponent(Webserver.class, configuratie) / 100) *
+        // (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100));
+
+        return ((berekenComponent(Firewall.class, configuratie) / 100)
+                * (berekenComponent(Webserver.class, configuratie) / 100)
+                * (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100) >= percentage;
     }
 
     private void voegVolgendeToe(Class<?> type) {
         // Switchen tussen Webserver en Database server.
         if (type.isAssignableFrom(Webserver.class)) {
+
             config.voegToeComponent(componenten.webServers.get(0));
         } else if (type.isAssignableFrom(DatabaseServer.class)) {
             config.voegToeComponent(componenten.dbServers.get(0));
+
         }
     }
 
@@ -147,6 +203,18 @@ public class Backtracking {
 
     private int berekenTotalePrijs(Configuratie configuratie) {
         int totalePrijs = 0;
+        try {
+            for (Component component : configuratie.getComponenten()) {
+                totalePrijs += component.getPrijs();
+            }
+        } catch (NullPointerException npe) {
+            System.out.println(npe);
+        }
+        return totalePrijs;
+    }
+
+    public double berekenTotalePrijsDouble(Configuratie configuratie) {
+        double totalePrijs = 0;
         try {
             for (Component component : configuratie.getComponenten()) {
                 totalePrijs += component.getPrijs();
