@@ -178,4 +178,11 @@ public class Database {
         }
         return data;
     }
+
+    public ResultSet preparedQuery (Query query) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(query.getQuery());
+
+        ResultSet rs = ps.executeQuery();
+        return rs;
+    }
 }

@@ -187,18 +187,20 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             String naamOntwerp = JOptionPane.showInputDialog(this, "Geef dit ontwerp een naam", null);
 
             try {
-                // Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+                Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
-                // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                java.util.Date date = new java.util.Date();
 
-                // String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
-                // String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
-                // String.valueOf(configuratie.berekenTotalePrijsDouble()) };
-                // for (String value : values) {
-                // System.out.println(value);
-                // }
-                // db.insert("configuratie", values);
-                // primaryKey++;
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
+                        String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
+                        String.valueOf(configuratie.berekenTotalePrijsDouble()) };
+                for (String value : values) {
+                    System.out.println(value);
+                }
+                db.insert("configuratie", values);
+                primaryKey++;
 
                 // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
                 // // java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
