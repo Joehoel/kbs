@@ -31,10 +31,12 @@ public class Database {
      */
     public Database(String db, String userName, String password) throws SQLException {
 
+
+ //       connection = DriverManager.getConnection("jdbc:mysql://172.16.1.1:3306/" + db, userName, password);
+
         connection = DriverManager.getConnection("jdbc:mysql://172.16.1.1/" + db, userName, password);
 
     }
-
     /**
      *
      * @param query
@@ -176,5 +178,12 @@ public class Database {
             data.add(row);
         }
         return data;
+    }
+
+    public ResultSet preparedQuery (Query query) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(query.getQuery());
+
+        ResultSet rs = ps.executeQuery();
+        return rs;
     }
 }

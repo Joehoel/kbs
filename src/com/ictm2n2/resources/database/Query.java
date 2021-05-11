@@ -151,4 +151,71 @@ public class Query {
     public String getQuery() {
         return query.toString();
     }
+
+    /**
+     * Returns the generated SQL query
+     *
+     * @return query
+     */
+    public Query groupBy(String column) {
+        query = new StringBuilder();
+        query.append(" GROUP BY ");
+        query.append(column);;
+        return this;
+    }
+
+    public Query DbMonitorPanelQuery () {
+        query = new StringBuilder();
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " +
+                "FROM component c " +
+                "JOIN status s " +
+                "ON c.component_id=s.component_id WHERE c.type_id IN (3,4,5)" +
+                "GROUP BY c.component_id " +
+                "HAVING max(tijdstip);");
+        return this;
+    }
+
+    public Query WbMonitorPanelQuery () {
+        query = new StringBuilder();
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " +
+                "FROM component c " +
+                "JOIN status s " +
+                "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)" +
+                "GROUP BY c.component_id " +
+                "HAVING max(tijdstip);");
+        return this;
+    }
+
+    public Query LbMonitorPanelQuery () {
+        query = new StringBuilder();
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " +
+                "FROM component c " +
+                "JOIN status s " +
+                "ON c.component_id=s.component_id WHERE c.type_id IN (2)" +
+                "GROUP BY c.component_id " +
+                "HAVING max(tijdstip);");
+        return this;
+    }
+
+    public Query PfSMonitorPanelQuery () {
+        query = new StringBuilder();
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " +
+                "FROM component c " +
+                "JOIN status s " +
+                "ON c.component_id=s.component_id WHERE c.type_id IN (1)" +
+                "GROUP BY c.component_id " +
+                "HAVING max(tijdstip);");
+        return this;
+    }
+
+    public Query DetailOverzichtMonitorPanelQuery (String hostname) {
+        query = new StringBuilder();
+        query.append("SELECT c.hostname, c.cpu, s.processor_belasting, c.opslag, s.opslag_verbruik, s.beschikbaar_lengte, s.tijdstip\n" +
+                "FROM component c\n" +
+                "JOIN status s\n" +
+                "ON c.component_id = s.component_id WHERE c.hostname = \"DB02\"\n" +
+                "GROUP BY c.component_id\n" +
+                "HAVING max(tijdstip);");
+        return this;
+    }
 }
