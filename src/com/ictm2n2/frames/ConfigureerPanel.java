@@ -1,7 +1,7 @@
 package com.ictm2n2.frames;
 
-import java.awt.Component;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -188,6 +188,10 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                     for (Object naam : configuratie.getComponentenNamen()) {
                         jcbToegevoegd.addItem(naam);
                     }
+                    for (Component component : configuratie.getComponenten()) {
+                        tp.voegToeComponent(component.getType(), component);
+                    }
+                    repaint();
                 }
                 // this.componenten = configuratie.getComponenten();
             } catch (NumberFormatException ex) {
