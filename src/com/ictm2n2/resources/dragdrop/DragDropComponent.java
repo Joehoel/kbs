@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class DragDropComponent extends JLabel {
     private Component component;
-    private ArrayList<VerbindingComponent> verbindingen = new ArrayList<VerbindingComponent>();
+//    private ArrayList<VerbindingComponent> verbindingen = new ArrayList<VerbindingComponent>();
     private Point imageCorner = new Point(0, 0);
     private Dimension panelGrootte;
     private ImageIcon plaatje;
@@ -37,6 +37,14 @@ public class DragDropComponent extends JLabel {
         return this.imageCorner;
     }
 
+//    public ArrayList<VerbindingComponent> getVerbindingen() {
+//        return this.verbindingen;
+//    }
+//
+//    public int getVerbindingenLengte() {
+//        return this.verbindingen.size();
+//    }
+
     private class DragListener extends MouseMotionAdapter {
         public void mouseDragged(MouseEvent e) {
             Point currentPoint = e.getPoint();
@@ -54,20 +62,19 @@ public class DragDropComponent extends JLabel {
             if (e.getButton() == MouseEvent.BUTTON1) {
                 previousPoint = e.getPoint();
             }
-//            else if (e.getButton() == MouseEvent.BUTTON3) {
-//                if (TekenPanel.huidigComponent == null) {
-//                    verbindingen.add(new VerbindingComponent(component));
-//                    TekenPanel.huidigComponent = component;
-//                }
-//                else {
-//
-//                }
-//                System.out.println(verbindingen.size());
-////                else {
-////                    System.out.println(verbindingen.size());
-////                }
-//////                TekenPanel.voegToeHuidigComponent(component);
-//            }
+            else if (e.getButton() == MouseEvent.BUTTON3) {
+                if (TekenPanel.vanComponent == null) {
+                    TekenPanel.vanComponent = DragDropComponent.this;
+                }
+                else {
+                    if (TekenPanel.vanComponent != DragDropComponent.this) {
+
+                        new VerbindingComponent(TekenPanel.vanComponent, DragDropComponent.this);
+                        repaint();
+                    }
+                    TekenPanel.vanComponent = null;
+                }
+            }
         }
     }
 }
