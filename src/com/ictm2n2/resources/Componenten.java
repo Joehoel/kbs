@@ -10,6 +10,7 @@ public class Componenten {
     ArrayList<DatabaseServer> dbServers = new ArrayList<DatabaseServer>();
     ArrayList<Webserver> webServers = new ArrayList<Webserver>();
     ArrayList<Firewall> firewalls = new ArrayList<Firewall>();
+    ArrayList<Loadbalancer> loadbalancers = new ArrayList<Loadbalancer>();
 
     public Componenten() {
         try {
@@ -30,6 +31,8 @@ public class Componenten {
                     webServers.add(new Webserver(naam, prijs, beschikbaarheid));
                 } else if (type.equals("firewall")) {
                     firewalls.add(new Firewall(naam, prijs, beschikbaarheid));
+                } else if (type.equals("loadbalancer")) {
+                    loadbalancers.add(new Loadbalancer(naam, prijs, beschikbaarheid));
                 }
             }
         } catch (Exception e) {
@@ -84,4 +87,14 @@ public class Componenten {
         return data.toArray(new String[] {});
     }
 
+    public ArrayList<Component> getComponenten() {
+        ArrayList<Component> componenten = new ArrayList<Component>();
+        for (Webserver webserver : webServers) {
+            componenten.add(webserver);
+        }
+        for (DatabaseServer DbServer : dbServers) {
+            componenten.add(DbServer);
+        }
+        return componenten;
+    }
 }

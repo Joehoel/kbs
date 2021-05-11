@@ -66,7 +66,7 @@ public class Configuratie {
         System.out.println((berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
                 * berekenComponent(DatabaseServer.class));
         return (berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
-                * berekenComponent(DatabaseServer.class);
+                * (berekenComponent(Loadbalancer.class) / 100) * berekenComponent(DatabaseServer.class);
     }
 
     private double berekenComponent(Class<?> type) {
@@ -83,11 +83,21 @@ public class Configuratie {
 
     public void optimaliseer(double percentage) {
         Backtracking bt = new Backtracking();
-        setComponenten(bt.maakConfiguratie(percentage).getComponenten());
+        setComponenten(bt.berekenBesteConfiguratie(percentage).getComponenten());
     }
 
     public void setComponenten(ArrayList<Component> componenten) {
         this.componenten = componenten;
+    }
+
+    public void print() {
+        System.out.println("Componenten size=" + getComponenten().size());
+        for (Component component : getComponenten()) {
+            System.out.println("\t" + component);
+        }
+        if (getComponenten().size() == 0) {
+            System.out.println("\t This bitch empty, YEET!");
+        }
     }
 
 }
