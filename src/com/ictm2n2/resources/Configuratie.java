@@ -63,6 +63,8 @@ public class Configuratie {
     }
 
     public double berekenBeschikbaarheid() {
+        System.out.println((berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
+                * berekenComponent(DatabaseServer.class));
         return (berekenComponent(Firewall.class) / 100) * (berekenComponent(Webserver.class) / 100)
                 * berekenComponent(DatabaseServer.class);
     }
