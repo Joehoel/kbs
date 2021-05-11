@@ -51,7 +51,7 @@ public class Backtracking {
 
                 for (int j = 0; j < hoeveelVan(duurdereWs, configuratie); j++) {
                     if (kosten < berekenTotalePrijs(configuratie)) {
-                        configuratie.verwijderComponent(duurdereWs);
+                        configuratie.verwijderComponent(goedkoopsteWs);
                     } else if (isVoldaan(percentage, configuratie)) {
                         kosten = berekenTotalePrijs(configuratie);
                     }
@@ -84,8 +84,8 @@ public class Backtracking {
                     }
                 }
             }
+            dbDoorlopen = true;
         }
-        dbDoorlopen = true;
         return configuratie;
     }
 
