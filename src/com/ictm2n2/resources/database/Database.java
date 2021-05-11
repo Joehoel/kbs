@@ -41,7 +41,7 @@ public class Database {
             System.out.println("Chef misschien moet je de vpn aanzetten");
             System.out.println("Of je internet werkt niet lol");
             System.exit(0);
-         }
+        }
     }
     /**
      *
