@@ -174,6 +174,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         if (e.getSource() == jbOptimaliseer) {
             try {
                 double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
+
                 if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
                     JOptionPane.showMessageDialog(this, "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {

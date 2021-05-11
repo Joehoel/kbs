@@ -88,8 +88,8 @@ public class Backtracking {
                     }
                 }
             }
+            dbDoorlopen = true;
         }
-        dbDoorlopen = true;
         return configuratie;
     }
 
