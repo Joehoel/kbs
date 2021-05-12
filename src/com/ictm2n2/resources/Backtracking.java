@@ -2,12 +2,10 @@ package com.ictm2n2.resources;
 
 public class Backtracking {
 
-
     private Configuratie config = new Configuratie();
 
+    private double kosten = 0;
     private Componenten componenten = new Componenten();
-
-
 
     public Configuratie maakConfiguratie(double percentage) {
         /*
@@ -33,7 +31,7 @@ public class Backtracking {
             config.setComponenten(maakGoedkoper(percentage, config).getComponenten());
 
         }
-        configuratie.print();
+        config.print();
 
         return this.config;
 
@@ -149,20 +147,22 @@ public class Backtracking {
 
         System.out.println(String.format("%s >= %s ---- %s", b, percentage, b >= percentage));
         // Om te kijken of de percentage al behaald is in de configuratie.
-//        System.out.println("1");
-//        System.out.println(berekenComponent(Firewall.class, configuratie));
-//        System.out.println("2");
-//        System.out.println(berekenComponent(Webserver.class, configuratie));
-//        System.out.println("3");
-//        System.out.println(berekenComponent(DatabaseServer.class, configuratie));
-//        System.out.println((berekenComponent(Firewall.class, configuratie)/100) * (berekenComponent(Webserver.class, configuratie)/100) * (berekenComponent(DatabaseServer.class, configuratie)));
-//        System.out.println(((berekenComponent(Firewall.class, configuratie) / 100) *
-//                (berekenComponent(Webserver.class, configuratie) / 100) *
-//                (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100));
+        // System.out.println("1");
+        // System.out.println(berekenComponent(Firewall.class, configuratie));
+        // System.out.println("2");
+        // System.out.println(berekenComponent(Webserver.class, configuratie));
+        // System.out.println("3");
+        // System.out.println(berekenComponent(DatabaseServer.class, configuratie));
+        // System.out.println((berekenComponent(Firewall.class, configuratie)/100) *
+        // (berekenComponent(Webserver.class, configuratie)/100) *
+        // (berekenComponent(DatabaseServer.class, configuratie)));
+        // System.out.println(((berekenComponent(Firewall.class, configuratie) / 100) *
+        // (berekenComponent(Webserver.class, configuratie) / 100) *
+        // (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100));
 
-        return ((berekenComponent(Firewall.class, configuratie) / 100) *
-                (berekenComponent(Webserver.class, configuratie) / 100) *
-                (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100) >= percentage;
+        return ((berekenComponent(Firewall.class, configuratie) / 100)
+                * (berekenComponent(Webserver.class, configuratie) / 100)
+                * (berekenComponent(DatabaseServer.class, configuratie) / 100) * 100) >= percentage;
     }
 
     private void voegVolgendeToe(Class<?> type) {

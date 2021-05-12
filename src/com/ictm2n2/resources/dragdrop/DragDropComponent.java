@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class DragDropComponent extends JLabel {
     private Component component;
-//    private ArrayList<VerbindingComponent> verbindingen = new ArrayList<VerbindingComponent>();
+    private ArrayList<VerbindingComponent> verbindingen = new ArrayList<VerbindingComponent>();
     private Point imageCorner = new Point(0, 0);
     private Dimension panelGrootte;
     private ImageIcon plaatje;
@@ -28,22 +28,26 @@ public class DragDropComponent extends JLabel {
         setText(component.getNaam());
         setVerticalTextPosition(JLabel.BOTTOM);
         setHorizontalTextPosition(JLabel.CENTER);
-        setBounds((int)imageCorner.getX(), (int)imageCorner.getY(), 100, 100);
         addMouseListener(new ClickListener());
         addMouseMotionListener(new DragListener());
+        setVisible(true);
     }
 
     public Point getImageCorner() {
         return this.imageCorner;
     }
 
-//    public ArrayList<VerbindingComponent> getVerbindingen() {
-//        return this.verbindingen;
-//    }
-//
-//    public int getVerbindingenLengte() {
-//        return this.verbindingen.size();
-//    }
+    public void verwijderVerbindingComponent(int index) {
+        verbindingen.remove(index);
+    }
+
+    public ArrayList<VerbindingComponent> getVerbindingen() {
+        return this.verbindingen;
+    }
+
+    public int getVerbindingenLengte() {
+        return this.verbindingen.size();
+    }
 
     private class DragListener extends MouseMotionAdapter {
         public void mouseDragged(MouseEvent e) {
@@ -69,7 +73,7 @@ public class DragDropComponent extends JLabel {
                 else {
                     if (TekenPanel.vanComponent != DragDropComponent.this) {
 
-                        new VerbindingComponent(TekenPanel.vanComponent, DragDropComponent.this);
+                        verbindingen.add(new VerbindingComponent(TekenPanel.vanComponent, DragDropComponent.this));
                         repaint();
                     }
                     TekenPanel.vanComponent = null;

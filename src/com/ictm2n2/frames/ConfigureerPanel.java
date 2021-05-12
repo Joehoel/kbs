@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import com.ictm2n2.resources.*;
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
+import com.ictm2n2.resources.dragdrop.VerbindingComponent;
 
 public class ConfigureerPanel extends JPanel implements ActionListener {
 
@@ -165,6 +166,15 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 Object name = jcbToegevoegd.getSelectedItem();
                 configuratie.verwijderComponent(index);
                 jcbToegevoegd.removeItem(name);
+                for(int i = 0; i < tp.getComponenten().size(); i++) {
+                    for(int it = 0; it < tp.getComponenten().get(i).getVerbindingen().size(); i++) {
+                        VerbindingComponent vc = tp.getComponenten().get(i).getVerbindingen().get(it);
+                        if (vc.getNaarComponent() == tp.getComponenten().get(i) || vc.getVanComponent() == tp.getComponenten().get(i)) {
+                            tp.getComponenten().get(i).verwijderVerbindingComponent(it);
+                            break;
+                        }
+                    }
+                }
                 tp.verwijderComponent(index);
             } catch (ArrayIndexOutOfBoundsException error) {
                 JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
