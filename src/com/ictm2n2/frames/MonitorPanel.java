@@ -48,7 +48,7 @@ public class MonitorPanel extends JPanel {
     public MonitorPanel() {
         setLayout(null);
 
-        //lijsten maken voor component types
+        // lijsten maken voor component types
         DefaultListModel<String> dlDbModel = new DefaultListModel<>();
         JList DbList = new JList<>(dlDbModel);
         DbList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -69,8 +69,8 @@ public class MonitorPanel extends JPanel {
         PfSList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         PfSList.setLayoutOrientation(JList.VERTICAL_WRAP);
 
-        //databaseservers ophalen en in array stoppen
-                try {
+        // databaseservers ophalen en in array stoppen
+        try {
             Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
             Query q = new Query();
             q = q.DbMonitorPanelQuery();
@@ -93,9 +93,9 @@ public class MonitorPanel extends JPanel {
         } catch (Exception a) {
             a.printStackTrace();
         }
-        System.out.println(DbHostnames.size()+" "+DbCpu.size()+" "+DbOpslag.size());
+        System.out.println(DbHostnames.size() + " " + DbCpu.size() + " " + DbOpslag.size());
 
-        //webservers ophalen en in array stoppen
+        // webservers ophalen en in array stoppen
         try {
             Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
             Query q = new Query();
@@ -119,9 +119,9 @@ public class MonitorPanel extends JPanel {
         } catch (Exception a) {
             a.printStackTrace();
         }
-        System.out.println(WbHostnames.size()+" "+WbCpu.size()+" "+WbOpslag.size());
+        System.out.println(WbHostnames.size() + " " + WbCpu.size() + " " + WbOpslag.size());
 
-        //loadbalancer ophalen en in array stoppen
+        // loadbalancer ophalen en in array stoppen
         try {
             Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
             Query q = new Query();
@@ -145,9 +145,9 @@ public class MonitorPanel extends JPanel {
         } catch (Exception a) {
             a.printStackTrace();
         }
-        System.out.println(LbHostnames.size()+" "+LbCpu.size()+" "+LbOpslag.size());
+        System.out.println(LbHostnames.size() + " " + LbCpu.size() + " " + LbOpslag.size());
 
-        //pfsense ophalen en in array stoppen
+        // pfsense ophalen en in array stoppen
         try {
             Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
             Query q = new Query();
@@ -171,68 +171,63 @@ public class MonitorPanel extends JPanel {
         } catch (Exception a) {
             a.printStackTrace();
         }
-        System.out.println(PfSHostnames.size()+" "+PfSCpu.size()+" "+PfSOpslag.size());
+        System.out.println(PfSHostnames.size() + " " + PfSCpu.size() + " " + PfSOpslag.size());
 
-
-        //database servers toevoegen aan jlist
+        // database servers toevoegen aan jlist
         int i = 0;
         while (i < DbHostnames.size()) {
-            String element = "<html><strong>Hostname: "+String.format(DbHostnames.get(i))+" </strong><br>"+
-                    DbCpu.get(i)+" GHz <br>"+
-                    DbOpslag.get(i)+" GB <br>";
+            String element = "<html><strong>Hostname: " + String.format(DbHostnames.get(i)) + " </strong><br>"
+                    + DbCpu.get(i) + " GHz <br>" + DbOpslag.get(i) + " GB <br>";
 
             if (DbAangesloten.get(i).equals("aangesloten")) {
-                element += "<i> <p style =\"color:green\">"+DbAangesloten.get(i)+" </p></i></html>";
+                element += "<i> <p style =\"color:green\">" + DbAangesloten.get(i) + " </p></i></html>";
             } else {
-                element += "<i> <p style =\"color:red\">"+DbAangesloten.get(i)+" </p></i></html>";
+                element += "<i> <p style =\"color:red\">" + DbAangesloten.get(i) + " </p></i></html>";
             }
             dlDbModel.addElement(element);
             i++;
         }
 
-        //webservers toevoegen aan jlist
+        // webservers toevoegen aan jlist
         i = 0;
         while (i < WbHostnames.size()) {
-            String element = "<html><strong>Hostname: "+String.format(WbHostnames.get(i))+"</strong><br>"+
-                    WbCpu.get(i)+" GHz<br>"+
-                    WbOpslag.get(i)+" GB<br>";
+            String element = "<html><strong>Hostname: " + String.format(WbHostnames.get(i)) + "</strong><br>"
+                    + WbCpu.get(i) + " GHz<br>" + WbOpslag.get(i) + " GB<br>";
 
             if (WbAangesloten.get(i).equals("aangesloten")) {
-                element += "<i> <p style =\"color:green\">"+WbAangesloten.get(i)+"</p></i></html>";
+                element += "<i> <p style =\"color:green\">" + WbAangesloten.get(i) + "</p></i></html>";
             } else {
-                element += "<i> <p style =\"color:red\">"+WbAangesloten.get(i)+"</p></i></html>";
+                element += "<i> <p style =\"color:red\">" + WbAangesloten.get(i) + "</p></i></html>";
             }
             dlWbModel.addElement(element);
             i++;
         }
 
-        //loadbalancer toevoegen aan jlist
+        // loadbalancer toevoegen aan jlist
         i = 0;
         while (i < LbHostnames.size()) {
-            String element = "<html><strong>Hostname: "+String.format(LbHostnames.get(i))+"</strong><br>"+
-                    LbCpu.get(i)+" GHz<br>"+
-                    LbOpslag.get(i)+" GB<br>";
+            String element = "<html><strong>Hostname: " + String.format(LbHostnames.get(i)) + "</strong><br>"
+                    + LbCpu.get(i) + " GHz<br>" + LbOpslag.get(i) + " GB<br>";
 
             if (LbAangesloten.get(i).equals("aangesloten")) {
-                element += "<i> <p style =\"color:green\">"+LbAangesloten.get(i)+"</p></i></html>";
+                element += "<i> <p style =\"color:green\">" + LbAangesloten.get(i) + "</p></i></html>";
             } else {
-                element += "<i> <p style =\"color:red\">"+LbAangesloten.get(i)+"</p></i></html>";
+                element += "<i> <p style =\"color:red\">" + LbAangesloten.get(i) + "</p></i></html>";
             }
             dlLbModel.addElement(element);
             i++;
         }
 
-        //pfsense toevoegen aan jlist
+        // pfsense toevoegen aan jlist
         i = 0;
         while (i < PfSHostnames.size()) {
-            String element = "<html><strong>Hostname: "+String.format(PfSHostnames.get(i))+"</strong><br>"+
-                    PfSCpu.get(i)+" GHz<br>"+
-                    PfSOpslag.get(i)+" GB<br>";
+            String element = "<html><strong>Hostname: " + String.format(PfSHostnames.get(i)) + "</strong><br>"
+                    + PfSCpu.get(i) + " GHz<br>" + PfSOpslag.get(i) + " GB<br>";
 
             if (PfSAangesloten.get(i).equals("aangesloten")) {
-                element += "<i> <p style =\"color:green\">"+PfSAangesloten.get(i)+"</p></i></html>";
+                element += "<i> <p style =\"color:green\">" + PfSAangesloten.get(i) + "</p></i></html>";
             } else {
-                element += "<i> <p style =\"color:red\">"+PfSAangesloten.get(i)+"</p></i></html>";
+                element += "<i> <p style =\"color:red\">" + PfSAangesloten.get(i) + "</p></i></html>";
             }
             dlPfSModel.addElement(element);
             i++;
@@ -241,60 +236,61 @@ public class MonitorPanel extends JPanel {
         jlDb = new JLabel("Databases");
         jlWb = new JLabel("Webservers");
         jlLb = new JLabel("Load-Balancer");
-        jlPfS= new JLabel("PfSense");
+        jlPfS = new JLabel("PfSense");
         jlDetailOverzicht = new JLabel("Gedetailleerd Overzicht");
         jlDetailOverzichtWaarden = new JLabel(detailOverzichtWaarden);
         jpDetailOverzichtWaarden = new JPanel();
 
         add(jlDb);
-        jlDb.setBounds(25,20,270,20);
+        jlDb.setBounds(25, 20, 270, 20);
         DbList.setBounds(25, 50, 270, 465);
         DbList.setFixedCellWidth(270);
         DbList.setFixedCellHeight(80);
         add(DbList);
 
         add(jlWb);
-        jlWb.setBounds(305,20,270,20);
-        WbList.setBounds(305,50,270,465);
+        jlWb.setBounds(305, 20, 270, 20);
+        WbList.setBounds(305, 50, 270, 465);
         WbList.setFixedCellWidth(270);
         WbList.setFixedCellHeight(80);
         add(WbList);
 
         add(jlLb);
-        jlLb.setBounds(585,20,270,20);
-        LbList.setBounds(585,50,270,80);
+        jlLb.setBounds(585, 20, 270, 20);
+        LbList.setBounds(585, 50, 270, 80);
         LbList.setFixedCellWidth(270);
         LbList.setFixedCellHeight(80);
         add(LbList);
 
         add(jlPfS);
-        jlPfS.setBounds(585,150,270,20);
-        PfSList.setBounds(585,180,270,80);
+        jlPfS.setBounds(585, 150, 270, 20);
+        PfSList.setBounds(585, 180, 270, 80);
         PfSList.setFixedCellWidth(270);
         PfSList.setFixedCellHeight(80);
         add(PfSList);
 
         add(jlDetailOverzicht);
-        jlDetailOverzicht.setBounds(585,280,270,20);
+        jlDetailOverzicht.setBounds(585, 280, 270, 20);
         jpDetailOverzichtWaarden = new JPanel();
         jpDetailOverzichtWaarden.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpDetailOverzichtWaarden.add(jlDetailOverzichtWaarden);
-        jlDetailOverzichtWaarden.setBounds(585,310,270,205);
+        jlDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
         jpDetailOverzichtWaarden.setBackground(Color.white);
-        jpDetailOverzichtWaarden.setBounds(585,310,270,205);
+        jpDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
         add(jpDetailOverzichtWaarden);
 
-        //selectionlistener voor databasecomponenten
+        // selectionlistener voor databasecomponenten
         DbList.getSelectionModel().addListSelectionListener(e -> {
             if (DbList.getValueIsAdjusting()) {
-                //geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste formaat
+                // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
+                // formaat
                 Object selectedComponent = DbList.getSelectedValue();
                 String selectedComponentMinHTML = String.valueOf(selectedComponent).replaceAll("\\<.*?\\>", "");
                 String[] selectedComponentSplit = selectedComponentMinHTML.split(" ");
                 String hostname = selectedComponentSplit[1];
                 System.out.println(hostname);
 
-                //gedetaileerde informatie over component wordt opgevraagd uit database
+                // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
@@ -310,15 +306,12 @@ public class MonitorPanel extends JPanel {
                             double opslagVerbruik = rs.getDouble("s.opslag_verbruik");
                             int beschikbaarLengte = (int) rs.getDouble("beschikbaar_lengte");
                             String tijdstip = rs.getString("s.tijdstip");
-                            //System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
+                            // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" +
-                                    processor + " GHz<br>" +
-                                    processorBelasting + " GHz<br>" +
-                                    opslag + " GB<br>" +
-                                    opslagVerbruik + " GB<br>" +
-                                    (beschikbaarLengte / 60) + " minuten<br>sinds " +
-                                    tijdstip+"</html>";
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" + processor
+                                    + " GHz<br>" + processorBelasting + " GHz<br>" + opslag + " GB<br>" + opslagVerbruik
+                                    + " GB<br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
+                                    + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
                     } catch (SQLException throwables) {
@@ -330,17 +323,18 @@ public class MonitorPanel extends JPanel {
             }
         });
 
-        //selectionlistener voor webservercomponenten
+        // selectionlistener voor webservercomponenten
         WbList.getSelectionModel().addListSelectionListener(e -> {
             if (WbList.getValueIsAdjusting()) {
-                //geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste formaat
+                // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
+                // formaat
                 Object selectedComponent = WbList.getSelectedValue();
                 String selectedComponentMinHTML = String.valueOf(selectedComponent).replaceAll("\\<.*?\\>", "");
                 String[] selectedComponentSplit = selectedComponentMinHTML.split(" ");
                 String hostname = selectedComponentSplit[1];
                 System.out.println(hostname);
 
-                //gedetaileerde informatie over component wordt opgevraagd uit database
+                // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
@@ -356,15 +350,12 @@ public class MonitorPanel extends JPanel {
                             double opslagVerbruik = rs.getDouble("s.opslag_verbruik");
                             int beschikbaarLengte = (int) rs.getDouble("beschikbaar_lengte");
                             String tijdstip = rs.getString("s.tijdstip");
-                            //System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
+                            // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" +
-                                    processor + " GHz<br>" +
-                                    processorBelasting + " GHz<br>" +
-                                    opslag + " GB<br>" +
-                                    opslagVerbruik + " GB<br>" +
-                                    (beschikbaarLengte / 60) + " minuten<br>sinds " +
-                                    tijdstip+"</html>";
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" + processor
+                                    + " GHz<br>" + processorBelasting + " GHz<br>" + opslag + " GB<br>" + opslagVerbruik
+                                    + " GB<br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
+                                    + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
                     } catch (SQLException throwables) {
@@ -376,17 +367,18 @@ public class MonitorPanel extends JPanel {
             }
         });
 
-        //selectionlistener voor loadbalancer
+        // selectionlistener voor loadbalancer
         LbList.getSelectionModel().addListSelectionListener(e -> {
             if (LbList.getValueIsAdjusting()) {
-                //geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste formaat
+                // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
+                // formaat
                 Object selectedComponent = LbList.getSelectedValue();
                 String selectedComponentMinHTML = String.valueOf(selectedComponent).replaceAll("\\<.*?\\>", "");
                 String[] selectedComponentSplit = selectedComponentMinHTML.split(" ");
                 String hostname = selectedComponentSplit[1];
                 System.out.println(hostname);
 
-                //gedetaileerde informatie over component wordt opgevraagd uit database
+                // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
@@ -396,21 +388,19 @@ public class MonitorPanel extends JPanel {
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
                     try {
                         while (rs.next()) {
+                            hostname = rs.getString("c.hostname");
                             double processor = rs.getDouble("c.cpu");
                             double processorBelasting = rs.getDouble("s.processor_belasting");
                             double opslag = rs.getDouble("c.opslag");
                             double opslagVerbruik = rs.getDouble("s.opslag_verbruik");
                             int beschikbaarLengte = (int) rs.getDouble("beschikbaar_lengte");
                             String tijdstip = rs.getString("s.tijdstip");
-                            //System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
+                            // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" +
-                                    processor + " GHz<br>" +
-                                    processorBelasting + " GHz<br>" +
-                                    opslag + " GB<br>" +
-                                    opslagVerbruik + " GB<br>" +
-                                    (beschikbaarLengte / 60) + " minuten<br>sinds " +
-                                    tijdstip+"</html>";
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" + processor
+                                    + " GHz<br>" + processorBelasting + " GHz<br>" + opslag + " GB<br>" + opslagVerbruik
+                                    + " GB<br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
+                                    + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
                     } catch (SQLException throwables) {
@@ -422,17 +412,18 @@ public class MonitorPanel extends JPanel {
             }
         });
 
-        //selectionlistener voor firewall
+        // selectionlistener voor firewall
         PfSList.getSelectionModel().addListSelectionListener(e -> {
             if (PfSList.getValueIsAdjusting()) {
-                //geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste formaat
+                // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
+                // formaat
                 Object selectedComponent = PfSList.getSelectedValue();
                 String selectedComponentMinHTML = String.valueOf(selectedComponent).replaceAll("\\<.*?\\>", "");
                 String[] selectedComponentSplit = selectedComponentMinHTML.split(" ");
                 String hostname = selectedComponentSplit[1];
                 System.out.println(hostname);
 
-                //gedetaileerde informatie over component wordt opgevraagd uit database
+                // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
@@ -442,24 +433,22 @@ public class MonitorPanel extends JPanel {
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
                     try {
                         while (rs.next()) {
+                            hostname = rs.getString("c.hostname");
                             double processor = rs.getDouble("c.cpu");
                             double processorBelasting = rs.getDouble("s.processor_belasting");
                             double opslag = rs.getDouble("c.opslag");
                             double opslagVerbruik = rs.getDouble("s.opslag_verbruik");
                             int beschikbaarLengte = (int) rs.getDouble("beschikbaar_lengte");
                             String tijdstip = rs.getString("s.tijdstip");
-                            //System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
+                            // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" +
-                                    processor + " GHz<br>momenteel " +
-                                    processorBelasting + " GHz in gebruik<br><br>" +
-                                    opslag + " GB opslag<br>" +
-                                    opslagVerbruik + " GB verbruikt<br><br>" +
-                                    (beschikbaarLengte / 60) + " minuten in bedrijf<br>sinds " +
-                                    tijdstip+"</html>";
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" + processor
+                                    + " GHz<br>momenteel " + processorBelasting + " GHz in gebruik<br><br>" + opslag
+                                    + " GB opslag<br>" + opslagVerbruik + " GB verbruikt<br><br>"
+                                    + (beschikbaarLengte / 60) + " minuten in bedrijf<br>sinds " + tijdstip + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
-                            //PfSList.setSelectionInterval(-1, -1);
-                            //PfSList.setEnabled(false);
+                            // PfSList.setSelectionInterval(-1, -1);
+                            // PfSList.setEnabled(false);
                         }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
