@@ -107,27 +107,34 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         add(jcbWebServers);
         add(jcbDbServers);
         add(jcbFirewalls);
+
         add(jbDbVoegToe);
         add(jbWsVoegToe);
         add(jbFwVoegToe);
+
         add(jlPercentage);
         add(jtPercentage);
         add(jbOptimaliseer);
+
+        // Backtracking grafisch toevoeging
         add(jcbToegevoegd);
         add(jlToegevoegd);
         add(jbVerwijder);
         add(jlTotaleBeschikbaarheid);
         add(jlTotalePrijs);
+
         add(jbOpslaan);
         add(tp);
 
         jbDbVoegToe.addActionListener(this);
         jbWsVoegToe.addActionListener(this);
         jbFwVoegToe.addActionListener(this);
+
+        // Backtracking optimaliseer
         jbOptimaliseer.addActionListener(this);
+
         jbVerwijder.addActionListener(this);
         jbOpslaan.addActionListener(this);
-
     }
 
     @Override
@@ -163,11 +170,13 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 error.printStackTrace();
             }
         }
+        // Check if optimaliseer button has been pressed for backtracking
         if (e.getSource() == jbOptimaliseer) {
             try {
                 double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
+
                 if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
-                    JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     configuratie.optimaliseer(gewenstPercentage);
                     jcbToegevoegd.removeAll();
@@ -178,7 +187,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 }
                 // this.componenten = configuratie.getComponenten();
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Fout met optimaliseren", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 

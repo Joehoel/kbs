@@ -3,7 +3,15 @@ package com.ictm2n2.frames;
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
 import javax.swing.*;
+
 import java.awt.*;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -164,6 +172,7 @@ public class MonitorPanel extends JPanel {
             a.printStackTrace();
         }
         System.out.println(PfSHostnames.size()+" "+PfSCpu.size()+" "+PfSOpslag.size());
+
 
         //database servers toevoegen aan jlist
         int i = 0;
