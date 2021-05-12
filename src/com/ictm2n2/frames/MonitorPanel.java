@@ -295,6 +295,7 @@ public class MonitorPanel extends JPanel {
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
                     try {
                         while (rs.next()) {
+                            hostname = rs.getString("c.hostname");
                             double processor = rs.getDouble("c.cpu");
                             double processorBelasting = rs.getDouble("s.processor_belasting");
                             double opslag = rs.getDouble("c.opslag");
@@ -304,11 +305,11 @@ public class MonitorPanel extends JPanel {
                             //System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" +
-                                    processor + " GHz<br>" +
-                                    processorBelasting + " GHz<br>" +
-                                    opslag + " GB<br>" +
-                                    opslagVerbruik + " GB<br>" +
-                                    (beschikbaarLengte / 60) + " minuten<br>sinds " +
+                                    processor + " GHz<br>momenteel " +
+                                    processorBelasting + " GHz in gebruik<br><br>" +
+                                    opslag + " GB opslag<br>" +
+                                    opslagVerbruik + " GB verbruikt<br><br>" +
+                                    (beschikbaarLengte / 60) + " minuten in bedrijf<br>sinds " +
                                     tijdstip+"</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
@@ -341,6 +342,7 @@ public class MonitorPanel extends JPanel {
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
                     try {
                         while (rs.next()) {
+                            hostname = rs.getString("c.hostname");
                             double processor = rs.getDouble("c.cpu");
                             double processorBelasting = rs.getDouble("s.processor_belasting");
                             double opslag = rs.getDouble("c.opslag");
@@ -350,11 +352,11 @@ public class MonitorPanel extends JPanel {
                             //System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" +
-                                    processor + " GHz<br>" +
-                                    processorBelasting + " GHz<br>" +
-                                    opslag + " GB<br>" +
-                                    opslagVerbruik + " GB<br>" +
-                                    (beschikbaarLengte / 60) + " minuten<br>sinds " +
+                                    processor + " GHz<br>momenteel " +
+                                    processorBelasting + " GHz in gebruik<br><br>" +
+                                    opslag + " GB opslag<br>" +
+                                    opslagVerbruik + " GB verbruikt<br><br>" +
+                                    (beschikbaarLengte / 60) + " minuten in bedrijf<br>sinds " +
                                     tijdstip+"</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
@@ -387,6 +389,7 @@ public class MonitorPanel extends JPanel {
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
                     try {
                         while (rs.next()) {
+                            hostname = rs.getString("c.hostname");
                             double processor = rs.getDouble("c.cpu");
                             double processorBelasting = rs.getDouble("s.processor_belasting");
                             double opslag = rs.getDouble("c.opslag");
@@ -396,11 +399,11 @@ public class MonitorPanel extends JPanel {
                             //System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" +
-                                    processor + " GHz<br>" +
-                                    processorBelasting + " GHz<br>" +
-                                    opslag + " GB<br>" +
-                                    opslagVerbruik + " GB<br>" +
-                                    (beschikbaarLengte / 60) + " minuten<br>sinds " +
+                                    processor + " GHz<br>momenteel " +
+                                    processorBelasting + " GHz in gebruik<br><br>" +
+                                    opslag + " GB opslag<br>" +
+                                    opslagVerbruik + " GB verbruikt<br><br>" +
+                                    (beschikbaarLengte / 60) + " minuten in bedrijf<br>sinds " +
                                     tijdstip+"</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
@@ -433,6 +436,7 @@ public class MonitorPanel extends JPanel {
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
                     try {
                         while (rs.next()) {
+                            hostname = rs.getString("c.hostname");
                             double processor = rs.getDouble("c.cpu");
                             double processorBelasting = rs.getDouble("s.processor_belasting");
                             double opslag = rs.getDouble("c.opslag");
