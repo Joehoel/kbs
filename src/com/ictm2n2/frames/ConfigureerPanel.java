@@ -95,7 +95,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jtPercentage.setBounds(10, 270, 45, 25);
         jbOptimaliseer.setBounds(65, 270, 200, 25);
 
-        jbOpslaan.setBounds(10, 505, 100, 30);
+        jbOpslaan.setBounds(10, 495, 100, 30);
 
         int width = 605;
         int height = 525;
