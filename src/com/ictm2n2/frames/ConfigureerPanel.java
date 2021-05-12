@@ -169,7 +169,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             } catch (ArrayIndexOutOfBoundsException error) {
                 JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
                         JOptionPane.ERROR_MESSAGE);
-                error.printStackTrace();
             }
         }
         // Check if optimaliseer button has been pressed for backtracking
