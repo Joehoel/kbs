@@ -207,7 +207,7 @@ public class Query {
                 "HAVING max(tijdstip);");
         return this;
     }
-
+//
     public Query DetailOverzichtMonitorPanelQuery (String hostname) {
         query = new StringBuilder();
         query.append("SELECT c.hostname, c.cpu, s.processor_belasting, c.opslag, s.opslag_verbruik, s.beschikbaar_lengte, s.tijdstip\n" +
