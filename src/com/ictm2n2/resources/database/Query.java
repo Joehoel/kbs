@@ -213,7 +213,7 @@ public class Query {
         query.append("SELECT c.hostname, c.cpu, s.processor_belasting, c.opslag, s.opslag_verbruik, s.beschikbaar_lengte, s.tijdstip\n" +
                 "FROM component c\n" +
                 "JOIN status s\n" +
-                "ON c.component_id = s.component_id WHERE c.hostname = \"DB02\"\n" +
+                "ON c.component_id = s.component_id WHERE c.hostname = \""+hostname+"\"\n" +
                 "GROUP BY c.component_id\n" +
                 "HAVING max(tijdstip);");
         return this;
