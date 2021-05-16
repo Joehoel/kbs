@@ -191,8 +191,8 @@ public class MonitorPanel extends JPanel {
         // webservers toevoegen aan jlist
         i = 0;
         while (i < WbHostnames.size()) {
-            String element = "<html><strong>Hostname: " + String.format(WbHostnames.get(i)) + "</strong><br>"
-                    + WbCpu.get(i) + " GHz<br>" + WbOpslag.get(i) + " GB<br>";
+            String element = "<html><strong>Hostname: " + String.format(WbHostnames.get(i)) + " </strong><br>"
+                    + WbCpu.get(i) + " GHz <br>" + WbOpslag.get(i) + " GB<br>";
 
             if (WbAangesloten.get(i).equals("aangesloten")) {
                 element += "<i> <p style =\"color:green\">" + WbAangesloten.get(i) + "</p></i></html>";
@@ -206,8 +206,8 @@ public class MonitorPanel extends JPanel {
         // loadbalancer toevoegen aan jlist
         i = 0;
         while (i < LbHostnames.size()) {
-            String element = "<html><strong>Hostname: " + String.format(LbHostnames.get(i)) + "</strong><br>"
-                    + LbCpu.get(i) + " GHz<br>" + LbOpslag.get(i) + " GB<br>";
+            String element = "<html><strong>Hostname: " + String.format(LbHostnames.get(i)) + " </strong><br>"
+                    + LbCpu.get(i) + " GHz <br>" + LbOpslag.get(i) + " GB<br>";
 
             if (LbAangesloten.get(i).equals("aangesloten")) {
                 element += "<i> <p style =\"color:green\">" + LbAangesloten.get(i) + "</p></i></html>";
@@ -221,8 +221,8 @@ public class MonitorPanel extends JPanel {
         // pfsense toevoegen aan jlist
         i = 0;
         while (i < PfSHostnames.size()) {
-            String element = "<html><strong>Hostname: " + String.format(PfSHostnames.get(i)) + "</strong><br>"
-                    + PfSCpu.get(i) + " GHz<br>" + PfSOpslag.get(i) + " GB<br>";
+            String element = "<html><strong>Hostname: " + String.format(PfSHostnames.get(i)) + " </strong><br>"
+                    + PfSCpu.get(i) + " GHz <br>" + PfSOpslag.get(i) + " GB<br>";
 
             if (PfSAangesloten.get(i).equals("aangesloten")) {
                 element += "<i> <p style =\"color:green\">" + PfSAangesloten.get(i) + "</p></i></html>";
@@ -284,17 +284,18 @@ public class MonitorPanel extends JPanel {
             if (DbList.getValueIsAdjusting()) {
                 // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
                 // formaat
-                Object selectedComponent = DbList.getSelectedValue();
-                String selectedComponentMinHTML = String.valueOf(selectedComponent).replaceAll("\\<.*?\\>", "");
-                String[] selectedComponentSplit = selectedComponentMinHTML.split(" ");
-                String hostname = selectedComponentSplit[1];
-                System.out.println(hostname);
+                Object selectedComponentDb = DbList.getSelectedValue();
+                String selectedComponentMinHTMLDb = String.valueOf(selectedComponentDb).replaceAll("\\<.*?\\>", "");
+                System.out.println(selectedComponentMinHTMLDb);
+                String[] selectedComponentSplitDb = selectedComponentMinHTMLDb.split(" ");
+                String hostnameDb = selectedComponentSplitDb[1];
+                System.out.println(hostnameDb);
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
-                    q = q.DetailOverzichtMonitorPanelQuery(hostname);
+                    q = q.DetailOverzichtMonitorPanelQuery(hostnameDb);
                     ResultSet rs = db.preparedQuery(q);
 
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
@@ -308,9 +309,9 @@ public class MonitorPanel extends JPanel {
                             String tijdstip = rs.getString("s.tijdstip");
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" + processor
-                                    + " GHz<br>" + processorBelasting + " GHz<br>" + opslag + " GB<br>" + opslagVerbruik
-                                    + " GB<br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameDb + "</strong><br><br>" + processor
+                                    + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>" + opslagVerbruik
+                                    + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
                                     + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
@@ -328,17 +329,18 @@ public class MonitorPanel extends JPanel {
             if (WbList.getValueIsAdjusting()) {
                 // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
                 // formaat
-                Object selectedComponent = WbList.getSelectedValue();
-                String selectedComponentMinHTML = String.valueOf(selectedComponent).replaceAll("\\<.*?\\>", "");
-                String[] selectedComponentSplit = selectedComponentMinHTML.split(" ");
-                String hostname = selectedComponentSplit[1];
-                System.out.println(hostname);
+                Object selectedComponentWb = WbList.getSelectedValue();
+                String selectedComponentMinHTMLWb = String.valueOf(selectedComponentWb).replaceAll("\\<.*?\\>", "");
+                System.out.println(selectedComponentMinHTMLWb);
+                String[] selectedComponentSplitWb = selectedComponentMinHTMLWb.split(" ");
+                String hostnameWb = selectedComponentSplitWb[1];
+                System.out.println(hostnameWb);
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
-                    q = q.DetailOverzichtMonitorPanelQuery(hostname);
+                    q = q.DetailOverzichtMonitorPanelQuery(hostnameWb);
                     ResultSet rs = db.preparedQuery(q);
 
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
@@ -352,9 +354,9 @@ public class MonitorPanel extends JPanel {
                             String tijdstip = rs.getString("s.tijdstip");
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" + processor
-                                    + " GHz<br>" + processorBelasting + " GHz<br>" + opslag + " GB<br>" + opslagVerbruik
-                                    + " GB<br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameWb + "</strong><br><br>" + processor
+                                    + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>" + opslagVerbruik
+                                    + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
                                     + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
@@ -372,23 +374,23 @@ public class MonitorPanel extends JPanel {
             if (LbList.getValueIsAdjusting()) {
                 // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
                 // formaat
-                Object selectedComponent = LbList.getSelectedValue();
-                String selectedComponentMinHTML = String.valueOf(selectedComponent).replaceAll("\\<.*?\\>", "");
-                String[] selectedComponentSplit = selectedComponentMinHTML.split(" ");
-                String hostname = selectedComponentSplit[1];
-                System.out.println(hostname);
+                Object selectedComponentLb = LbList.getSelectedValue();
+                String selectedComponentMinHTMLLb = String.valueOf(selectedComponentLb).replaceAll("\\<.*?\\>", "");
+                System.out.println(selectedComponentMinHTMLLb);
+                String[] selectedComponentSplitLb = selectedComponentMinHTMLLb.split(" ");
+                String hostnameLb = selectedComponentSplitLb[1];
+                System.out.println(hostnameLb);
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
-                    q = q.DetailOverzichtMonitorPanelQuery(hostname);
+                    q = q.DetailOverzichtMonitorPanelQuery(hostnameLb);
                     ResultSet rs = db.preparedQuery(q);
 
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
                     try {
                         while (rs.next()) {
-                            hostname = rs.getString("c.hostname");
                             double processor = rs.getDouble("c.cpu");
                             double processorBelasting = rs.getDouble("s.processor_belasting");
                             double opslag = rs.getDouble("c.opslag");
@@ -397,9 +399,9 @@ public class MonitorPanel extends JPanel {
                             String tijdstip = rs.getString("s.tijdstip");
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" + processor
-                                    + " GHz<br>" + processorBelasting + " GHz<br>" + opslag + " GB<br>" + opslagVerbruik
-                                    + " GB<br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameLb + "</strong><br><br>" + processor
+                                    + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>" + opslagVerbruik
+                                    + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
                                     + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
@@ -417,23 +419,23 @@ public class MonitorPanel extends JPanel {
             if (PfSList.getValueIsAdjusting()) {
                 // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
                 // formaat
-                Object selectedComponent = PfSList.getSelectedValue();
-                String selectedComponentMinHTML = String.valueOf(selectedComponent).replaceAll("\\<.*?\\>", "");
-                String[] selectedComponentSplit = selectedComponentMinHTML.split(" ");
-                String hostname = selectedComponentSplit[1];
-                System.out.println(hostname);
+                Object selectedComponentPfS = PfSList.getSelectedValue();
+                String selectedComponentMinHTMLPfS = String.valueOf(selectedComponentPfS).replaceAll("\\<.*?\\>", "");
+                System.out.println(selectedComponentMinHTMLPfS);
+                String[] selectedComponentSplitPfS = selectedComponentMinHTMLPfS.split(" ");
+                String hostnamePfS = selectedComponentSplitPfS[1];
+                System.out.println(hostnamePfS);
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
-                    q = q.DetailOverzichtMonitorPanelQuery(hostname);
+                    q = q.DetailOverzichtMonitorPanelQuery(hostnamePfS);
                     ResultSet rs = db.preparedQuery(q);
 
                     // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
                     try {
                         while (rs.next()) {
-                            hostname = rs.getString("c.hostname");
                             double processor = rs.getDouble("c.cpu");
                             double processorBelasting = rs.getDouble("s.processor_belasting");
                             double opslag = rs.getDouble("c.opslag");
@@ -442,10 +444,10 @@ public class MonitorPanel extends JPanel {
                             String tijdstip = rs.getString("s.tijdstip");
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostname + "</strong><br>" + processor
-                                    + " GHz<br>momenteel " + processorBelasting + " GHz in gebruik<br><br>" + opslag
-                                    + " GB opslag<br>" + opslagVerbruik + " GB verbruikt<br><br>"
-                                    + (beschikbaarLengte / 60) + " minuten in bedrijf<br>sinds " + tijdstip + "</html>";
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnamePfS + "</strong><br><br>" + processor
+                                    + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>" + opslagVerbruik
+                                    + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
+                                    + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                             // PfSList.setSelectionInterval(-1, -1);
                             // PfSList.setEnabled(false);
