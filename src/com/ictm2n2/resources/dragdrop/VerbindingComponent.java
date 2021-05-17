@@ -1,9 +1,8 @@
 package com.ictm2n2.resources.dragdrop;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
+
+import javax.swing.JComponent;
 
 public class VerbindingComponent extends JComponent {
     private DragDropComponent vanComponent;

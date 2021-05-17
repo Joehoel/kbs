@@ -21,24 +21,23 @@ public class Componenten {
             ResultSet rs = db.select(q);
             while (rs.next()) {
                 String naam = rs.getString("type_naam");
-                String type = rs.getString("type_soort");
+                String type = rs.getString("type_soort").toLowerCase();
 
                 double beschikbaarheid = rs.getDouble("type_beschikbaarheid");
                 double prijs = rs.getDouble("type_prijs");
-                if (type.equals("DBserver")) {
-                    dbServers.add(new DatabaseServer(naam, prijs, beschikbaarheid));
-                } else if (type.equals("Webserver")) {
-                    webServers.add(new Webserver(naam, prijs, beschikbaarheid));
+                if (type.equals("dbserver")) {
+                    dbServers.add(new DatabaseServer(naam, type, prijs, beschikbaarheid));
+                } else if (type.equals("webserver")) {
+                    webServers.add(new Webserver(naam, type, prijs, beschikbaarheid));
                 } else if (type.equals("firewall")) {
-                    firewalls.add(new Firewall(naam, prijs, beschikbaarheid));
+                    firewalls.add(new Firewall(naam, type, prijs, beschikbaarheid));
                 } else if (type.equals("loadbalancer")) {
-                    loadbalancers.add(new Loadbalancer(naam, prijs, beschikbaarheid));
+                    loadbalancers.add(new Loadbalancer(naam, type, prijs, beschikbaarheid));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
     }
 

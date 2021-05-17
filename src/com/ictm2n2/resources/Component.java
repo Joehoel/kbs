@@ -8,16 +8,18 @@ public abstract class Component {
     private double processorBelasting;
     private double diskRuimte;
     private double prijs;
+    private String type;
     private boolean aangesloten;
 
-    public Component(String naam, double prijs, double beschikbaarheidsPercentage) {
+    public Component(String naam, String type, double prijs, double beschikbaarheidsPercentage) {
+        this.type = type;
         this.naam = naam;
         this.prijs = prijs;
         this.beschikbaarheidsPercentage = beschikbaarheidsPercentage;
     }
 
     public String getType() {
-        return this.naam;
+        return this.type;
     };
 
     public int getId() {
