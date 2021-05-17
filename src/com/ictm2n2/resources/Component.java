@@ -88,9 +88,9 @@ public abstract class Component {
         return beschikbaarheidsPercentage;
     }
 
-    public String toString() {
-        String string = "Component #%s: %s, %s, €%s";
-        return String.format(string, this.id, this.naam, this.beschikbaarheidsPercentage, this.prijs);
-    }
+//    public String toString() {
+//        String string = "Component #%s: %s, %s, €%s";
+//        return String.format(string, this.id, this.naam, this.beschikbaarheidsPercentage, this.prijs);
+//    }
 
 }

@@ -5,31 +5,50 @@ import com.ictm2n2.resources.Component;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import java.util.ArrayList;
 
-public class DragDropComponent extends JLabel {
+public class DragDropComponent extends JLabel implements ActionListener {
     private Component component;
-    private ArrayList<VerbindingComponent> verbindingen = new ArrayList<VerbindingComponent>();
     private Point imageCorner = new Point(0, 0);
     private Dimension panelGrootte;
     private ImageIcon plaatje;
+    private TekenPanel tekenPanel;
 
     private Point previousPoint;
 
-    public DragDropComponent(Component component, ImageIcon plaatje, Dimension panelGrootte) {
+    private JPopupMenu popUpMenu = new JPopupMenu();
+    private JMenuItem verwijder = new JMenuItem("Verwijder");
+    private JMenuItem verbinden = new JMenuItem("Verbinden");
+
+    public DragDropComponent(Component component, ImageIcon plaatje, Dimension panelGrootte, TekenPanel tekenPanel) {
         this.component = component;
         this.plaatje = plaatje;
         this.panelGrootte = panelGrootte;
+        this.tekenPanel = tekenPanel;
 
         setIcon(plaatje);
         setText(component.getNaam());
+
+        setVerticalAlignment(SwingConstants.CENTER);
+        setHorizontalAlignment(SwingConstants.CENTER);
         setVerticalTextPosition(JLabel.BOTTOM);
         setHorizontalTextPosition(JLabel.CENTER);
+
         addMouseListener(new ClickListener());
         addMouseMotionListener(new DragListener());
+
+        verwijder.setActionCommand("verwijder");
+        verbinden.setActionCommand("verbinden");
+
+        verwijder.addActionListener(this);
+        verbinden.addActionListener(this);
+
+        popUpMenu.add(verwijder);
+        popUpMenu.add(verbinden);
+
+        add(popUpMenu);
+
         setVisible(true);
     }
 
@@ -37,17 +56,26 @@ public class DragDropComponent extends JLabel {
         return this.imageCorner;
     }
 
-    public void verwijderVerbindingComponent(int index) {
-        verbindingen.remove(index);
+    public Component getComponent() {
+        return this.component;
     }
 
-    public ArrayList<VerbindingComponent> getVerbindingen() {
-        return this.verbindingen;
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("verwijder")) {
+            tekenPanel.verwijderComponent(this);
+        }
+
+        if (e.getActionCommand().equals("verbinden")) {
+            if (tekenPanel.getVanComponent() == null) {
+                tekenPanel.setVanComponent(this);
+            }
+            else {
+                tekenPanel.voegToeVerbinding(this);
+            }
+        }
     }
 
-    public int getVerbindingenLengte() {
-        return this.verbindingen.size();
-    }
 
     private class DragListener extends MouseMotionAdapter {
         public void mouseDragged(MouseEvent e) {
@@ -64,20 +92,15 @@ public class DragDropComponent extends JLabel {
     private class ClickListener extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON1) {
-                previousPoint = e.getPoint();
-            }
-            else if (e.getButton() == MouseEvent.BUTTON3) {
-                if (TekenPanel.vanComponent == null) {
-                    TekenPanel.vanComponent = DragDropComponent.this;
+                if (tekenPanel.getVanComponent() != null) {
+                    tekenPanel.voegToeVerbinding(DragDropComponent.this);
                 }
                 else {
-                    if (TekenPanel.vanComponent != DragDropComponent.this) {
-
-                        verbindingen.add(new VerbindingComponent(TekenPanel.vanComponent, DragDropComponent.this));
-                        repaint();
-                    }
-                    TekenPanel.vanComponent = null;
+                    previousPoint = e.getPoint();
                 }
+            }
+            else if (e.getButton() == MouseEvent.BUTTON3) {
+                popUpMenu.show(DragDropComponent.this, e.getX(), e.getY());
             }
         }
     }
