@@ -2,8 +2,8 @@ package com.ictm2n2.frames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -13,7 +13,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ictm2n2.resources.*;
+import com.ictm2n2.resources.Component;
+import com.ictm2n2.resources.Componenten;
+import com.ictm2n2.resources.Configuratie;
+import com.ictm2n2.resources.DatabaseServer;
+import com.ictm2n2.resources.Firewall;
+import com.ictm2n2.resources.Webserver;
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
 
@@ -39,6 +44,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JLabel jlTotalePrijs;
 
     private JButton jbOpslaan;
+    private JButton jbOpenen;
 
     private TekenPanel tp = new TekenPanel();
 
@@ -75,6 +81,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jlTotalePrijs = new JLabel("Totale Prijs: " + configuratie.berekenTotalePrijs());
 
         jbOpslaan = new JButton("Opslaan");
+        jbOpenen = new JButton("Openen");
 
         jcbWebServers.setBounds(10, 10, 200, 30);
         jcbDbServers.setBounds(10, 45, 200, 30);
@@ -95,7 +102,8 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jtPercentage.setBounds(10, 270, 45, 25);
         jbOptimaliseer.setBounds(65, 270, 200, 25);
 
-        jbOpslaan.setBounds(10, 505, 100, 30);
+        jbOpslaan.setBounds(10, 495, 122, 30);
+        jbOpenen.setBounds(142, 495, 122, 30);
 
         int width = 605;
         int height = 525;
@@ -123,6 +131,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         add(jlTotalePrijs);
 
         add(jbOpslaan);
+        add(jbOpenen);
         add(tp);
 
         jbDbVoegToe.addActionListener(this);
@@ -134,6 +143,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
         jbVerwijder.addActionListener(this);
         jbOpslaan.addActionListener(this);
+        jbOpenen.addActionListener(this);
     }
 
     @Override
@@ -242,10 +252,34 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             }
 
         }
+        if (e.getSource() == jbOpenen) {
+            try {
+                Object[] configuraties = getConfiguraties();
+                Object configuratieNaam = JOptionPane.showInputDialog(null, "Kies een configuratie", "Openen",
+                        JOptionPane.QUESTION_MESSAGE, null, configuraties, "Joe");
+                System.out.println(configuratieNaam);
+            } catch (Exception err) {
+                err.printStackTrace();
+            }
+
+        }
 
         jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
         jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
 
         repaint();
+    }
+
+    private Object[] getConfiguraties() throws SQLException {
+        Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+        Query q = new Query();
+        q.select(null).from("configuratie");
+        ResultSet rs = db.select(q);
+        ArrayList<String> namen = new ArrayList<String>();
+
+        while (rs.next()) {
+            namen.add(rs.getString("naam"));
+        }
+        return namen.toArray();
     }
 }
