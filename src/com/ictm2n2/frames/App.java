@@ -24,7 +24,6 @@ public class App extends JFrame implements ActionListener {
         setLayout(null);
 
         try {
-
             URL resource = getClass().getResource("../assets/KBS.png");
             BufferedImage image = ImageIO.read(resource);
             setIconImage(image);

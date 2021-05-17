@@ -1,20 +1,19 @@
 package com.ictm2n2.frames;
 
-import com.ictm2n2.resources.database.Database;
-import com.ictm2n2.resources.database.Query;
-import javax.swing.*;
-
-import java.awt.*;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+
+import com.ictm2n2.resources.database.Database;
+import com.ictm2n2.resources.database.Query;
 
 public class MonitorPanel extends JPanel {
     private JLabel jlDb;
@@ -309,10 +308,10 @@ public class MonitorPanel extends JPanel {
                             String tijdstip = rs.getString("s.tijdstip");
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameDb + "</strong><br><br>" + processor
-                                    + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>" + opslagVerbruik
-                                    + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
-                                    + "</html>";
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameDb + "</strong><br><br>"
+                                    + processor + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>"
+                                    + opslagVerbruik + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds "
+                                    + tijdstip + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
                     } catch (SQLException throwables) {
@@ -354,10 +353,10 @@ public class MonitorPanel extends JPanel {
                             String tijdstip = rs.getString("s.tijdstip");
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameWb + "</strong><br><br>" + processor
-                                    + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>" + opslagVerbruik
-                                    + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
-                                    + "</html>";
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameWb + "</strong><br><br>"
+                                    + processor + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>"
+                                    + opslagVerbruik + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds "
+                                    + tijdstip + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
                     } catch (SQLException throwables) {
@@ -399,10 +398,10 @@ public class MonitorPanel extends JPanel {
                             String tijdstip = rs.getString("s.tijdstip");
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameLb + "</strong><br><br>" + processor
-                                    + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>" + opslagVerbruik
-                                    + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
-                                    + "</html>";
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameLb + "</strong><br><br>"
+                                    + processor + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>"
+                                    + opslagVerbruik + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds "
+                                    + tijdstip + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                         }
                     } catch (SQLException throwables) {
@@ -444,10 +443,10 @@ public class MonitorPanel extends JPanel {
                             String tijdstip = rs.getString("s.tijdstip");
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
-                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnamePfS + "</strong><br><br>" + processor
-                                    + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>" + opslagVerbruik
-                                    + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds " + tijdstip
-                                    + "</html>";
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnamePfS + "</strong><br><br>"
+                                    + processor + " GHz<br>" + processorBelasting + " GHz<br><br>" + opslag + " GB<br>"
+                                    + opslagVerbruik + " GB<br><br>" + (beschikbaarLengte / 60) + " minuten<br>sinds "
+                                    + tijdstip + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                             // PfSList.setSelectionInterval(-1, -1);
                             // PfSList.setEnabled(false);

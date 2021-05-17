@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ictm2n2.resources.Component;
 import com.ictm2n2.resources.Componenten;
 import com.ictm2n2.resources.Configuratie;
 import com.ictm2n2.resources.DatabaseServer;
@@ -32,10 +31,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JComboBox<Object> jcbWebServers;
     private JComboBox<Object> jcbFirewalls;
 
-    private JLabel jlToegevoegd;
-    private JComboBox<Object> jcbToegevoegd;
-    private JButton jbVerwijder;
-
     private JButton jbDbVoegToe;
     private JButton jbWsVoegToe;
     private JButton jbFwVoegToe;
@@ -46,11 +41,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JButton jbOpslaan;
     private JButton jbOpenen;
 
-    private TekenPanel tp = new TekenPanel();
-
     private Configuratie configuratie;
     private Componenten componenten;
     private static int primaryKey = 0;
+
+    private TekenPanel tp;
 
     public ConfigureerPanel() {
         setLayout(null);
@@ -61,13 +56,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         this.componenten = componenten;
         this.configuratie = configuratie;
 
+        tp = new TekenPanel(this, this.configuratie);
+
         jcbDbServers = new JComboBox<Object>(componenten.get(DatabaseServer.class));
         jcbWebServers = new JComboBox<Object>(componenten.get(Webserver.class));
         jcbFirewalls = new JComboBox<Object>(componenten.get(Firewall.class));
-
-        jlToegevoegd = new JLabel("Toegevoegd:");
-        jcbToegevoegd = new JComboBox<Object>(configuratie.getComponentenNamen());
-        jbVerwijder = new JButton("x");
 
         jbDbVoegToe = new JButton("+");
         jbWsVoegToe = new JButton("+");
@@ -86,10 +79,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jcbWebServers.setBounds(10, 10, 200, 30);
         jcbDbServers.setBounds(10, 45, 200, 30);
         jcbFirewalls.setBounds(10, 80, 200, 30);
-
-        jlToegevoegd.setBounds(10, 115, 100, 30);
-        jcbToegevoegd.setBounds(10, 145, 100, 30);
-        jbVerwijder.setBounds(120, 145, 45, 30);
 
         jbWsVoegToe.setBounds(220, 10, 45, 30);
         jbDbVoegToe.setBounds(220, 45, 45, 30);
@@ -124,9 +113,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         add(jbOptimaliseer);
 
         // Backtracking grafisch toevoeging
-        add(jcbToegevoegd);
-        add(jlToegevoegd);
-        add(jbVerwijder);
         add(jlTotaleBeschikbaarheid);
         add(jlTotalePrijs);
 
@@ -140,10 +126,15 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
         // Backtracking optimaliseer
         jbOptimaliseer.addActionListener(this);
-
-        jbVerwijder.addActionListener(this);
         jbOpslaan.addActionListener(this);
         jbOpenen.addActionListener(this);
+    }
+
+    public void bewerkGegevens() {
+        jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
+        jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
+
+        repaint();
     }
 
     @Override
@@ -152,41 +143,26 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             Object selectedIndex = jcbDbServers.getSelectedIndex();
             DatabaseServer c = componenten.getDbServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            jcbToegevoegd.addItem(c.getNaam());
             tp.voegToeComponent("dbserver", c);
         }
         if (e.getSource() == jbWsVoegToe) {
             Object selectedIndex = jcbWebServers.getSelectedIndex();
             Webserver c = componenten.getWebServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            jcbToegevoegd.addItem(c.getNaam());
             tp.voegToeComponent("webserver", c);
         }
         if (e.getSource() == jbFwVoegToe) {
             Object selectedIndex = jcbFirewalls.getSelectedIndex();
             Firewall c = componenten.getFirewalls().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            jcbToegevoegd.addItem(c.getNaam());
             tp.voegToeComponent("firewall", c);
-        }
-        if (e.getSource() == jbVerwijder) {
-            try {
-                int index = jcbToegevoegd.getSelectedIndex();
-                Object name = jcbToegevoegd.getSelectedItem();
-                configuratie.verwijderComponent(index);
-                jcbToegevoegd.removeItem(name);
-                tp.verwijderComponent(index);
-            } catch (ArrayIndexOutOfBoundsException error) {
-                JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
         }
         // Check if optimaliseer button has been pressed for backtracking
         if (e.getSource() == jbOptimaliseer) {
             try {
                 double gewenstPercentage;
                 // If string contains comma, convert to dot
-                if(jtPercentage.getText().contains(",")) {
+                if (jtPercentage.getText().contains(",")) {
                     gewenstPercentage = Double.parseDouble(jtPercentage.getText().replace(",", "."));
                 } else {
                     gewenstPercentage = Double.parseDouble(jtPercentage.getText());
@@ -197,18 +173,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                             "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
-                    jcbToegevoegd.removeAll();
-                    jcbToegevoegd.removeAllItems();
-                    tp.removeAll();
-                    tp.repaint();
                     configuratie.optimaliseer(gewenstPercentage);
-                    for (Object naam : configuratie.getComponentenNamen()) {
-                        jcbToegevoegd.addItem(naam);
-                    }
-                    for (Component component : configuratie.getComponenten()) {
-                        tp.voegToeComponent(component.getType(), component);
-                    }
-                    repaint();
                 }
                 // this.componenten = configuratie.getComponenten();
             } catch (NumberFormatException ex) {
@@ -269,11 +234,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             }
 
         }
-
-        jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
-        jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
-
-        repaint();
+        bewerkGegevens();
     }
 
     private Object[] getConfiguraties() throws SQLException {
