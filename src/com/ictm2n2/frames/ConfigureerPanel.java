@@ -175,7 +175,13 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         // Check if optimaliseer button has been pressed for backtracking
         if (e.getSource() == jbOptimaliseer) {
             try {
-                double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
+                double gewenstPercentage;
+                // If string contains comma, convert to dot
+                if(jtPercentage.getText().contains(",")) {
+                    gewenstPercentage = Double.parseDouble(jtPercentage.getText().replace(",", "."));
+                } else {
+                    gewenstPercentage = Double.parseDouble(jtPercentage.getText());
+                }
 
                 if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
                     JOptionPane.showMessageDialog(this,
