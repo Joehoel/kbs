@@ -1,12 +1,9 @@
 
 package com.ictm2n2.resources.database;
 
-
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 
-
 import java.sql.Driver;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
