@@ -95,7 +95,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbOpenen.setBounds(142, 495, 122, 30);
 
         int width = 605;
-        int height = 525;
+        int height = 515;
 
         tp.setSize(width, height);
         tp.setBounds(275, 10, width, height);

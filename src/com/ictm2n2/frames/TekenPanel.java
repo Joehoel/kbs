@@ -43,7 +43,6 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
         setVisible(true);
     }
 
-
     public void verwijderComponent(DragDropComponent component) {
         componenten.remove(component);
         configuratie.verwijderComponent(component.getComponent());
@@ -51,7 +50,7 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
         this.vanComponent = null;
 
         try {
-            for (int i = (verbindingen.size() - 1);i >= 0; i--) {
+            for (int i = (verbindingen.size() - 1); i >= 0; i--) {
                 VerbindingComponent verbinding = verbindingen.get(i);
 
                 if (component == verbinding.getVanComponent()) {
@@ -64,8 +63,7 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
                 }
             }
         } catch (ArrayIndexOutOfBoundsException error) {
-            JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error", JOptionPane.ERROR_MESSAGE);
             error.printStackTrace();
         }
 
@@ -81,21 +79,21 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
     }
 
     public void verwijderVerbinding() {
-        int beginPositieX = (int)beginPositie.getX();
-        int beginPositieY = (int)beginPositie.getY();
-        int eindPositieX = (int)eindPositie.getX();
-        int eindPositieY = (int)eindPositie.getY();
+        int beginPositieX = (int) beginPositie.getX();
+        int beginPositieY = (int) beginPositie.getY();
+        int eindPositieX = (int) eindPositie.getX();
+        int eindPositieY = (int) eindPositie.getY();
 
-        for(int i = (verbindingen.size() - 1);i >= 0; i--){
+        for (int i = (verbindingen.size() - 1); i >= 0; i--) {
             VerbindingComponent verbinding = verbindingen.get(i);
 
-            int loopBeginPositieX = (int)verbinding.getBeginPositie().getX();
-            int loopBeginPositieY = (int)verbinding.getBeginPositie().getY();
-            int loopEindPositieX = (int)verbinding.getEindPositie().getX();
-            int loopEindPositieY = (int)verbinding.getEindPositie().getY();
+            int loopBeginPositieX = (int) verbinding.getBeginPositie().getX();
+            int loopBeginPositieY = (int) verbinding.getBeginPositie().getY();
+            int loopEindPositieX = (int) verbinding.getEindPositie().getX();
+            int loopEindPositieY = (int) verbinding.getEindPositie().getY();
 
-            if(beginPositieX == loopBeginPositieX && beginPositieY == loopBeginPositieY
-                && eindPositieX == loopEindPositieX && eindPositieY == loopEindPositieY) {
+            if (beginPositieX == loopBeginPositieX && beginPositieY == loopBeginPositieY
+                    && eindPositieX == loopEindPositieX && eindPositieY == loopEindPositieY) {
                 verbindingen.remove(i);
             }
             beginPositie = null;
@@ -120,35 +118,31 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
         int xPosition = 0;
         int yPosition = 0;
 
-        for(int i = 0; i < this.componenten.size(); i++) {
+        for (int i = 0; i < this.componenten.size(); i++) {
             DragDropComponent cc = this.componenten.get(i);
 
-//            if (cc.getImageCorner().getY() == 0 && cc.getImageCorner().getX() == 0) {
-//                if (count == 6) {
-//                    count = 0;
-//                    yPosition = yPosition + 100;
-//                }
-//                xPosition = 100 * count;
-//                count = count + 1;
-//            }
-//            else {
-//                xPosition = (int)cc.getImageCorner().getX();
-//                yPosition = (int)cc.getImageCorner().getY();
-//                System.out.println("hoi");
-//            }
+            // if (cc.getImageCorner().getY() == 0 && cc.getImageCorner().getX() == 0) {
+            // if (count == 6) {
+            // count = 0;
+            // yPosition = yPosition + 100;
+            // }
+            // xPosition = 100 * count;
+            // count = count + 1;
+            // }
+            // else {
+            // xPosition = (int)cc.getImageCorner().getX();
+            // yPosition = (int)cc.getImageCorner().getY();
+            // System.out.println("hoi");
+            // }
 
-            cc.setBounds(
-                    (int)cc.getImageCorner().getX(),
-                    (int)cc.getImageCorner().getY(),
-                    100, 100);
+            cc.setBounds((int) cc.getImageCorner().getX(), (int) cc.getImageCorner().getY(), 100, 100);
 
             if (vanComponent != null) {
                 if (cc != vanComponent) {
                     cc.setOpaque(true);
-                    cc.setBackground(new Color(0,0,0,10));
+                    cc.setBackground(new Color(0, 0, 0, 10));
                 }
-            }
-            else {
+            } else {
                 cc.setOpaque(false);
             }
             add(cc, BorderLayout.NORTH);
@@ -156,12 +150,12 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
 
         boolean hover = false;
 
-        for(int i = 0; i < verbindingen.size(); i++) {
+        for (int i = 0; i < verbindingen.size(); i++) {
             VerbindingComponent verbinding = verbindingen.get(i);
-            int vanPositieX = (int)verbinding.getVanComponent().getImageCorner().getX() + 50;
-            int vanPositieY = (int)verbinding.getVanComponent().getImageCorner().getY() + 50;
-            int naarPositieX = (int)verbinding.getNaarComponent().getImageCorner().getX() + 50;
-            int naarPositieY = (int)verbinding.getNaarComponent().getImageCorner().getY() + 50;
+            int vanPositieX = (int) verbinding.getVanComponent().getImageCorner().getX() + 50;
+            int vanPositieY = (int) verbinding.getVanComponent().getImageCorner().getY() + 50;
+            int naarPositieX = (int) verbinding.getNaarComponent().getImageCorner().getX() + 50;
+            int naarPositieY = (int) verbinding.getNaarComponent().getImageCorner().getY() + 50;
 
             Polygon achtergrondLijn = new Polygon();
             achtergrondLijn.addPoint(naarPositieX + 3, naarPositieY + 3);
@@ -173,17 +167,14 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
             g2.fillPolygon(achtergrondLijn);
 
             Line2D lijn = new Line2D.Double();
-            lijn.setLine(
-                    vanPositieX, vanPositieY, naarPositieX, naarPositieY
-            );
+            lijn.setLine(vanPositieX, vanPositieY, naarPositieX, naarPositieY);
 
-            if (achtergrondLijn.contains(muisPositie)){
+            if (achtergrondLijn.contains(muisPositie)) {
                 g2.setColor(Color.RED);
                 beginPositie = lijn.getP1();
                 eindPositie = lijn.getP2();
                 hover = true;
-            }
-            else {
+            } else {
                 g2.setColor(Color.BLACK);
             }
 
@@ -196,7 +187,7 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
             eindPositie = null;
         }
 
-        setBackground(Color.WHITE);
+        setBackground(UIManager.getColor("ComboBox.buttonBackground"));
         setVisible(true);
         repaint();
     }
