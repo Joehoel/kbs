@@ -169,7 +169,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             } catch (ArrayIndexOutOfBoundsException error) {
                 JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
                         JOptionPane.ERROR_MESSAGE);
-                error.printStackTrace();
             }
         }
         // Check if optimaliseer button has been pressed for backtracking
@@ -188,9 +187,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                             "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
-                    configuratie.optimaliseer(gewenstPercentage);
                     jcbToegevoegd.removeAll();
                     jcbToegevoegd.removeAllItems();
+                    tp.removeAll();
+                    tp.repaint();
+                    configuratie.optimaliseer(gewenstPercentage);
                     for (Object naam : configuratie.getComponentenNamen()) {
                         jcbToegevoegd.addItem(naam);
                     }
