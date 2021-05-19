@@ -1,5 +1,6 @@
 package com.ictm2n2.frames;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -151,19 +152,19 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             Object selectedIndex = jcbDbServers.getSelectedIndex();
             DatabaseServer c = componenten.getDbServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            tp.voegToeComponent("dbserver", c);
+            tp.voegToeComponent(new Point(0, 0), "dbserver", c);
         }
         if (e.getSource() == jbWsVoegToe) {
             Object selectedIndex = jcbWebServers.getSelectedIndex();
             Webserver c = componenten.getWebServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            tp.voegToeComponent("webserver", c);
+            tp.voegToeComponent(new Point(0, 0),"webserver", c);
         }
         if (e.getSource() == jbFwVoegToe) {
             Object selectedIndex = jcbFirewalls.getSelectedIndex();
             Firewall c = componenten.getFirewalls().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            tp.voegToeComponent("firewall", c);
+            tp.voegToeComponent(new Point(0, 0),"firewall", c);
         }
         // Check if optimaliseer button has been pressed for backtracking
         if (e.getSource() == jbOptimaliseer) {
