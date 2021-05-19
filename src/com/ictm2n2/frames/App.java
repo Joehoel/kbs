@@ -11,7 +11,7 @@ import javax.swing.JTabbedPane;
 
 public class App extends JFrame implements ActionListener {
     private JTabbedPane jtpTabbedPane = new JTabbedPane();
-    private ConfigureerPanel configureerPanel = new ConfigureerPanel();
+    private ConfigureerPanel configureerPanel = new ConfigureerPanel(this);
     private MonitorPanel monitorPanel = new MonitorPanel();
     private InstellingenPanel instellingenPanel = new InstellingenPanel();
 

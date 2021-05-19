@@ -29,6 +29,8 @@ public class DragDropComponent extends JLabel implements ActionListener {
     private JPopupMenu popUpMenu = new JPopupMenu();
     private JMenuItem verwijder = new JMenuItem("Verwijder");
     private JMenuItem verbinden = new JMenuItem("Verbinden");
+    private JMenuItem configureer = new JMenuItem("configureer");
+    private DragDropDialoog dialoog;
 
     public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte, TekenPanel tekenPanel) {
         this.component = component;
@@ -37,8 +39,10 @@ public class DragDropComponent extends JLabel implements ActionListener {
         this.panelGrootte = panelGrootte;
         this.tekenPanel = tekenPanel;
 
+        dialoog = new DragDropDialoog(tekenPanel, this);
+
         setIcon(plaatje);
-        setText(component.getNaam());
+        setText("<html>" + component.getNaam() + "<br>" + dialoog.getjtIPv4Adres() + "</html>");
 
         setVerticalAlignment(SwingConstants.CENTER);
         setHorizontalAlignment(SwingConstants.CENTER);
@@ -50,12 +54,15 @@ public class DragDropComponent extends JLabel implements ActionListener {
 
         verwijder.setActionCommand("verwijder");
         verbinden.setActionCommand("verbinden");
+        configureer.setActionCommand("configureer");
 
         verwijder.addActionListener(this);
         verbinden.addActionListener(this);
+        configureer.addActionListener(this);
 
         popUpMenu.add(verwijder);
         popUpMenu.add(verbinden);
+        popUpMenu.add(configureer);
 
         add(popUpMenu);
 
@@ -70,6 +77,10 @@ public class DragDropComponent extends JLabel implements ActionListener {
         return this.component;
     }
 
+    public void setLabel() {
+        this.setText("<html>" + component.getNaam() + "<br>" + dialoog.getjtIPv4Adres() + "</html>");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("verwijder")) {
@@ -82,6 +93,9 @@ public class DragDropComponent extends JLabel implements ActionListener {
             } else {
                 tekenPanel.voegToeVerbinding(this);
             }
+        }
+        if (e.getActionCommand().equals("configureer")) {
+            dialoog.setVisible(true);
         }
     }
 

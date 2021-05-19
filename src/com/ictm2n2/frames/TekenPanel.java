@@ -19,6 +19,7 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
     private ArrayList<VerbindingComponent> verbindingen = new ArrayList<VerbindingComponent>();
 
     private DragDropComponent vanComponent = null;
+    private JFrame frame;
     private ConfigureerPanel configureerPanel;
     private Configuratie configuratie;
 
@@ -26,7 +27,8 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
     private Point2D beginPositie = null;
     private Point2D eindPositie = null;
 
-    public TekenPanel(ConfigureerPanel configureerPanel, Configuratie configuratie) {
+    public TekenPanel(JFrame frame, ConfigureerPanel configureerPanel, Configuratie configuratie) {
+        this.frame = frame;
         this.configureerPanel = configureerPanel;
         this.configuratie = configuratie;
 
@@ -101,6 +103,10 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
         }
     }
 
+    public JFrame getFrame() {
+        return this.frame;
+    }
+
     public DragDropComponent getVanComponent() {
         return this.vanComponent;
     }
@@ -121,19 +127,19 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
         for (int i = 0; i < this.componenten.size(); i++) {
             DragDropComponent cc = this.componenten.get(i);
 
-            // if (cc.getImageCorner().getY() == 0 && cc.getImageCorner().getX() == 0) {
-            // if (count == 6) {
-            // count = 0;
-            // yPosition = yPosition + 100;
-            // }
-            // xPosition = 100 * count;
-            // count = count + 1;
-            // }
-            // else {
-            // xPosition = (int)cc.getImageCorner().getX();
-            // yPosition = (int)cc.getImageCorner().getY();
-            // System.out.println("hoi");
-            // }
+//             if (cc.getImageCorner().getY() == 0 && cc.getImageCorner().getX() == 0) {
+//                if (count == 6) {
+//                    count = 0;
+//                    yPosition = yPosition + 100;
+//                }
+//                xPosition = 100 * count;
+//                count = count + 1;
+//             }
+//             else {
+//                xPosition = (int)cc.getImageCorner().getX();
+//                yPosition = (int)cc.getImageCorner().getY();
+//                System.out.println("hoi");
+//             }
 
             cc.setBounds((int) cc.getImageCorner().getX(), (int) cc.getImageCorner().getY(), 100, 100);
 
@@ -163,7 +169,7 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
             achtergrondLijn.addPoint(vanPositieX - 3, vanPositieY - 3);
             achtergrondLijn.addPoint(naarPositieX - 3, naarPositieY - 3);
 
-            g2.setColor(Color.WHITE);
+            g2.setColor(new Color(0,0,0,0));
             g2.fillPolygon(achtergrondLijn);
 
             Line2D lijn = new Line2D.Double();

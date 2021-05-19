@@ -8,12 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import com.ictm2n2.resources.Component;
 import com.ictm2n2.resources.Componenten;
@@ -52,7 +47,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private TekenPanel tp;
     private BeheerDialoog bd;
 
-    public ConfigureerPanel() {
+    public ConfigureerPanel(JFrame frame) {
         setLayout(null);
 
         bd = new BeheerDialoog();
@@ -63,7 +58,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         this.componenten = componenten;
         this.configuratie = configuratie;
 
-        tp = new TekenPanel(this, this.configuratie);
+        tp = new TekenPanel(frame, this, this.configuratie);
 
         jcbDbServers = new JComboBox<Object>(componenten.get(DatabaseServer.class));
         jcbWebServers = new JComboBox<Object>(componenten.get(Webserver.class));
