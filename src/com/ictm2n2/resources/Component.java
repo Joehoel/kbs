@@ -11,7 +11,8 @@ public abstract class Component {
     private String type;
     private boolean aangesloten;
 
-    public Component(String naam, String type, double prijs, double beschikbaarheidsPercentage) {
+    public Component(int id, String naam, String type, double prijs, double beschikbaarheidsPercentage) {
+        this.id = id;
         this.type = type;
         this.naam = naam;
         this.prijs = prijs;
@@ -90,9 +91,10 @@ public abstract class Component {
         return beschikbaarheidsPercentage;
     }
 
-//    public String toString() {
-//        String string = "Component #%s: %s, %s, €%s";
-//        return String.format(string, this.id, this.naam, this.beschikbaarheidsPercentage, this.prijs);
-//    }
+    // public String toString() {
+    // String string = "Component #%s: %s, %s, €%s";
+    // return String.format(string, this.id, this.naam,
+    // this.beschikbaarheidsPercentage, this.prijs);
+    // }
 
 }

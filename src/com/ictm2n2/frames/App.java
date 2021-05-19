@@ -33,6 +33,7 @@ public class App extends JFrame implements ActionListener {
             setTitle("NerdyGadgets | ICTm2n2");
             setResizable(false);
             setLayout(null);
+            setAutoRequestFocus(true);
 
             jtpTabbedPane.setBounds(0, 0, 900, 600);
             jtpTabbedPane.add("Configureer", configureerPanel);

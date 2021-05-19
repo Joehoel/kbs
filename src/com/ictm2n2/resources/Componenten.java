@@ -20,19 +20,20 @@ public class Componenten {
             q.select(null).from("component_type");
             ResultSet rs = db.select(q);
             while (rs.next()) {
+                int id = rs.getInt("type_id");
                 String naam = rs.getString("type_naam");
                 String type = rs.getString("type_soort").toLowerCase();
 
                 double beschikbaarheid = rs.getDouble("type_beschikbaarheid");
                 double prijs = rs.getDouble("type_prijs");
                 if (type.equals("dbserver")) {
-                    dbServers.add(new DatabaseServer(naam, type, prijs, beschikbaarheid));
+                    dbServers.add(new DatabaseServer(id, naam, type, prijs, beschikbaarheid));
                 } else if (type.equals("webserver")) {
-                    webServers.add(new Webserver(naam, type, prijs, beschikbaarheid));
+                    webServers.add(new Webserver(id, naam, type, prijs, beschikbaarheid));
                 } else if (type.equals("firewall")) {
-                    firewalls.add(new Firewall(naam, type, prijs, beschikbaarheid));
+                    firewalls.add(new Firewall(id, naam, type, prijs, beschikbaarheid));
                 } else if (type.equals("loadbalancer")) {
-                    loadbalancers.add(new Loadbalancer(naam, type, prijs, beschikbaarheid));
+                    loadbalancers.add(new Loadbalancer(id, naam, type, prijs, beschikbaarheid));
                 }
             }
         } catch (Exception e) {

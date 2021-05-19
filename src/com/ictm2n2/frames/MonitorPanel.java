@@ -339,8 +339,8 @@ public class MonitorPanel extends JPanel {
         jpDetailOverzichtWaarden = new JPanel();
         jpDetailOverzichtWaarden.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpDetailOverzichtWaarden.add(jlDetailOverzichtWaarden);
-        jlDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
         jpDetailOverzichtWaarden.setBackground(Color.white);
+        jlDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
         jpDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
         add(jpDetailOverzichtWaarden);
 
