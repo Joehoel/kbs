@@ -166,7 +166,7 @@ public class Query {
 
     public Query DbMonitorPanelQuery () {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " +
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
                 "FROM component c " +
                 "JOIN status s " +
                 "ON c.component_id=s.component_id WHERE c.type_id IN (3,4,5)" +
@@ -177,7 +177,7 @@ public class Query {
 
     public Query WbMonitorPanelQuery () {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " +
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
                 "FROM component c " +
                 "JOIN status s " +
                 "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)" +
@@ -188,7 +188,7 @@ public class Query {
 
     public Query LbMonitorPanelQuery () {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " +
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
                 "FROM component c " +
                 "JOIN status s " +
                 "ON c.component_id=s.component_id WHERE c.type_id IN (2)" +
@@ -199,7 +199,7 @@ public class Query {
 
     public Query PfSMonitorPanelQuery () {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " +
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
                 "FROM component c " +
                 "JOIN status s " +
                 "ON c.component_id=s.component_id WHERE c.type_id IN (1)" +
@@ -213,7 +213,7 @@ public class Query {
         query.append("SELECT c.hostname, c.cpu, s.processor_belasting, c.opslag, s.opslag_verbruik, s.beschikbaar_lengte, s.tijdstip\n" +
                 "FROM component c\n" +
                 "JOIN status s\n" +
-                "ON c.component_id = s.component_id WHERE c.hostname = \"DB02\"\n" +
+                "ON c.component_id = s.component_id WHERE c.hostname = \""+hostname+"\"\n" +
                 "GROUP BY c.component_id\n" +
                 "HAVING max(tijdstip);");
         return this;

@@ -1,10 +1,10 @@
 package com.ictm2n2.frames;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -14,7 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ictm2n2.resources.*;
+import com.ictm2n2.resources.Componenten;
+import com.ictm2n2.resources.Configuratie;
+import com.ictm2n2.resources.DatabaseServer;
+import com.ictm2n2.resources.Firewall;
+import com.ictm2n2.resources.Webserver;
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
 
@@ -28,10 +32,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JComboBox<Object> jcbWebServers;
     private JComboBox<Object> jcbFirewalls;
 
-    private JLabel jlToegevoegd;
-    private JComboBox<Object> jcbToegevoegd;
-    private JButton jbVerwijder;
-
     private JButton jbDbVoegToe;
     private JButton jbWsVoegToe;
     private JButton jbFwVoegToe;
@@ -40,12 +40,13 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JLabel jlTotalePrijs;
 
     private JButton jbOpslaan;
-
-    private TekenPanel tp = new TekenPanel();
+    private JButton jbOpenen;
 
     private Configuratie configuratie;
     private Componenten componenten;
     private static int primaryKey = 0;
+
+    private TekenPanel tp;
 
     public ConfigureerPanel() {
         setLayout(null);
@@ -56,13 +57,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         this.componenten = componenten;
         this.configuratie = configuratie;
 
+        tp = new TekenPanel(this, this.configuratie);
+
         jcbDbServers = new JComboBox<Object>(componenten.get(DatabaseServer.class));
         jcbWebServers = new JComboBox<Object>(componenten.get(Webserver.class));
         jcbFirewalls = new JComboBox<Object>(componenten.get(Firewall.class));
-
-        jlToegevoegd = new JLabel("Toegevoegd:");
-        jcbToegevoegd = new JComboBox<Object>(configuratie.getComponentenNamen());
-        jbVerwijder = new JButton("x");
 
         jbDbVoegToe = new JButton("+");
         jbWsVoegToe = new JButton("+");
@@ -76,14 +75,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jlTotalePrijs = new JLabel("Totale Prijs: " + configuratie.berekenTotalePrijs());
 
         jbOpslaan = new JButton("Opslaan");
+        jbOpenen = new JButton("Openen");
 
         jcbWebServers.setBounds(10, 10, 200, 30);
         jcbDbServers.setBounds(10, 45, 200, 30);
         jcbFirewalls.setBounds(10, 80, 200, 30);
-
-        jlToegevoegd.setBounds(10, 115, 100, 30);
-        jcbToegevoegd.setBounds(10, 145, 100, 30);
-        jbVerwijder.setBounds(120, 145, 45, 30);
 
         jbWsVoegToe.setBounds(220, 10, 45, 30);
         jbDbVoegToe.setBounds(220, 45, 45, 30);
@@ -96,10 +92,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jtPercentage.setBounds(10, 270, 45, 25);
         jbOptimaliseer.setBounds(65, 270, 200, 25);
 
-        jbOpslaan.setBounds(10, 505, 100, 30);
+        jbOpslaan.setBounds(10, 495, 122, 30);
+        jbOpenen.setBounds(142, 495, 122, 30);
 
         int width = 605;
-        int height = 525;
+        int height = 515;
 
         tp.setSize(width, height);
         tp.setBounds(275, 10, width, height);
@@ -117,13 +114,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         add(jbOptimaliseer);
 
         // Backtracking grafisch toevoeging
-        add(jcbToegevoegd);
-        add(jlToegevoegd);
-        add(jbVerwijder);
         add(jlTotaleBeschikbaarheid);
         add(jlTotalePrijs);
 
         add(jbOpslaan);
+        add(jbOpenen);
         add(tp);
 
         jbDbVoegToe.addActionListener(this);
@@ -132,9 +127,15 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
         // Backtracking optimaliseer
         jbOptimaliseer.addActionListener(this);
-
-        jbVerwijder.addActionListener(this);
         jbOpslaan.addActionListener(this);
+        jbOpenen.addActionListener(this);
+    }
+
+    public void bewerkGegevens() {
+        jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
+        jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
+
+        repaint();
     }
 
     @Override
@@ -143,98 +144,110 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             Object selectedIndex = jcbDbServers.getSelectedIndex();
             DatabaseServer c = componenten.getDbServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            jcbToegevoegd.addItem(c.getNaam());
+            tp.voegToeComponent(new Point(0, 0), "dbserver", c);
         }
         if (e.getSource() == jbWsVoegToe) {
             Object selectedIndex = jcbWebServers.getSelectedIndex();
             Webserver c = componenten.getWebServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            jcbToegevoegd.addItem(c.getNaam());
+            tp.voegToeComponent(new Point(0, 0),"webserver", c);
         }
         if (e.getSource() == jbFwVoegToe) {
             Object selectedIndex = jcbFirewalls.getSelectedIndex();
             Firewall c = componenten.getFirewalls().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            jcbToegevoegd.addItem(c.getNaam());
-        }
-        if (e.getSource() == jbVerwijder) {
-            try {
-                int index = jcbToegevoegd.getSelectedIndex();
-                Object name = jcbToegevoegd.getSelectedItem();
-                configuratie.verwijderComponent(index);
-                jcbToegevoegd.removeItem(name);
-
-            } catch (ArrayIndexOutOfBoundsException error) {
-                JOptionPane.showMessageDialog(this, "Kan component niet verwijderen", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                error.printStackTrace();
-            }
+            tp.voegToeComponent(new Point(0, 0),"firewall", c);
         }
         // Check if optimaliseer button has been pressed for backtracking
         if (e.getSource() == jbOptimaliseer) {
             try {
-                double gewenstPercentage = Double.parseDouble(jtPercentage.getText());
+                double gewenstPercentage;
+                // If string contains comma, convert to dot
+                if (jtPercentage.getText().contains(",")) {
+                    gewenstPercentage = Double.parseDouble(jtPercentage.getText().replace(",", "."));
+                } else {
+                    gewenstPercentage = Double.parseDouble(jtPercentage.getText());
+                }
 
                 if (gewenstPercentage > 99.99 || gewenstPercentage < 0) {
-                    JOptionPane.showMessageDialog(this, "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this,
+                            "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     configuratie.optimaliseer(gewenstPercentage);
-                    jcbToegevoegd.removeAll();
-                    jcbToegevoegd.removeAllItems();
-                    for (Object naam : configuratie.getComponentenNamen()) {
-                        jcbToegevoegd.addItem(naam);
-                    }
                 }
                 // this.componenten = configuratie.getComponenten();
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Fout met optimaliseren. Voer geldig getal tussen 0 tot en met 99.99 in", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
 
         if (e.getSource() == jbOpslaan) {
-         
-            String naamOntwerp = JOptionPane.showInputDialog(this, "Geef dit ontwerp een naam", null);
 
-      
+            String naamOntwerp = JOptionPane.showInputDialog(this, "Geef dit ontwerp een naam", null);
 
             try {
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
-                java.util.Date date=new java.util.Date();
+                java.util.Date date = new java.util.Date();
 
-                java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-                String [] values = {String.valueOf(primaryKey), String.valueOf(sqlDate), String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp, String.valueOf(configuratie.berekenTotalePrijsDouble())};
+                String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
+                        String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
+                        String.valueOf(configuratie.berekenTotalePrijsDouble()) };
                 for (String value : values) {
                     System.out.println(value);
                 }
                 db.insert("configuratie", values);
                 primaryKey++;
 
-            // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            // // java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
+                // java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                // // java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
 
-            // String[] columns = { "id", "datum", "beschikbaarheidspercentage", "naam",
-            // "prijs" };
-            // String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
-            // String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
-            // String.valueOf(configuratie.berekenTotalePrijsDouble()) };
-            // for (String value : values) {
-            // System.out.println(value);
-            // }
-            // Database db1 = new Database("nerdygadgets_1", "root", "");
-            // db1.insert("configuratie", values);
-            // primaryKey++;
+                // String[] columns = { "id", "datum", "beschikbaarheidspercentage", "naam",
+                // "prijs" };
+                // String[] values = { String.valueOf(primaryKey), String.valueOf(sqlDate),
+                // String.valueOf(configuratie.berekenBeschikbaarheid()), naamOntwerp,
+                // String.valueOf(configuratie.berekenTotalePrijsDouble()) };
+                // for (String value : values) {
+                // System.out.println(value);
+                // }
+                // Database db1 = new Database("nerdygadgets_1", "root", "");
+                // db1.insert("configuratie", values);
+                // primaryKey++;
 
-
-             } catch (Exception a) {
-             a.printStackTrace();
-             }
+            } catch (Exception a) {
+                a.printStackTrace();
+            }
 
         }
+        if (e.getSource() == jbOpenen) {
+            try {
+                Object[] configuraties = getConfiguraties();
+                Object configuratieNaam = JOptionPane.showInputDialog(null, "Kies een configuratie", "Openen",
+                        JOptionPane.QUESTION_MESSAGE, null, configuraties, "Joe");
+                System.out.println(configuratieNaam);
+            } catch (Exception err) {
+                err.printStackTrace();
+            }
 
-        jlTotaleBeschikbaarheid.setText("Totale Beschikbaarheid: " + configuratie.berekenBeschikbaarheid() + "%");
-        jlTotalePrijs.setText("Totale Prijs: " + configuratie.berekenTotalePrijs());
+        }
+        bewerkGegevens();
+    }
 
+    private Object[] getConfiguraties() throws SQLException {
+        Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+        Query q = new Query();
+        q.select(null).from("configuratie");
+        ResultSet rs = db.select(q);
+        ArrayList<String> namen = new ArrayList<String>();
+
+        while (rs.next()) {
+            namen.add(rs.getString("naam"));
+        }
+        return namen.toArray();
     }
 }

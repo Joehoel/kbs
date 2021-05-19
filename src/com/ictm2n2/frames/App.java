@@ -13,15 +13,17 @@ public class App extends JFrame implements ActionListener {
     private JTabbedPane jtpTabbedPane = new JTabbedPane();
     private ConfigureerPanel configureerPanel = new ConfigureerPanel();
     private MonitorPanel monitorPanel = new MonitorPanel();
+    private InstellingenPanel instellingenPanel = new InstellingenPanel();
 
     public App() {
+
         setSize(900, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("NerdyGadgets | ICTm2n2");
         setResizable(false);
         setLayout(null);
-        try {
 
+        try {
             URL resource = getClass().getResource("../assets/KBS.png");
             BufferedImage image = ImageIO.read(resource);
             setIconImage(image);
@@ -35,6 +37,7 @@ public class App extends JFrame implements ActionListener {
             jtpTabbedPane.setBounds(0, 0, 900, 600);
             jtpTabbedPane.add("Configureer", configureerPanel);
             jtpTabbedPane.add("Monitor", monitorPanel);
+            jtpTabbedPane.add("Instellingen", instellingenPanel);
 
             add(jtpTabbedPane);
 
@@ -43,9 +46,6 @@ public class App extends JFrame implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        jtpTabbedPane.setBounds(0, 0, 900, 600);
-        jtpTabbedPane.add("configureer", configureerPanel);
-        jtpTabbedPane.add("monitor", monitorPanel);
 
         add(jtpTabbedPane);
 
