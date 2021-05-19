@@ -19,7 +19,7 @@ import com.ictm2n2.resources.Component;
 
 public class DragDropComponent extends JLabel implements ActionListener {
     private Component component;
-    private Point imageCorner = new Point(0, 0);
+    private Point imageCorner;
     private Dimension panelGrootte;
     private ImageIcon plaatje;
     private TekenPanel tekenPanel;
@@ -30,8 +30,9 @@ public class DragDropComponent extends JLabel implements ActionListener {
     private JMenuItem verwijder = new JMenuItem("Verwijder");
     private JMenuItem verbinden = new JMenuItem("Verbinden");
 
-    public DragDropComponent(Component component, ImageIcon plaatje, Dimension panelGrootte, TekenPanel tekenPanel) {
+    public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte, TekenPanel tekenPanel) {
         this.component = component;
+        this.imageCorner = imageCorner;
         this.plaatje = plaatje;
         this.panelGrootte = panelGrootte;
         this.tekenPanel = tekenPanel;
