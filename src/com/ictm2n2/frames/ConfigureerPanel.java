@@ -199,58 +199,63 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         if (e.getSource() == jbOpslaan) {
             try {
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+                try {
+                    java.util.Date date = new java.util.Date();
 
-                java.util.Date date = new java.util.Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                    System.out.println(sqlDate);
+                    String naamConfiguratie = JOptionPane.showInputDialog(this, "Geef deze configuratie een naam",
+                            null);
+                    ArrayList<DragDropComponent> componenten = tp.getComponenten();
 
-                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                System.out.println(sqlDate);
-                String naamConfiguratie = JOptionPane.showInputDialog(this, "Geef deze configuratie een naam", null);
-                ArrayList<DragDropComponent> componenten = tp.getComponenten();
+                    Query insertQuery = new Query();
+                    insertQuery.insert("configuratie")
+                            .columns(new Object[] { "beschikbaarheids_percentage", "naam", "prijs" })
+                            .values(new Object[] { String.valueOf(configuratie.berekenBeschikbaarheid()),
+                                    naamConfiguratie, String.valueOf(configuratie.berekenTotalePrijsDouble()) });
 
-                Query insertQuery = new Query();
-                insertQuery.insert("configuratie")
-                        .columns(new Object[] { "beschikbaarheids_percentage", "naam", "prijs" })
-                        .values(new Object[] { String.valueOf(configuratie.berekenBeschikbaarheid()), naamConfiguratie,
-                                String.valueOf(configuratie.berekenTotalePrijsDouble()) });
+                    System.out.println(insertQuery.getQuery());
+                    PreparedStatement ps = db.getConnection().prepareStatement(insertQuery.getQuery());
+                    ps.setDouble(1, configuratie.berekenBeschikbaarheid());
+                    ps.setString(2, naamConfiguratie);
+                    ps.setDouble(3, configuratie.berekenTotalePrijsDouble());
+                    ps.executeUpdate();
 
-                System.out.println(insertQuery.getQuery());
-                PreparedStatement ps = db.getConnection().prepareStatement(insertQuery.getQuery());
-                ps.setDouble(1, configuratie.berekenBeschikbaarheid());
-                ps.setString(2, naamConfiguratie);
-                ps.setDouble(3, configuratie.berekenTotalePrijsDouble());
-                ps.executeUpdate();
+                    Query q = new Query().LastInsertedId();
+                    ResultSet rs = db.select(q);
 
-                Query q = new Query().LastInsertedId();
-                ResultSet rs = db.select(q);
+                    int id = 0;
+                    while (rs.next()) {
+                        id = rs.getInt("configuratie_id");
+                    }
+                    System.out.println("Last id " + id);
 
-                int id = 0;
-                while (rs.next()) {
-                    id = rs.getInt("configuratie_id");
-                }
-                System.out.println("Last id " + id);
+                    for (DragDropComponent dragDropComponent : componenten) {
+                        int componentId = dragDropComponent.getComponent().getId();
+                        double x = dragDropComponent.getImageCorner().getX();
+                        double y = dragDropComponent.getImageCorner().getY();
 
-                for (DragDropComponent dragDropComponent : componenten) {
-                    int componentId = dragDropComponent.getComponent().getId();
-                    double x = dragDropComponent.getImageCorner().getX();
-                    double y = dragDropComponent.getImageCorner().getY();
+                        Query q1 = new Query();
+                        q1.insert("configuratie_onderdeel")
+                                .columns(new Object[] { "configuratie_id", "type_id", "positie_x", "positie_y" })
+                                .values(new Object[] { id, componentId, x, y });
+                        // db.update(q1);
+                        System.out.println(q1.getQuery());
+                        PreparedStatement ps1 = db.getConnection().prepareStatement(q1.getQuery());
+                        ps1.setInt(1, id);
+                        ps1.setInt(2, componentId);
+                        ps1.setInt(3, (int) x);
+                        ps1.setInt(4, (int) y);
+                        ps1.executeUpdate();
 
-                    Query q1 = new Query();
-                    q1.insert("configuratie_onderdeel")
-                            .columns(new Object[] { "configuratie_id", "type_id", "positie_x", "positie_y" })
-                            .values(new Object[] { id, componentId, x, y });
-                    // db.update(q1);
-                    System.out.println(q1.getQuery());
-                    PreparedStatement ps1 = db.getConnection().prepareStatement(q1.getQuery());
-                    ps1.setInt(1, id);
-                    ps1.setInt(2, componentId);
-                    ps1.setInt(3, (int) x);
-                    ps1.setInt(4, (int) y);
-                    ps1.executeUpdate();
-
+                    }
+                } catch (SQLException oopsie) {
+                    db.getConnection().rollback();
                 }
 
             } catch (Exception a) {
-                a.printStackTrace();
+                System.err.println("Fout met opslaan van configuratie");
+                // a.printStackTrace();
             }
 
         }

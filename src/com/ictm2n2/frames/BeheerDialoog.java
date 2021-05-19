@@ -10,12 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
-
-import jdk.internal.dynalink.support.ClassLoaderGetterContextProvider;
 
 public class BeheerDialoog extends JDialog implements ActionListener {
 
