@@ -167,33 +167,53 @@ public class Query {
 
     public Query DbMonitorPanelQuery() {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " + "FROM component c " + "JOIN status s "
-                + "ON c.component_id=s.component_id WHERE c.type_id IN (3,4,5)" + "GROUP BY c.component_id "
-                + "HAVING max(tijdstip);");
+
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
+                "FROM component c " +
+                "JOIN status s " +
+                "ON c.component_id=s.component_id WHERE c.type_id IN (3,4,5)" +
+                "GROUP BY c.component_id " +
+                "HAVING max(tijdstip);");
+
         return this;
     }
 
     public Query WbMonitorPanelQuery() {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " + "FROM component c " + "JOIN status s "
-                + "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)" + "GROUP BY c.component_id "
-                + "HAVING max(tijdstip);");
+
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
+                "FROM component c " +
+                "JOIN status s " +
+                "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)" +
+                "GROUP BY c.component_id " +
+                "HAVING max(tijdstip);");
+
         return this;
     }
 
     public Query LbMonitorPanelQuery() {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " + "FROM component c " + "JOIN status s "
-                + "ON c.component_id=s.component_id WHERE c.type_id IN (2)" + "GROUP BY c.component_id "
-                + "HAVING max(tijdstip);");
+
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
+                "FROM component c " +
+                "JOIN status s " +
+                "ON c.component_id=s.component_id WHERE c.type_id IN (2)" +
+                "GROUP BY c.component_id " +
+                "HAVING max(tijdstip);");
+
         return this;
     }
 
     public Query PfSMonitorPanelQuery() {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar " + "FROM component c " + "JOIN status s "
-                + "ON c.component_id=s.component_id WHERE c.type_id IN (1)" + "GROUP BY c.component_id "
-                + "HAVING max(tijdstip);");
+
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
+                "FROM component c " +
+                "JOIN status s " +
+                "ON c.component_id=s.component_id WHERE c.type_id IN (1)" +
+                "GROUP BY c.component_id " +
+                "HAVING max(tijdstip);");
+
         return this;
     }
 
