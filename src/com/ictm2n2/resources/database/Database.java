@@ -33,8 +33,8 @@ public class Database {
      */
     public Database(String db, String userName, String password) throws SQLException {
 
-
- //       connection = DriverManager.getConnection("jdbc:mysql://172.16.1.1:3306/" + db, userName, password);
+        // connection = DriverManager.getConnection("jdbc:mysql://172.16.1.1:3306/" +
+        // db, userName, password);
         try {
             connection = DriverManager.getConnection("jdbc:mysql://172.16.1.1/" + db, userName, password);
         } catch (CommunicationsException ce) {
@@ -43,6 +43,7 @@ public class Database {
             System.exit(0);
         }
     }
+
     /**
      *
      * @param query
@@ -50,7 +51,7 @@ public class Database {
      * @return
      * @throws SQLException
      */
-    private int query(String query, Object[] params) throws SQLException {
+    public int query(String query, Object[] params) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(query);
         if (params != null) {
             int index = 1;
@@ -156,6 +157,12 @@ public class Database {
         return rs;
     }
 
+    public void update(Query query) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(query.getQuery());
+
+        ps.executeUpdate();
+    }
+
     /**
      *
      * @param table
@@ -186,10 +193,15 @@ public class Database {
         return data;
     }
 
-    public ResultSet preparedQuery (Query query) throws SQLException {
+    public ResultSet preparedQuery(Query query) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(query.getQuery());
 
         ResultSet rs = ps.executeQuery();
         return rs;
     }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
 }

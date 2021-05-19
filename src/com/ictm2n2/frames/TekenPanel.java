@@ -230,4 +230,9 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
     public void mouseExited(MouseEvent e) {
 
     }
+
+    public ArrayList<DragDropComponent> getComponenten() {
+        return componenten;
+    }
+
 }
