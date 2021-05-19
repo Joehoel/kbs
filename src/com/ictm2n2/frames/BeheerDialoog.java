@@ -61,13 +61,17 @@ public class BeheerDialoog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        geselecteerdeConfiguratie = (String) jcbConfiguraties.getSelectedItem();
-        geselecteerdeConfiguratieId = (int) ids.get(jcbConfiguraties.getSelectedIndex());
-        if (e.getSource() == jbOpenen) {
-            dispose();
-        }
-        if (e.getSource() == jbVerwijder) {
+        try {
+            geselecteerdeConfiguratie = (String) jcbConfiguraties.getSelectedItem();
+            geselecteerdeConfiguratieId = (int) ids.get(jcbConfiguraties.getSelectedIndex());
+            if (e.getSource() == jbOpenen) {
+                dispose();
+            }
+            if (e.getSource() == jbVerwijder) {
 
+            }
+        } catch (ArrayIndexOutOfBoundsException err) {
+            System.err.println("Bestaat niet meer");
         }
 
     }
@@ -89,13 +93,15 @@ public class BeheerDialoog extends JDialog implements ActionListener {
         Query q = new Query();
         q.select(null).from("configuratie");
         ResultSet rs = db.select(q);
-
+        namen.clear();
+        ids.clear();
+        jcbConfiguraties.removeAll();
+        jcbConfiguraties.removeAllItems();
         while (rs.next()) {
             namen.add(rs.getString("naam"));
             ids.add(rs.getInt("configuratie_id"));
         }
-        jcbConfiguraties.removeAll();
-        // jcbConfiguraties.removeAllItems();
+
         for (String string : namen) {
             jcbConfiguraties.addItem(string);
         }

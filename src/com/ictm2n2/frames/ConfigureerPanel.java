@@ -137,6 +137,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbBeheer.addActionListener(this);
 
         bd.jbOpenen.addActionListener(this);
+        bd.jbVerwijder.addActionListener(this);
     }
 
     public void bewerkGegevens() {
@@ -158,13 +159,13 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             Object selectedIndex = jcbWebServers.getSelectedIndex();
             Webserver c = componenten.getWebServers().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            tp.voegToeComponent(new Point(0, 0),"webserver", c);
+            tp.voegToeComponent(new Point(0, 0), "webserver", c);
         }
         if (e.getSource() == jbFwVoegToe) {
             Object selectedIndex = jcbFirewalls.getSelectedIndex();
             Firewall c = componenten.getFirewalls().get((int) selectedIndex);
             configuratie.voegToeComponent(c);
-            tp.voegToeComponent(new Point(0, 0),"firewall", c);
+            tp.voegToeComponent(new Point(0, 0), "firewall", c);
         }
         // Check if optimaliseer button has been pressed for backtracking
         if (e.getSource() == jbOptimaliseer) {
@@ -183,6 +184,9 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     configuratie.optimaliseer(gewenstPercentage);
+                    for (Component component : configuratie.getComponenten()) {
+                        tp.voegToeComponent(new Point(0, 0), component.getType(), component);
+                    }
                 }
                 // this.componenten = configuratie.getComponenten();
             } catch (NumberFormatException ex) {
@@ -283,8 +287,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                         double prijs = rs1.getDouble("type_prijs");
                         String soort = rs1.getString("type_soort").toLowerCase();
 
-                        // configuratie.voegToeComponent(c);
-                        // tp.voegToeComponent("firewall", c);
                         Component c = null;
 
                         if (soort.equals("dbserver")) {
@@ -296,7 +298,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                         }
                         if (c != null) {
                             configuratie.voegToeComponent(c);
-                            tp.voegToeComponent(soort, c);
+                            tp.voegToeComponent(new Point(x, y), soort, c);
                         }
 
                     }
@@ -304,8 +306,48 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             } catch (Exception error) {
                 error.printStackTrace();
             }
+        }
+        if (e.getSource() == bd.jbVerwijder) {
+            try {
+                Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+
+                try {
+
+                    int id = bd.geselecteerdeConfiguratieId;
+                    System.out.println(id);
+                    db.getConnection().setAutoCommit(false);
+                    Query deleteQuery1 = new Query();
+                    deleteQuery1.delete("configuratie_onderdeel").where("configuratie_id = " + id);
+                    PreparedStatement ps1 = db.getConnection().prepareStatement(deleteQuery1.getQuery());
+                    ps1.executeUpdate();
+                    db.getConnection().commit();
+
+                    Query deleteQuery = new Query();
+                    deleteQuery.delete("configuratie").where("configuratie_id = " + id);
+                    PreparedStatement ps = db.getConnection().prepareStatement(deleteQuery.getQuery());
+                    ps.executeUpdate();
+                    db.getConnection().commit();
+
+                    db.getConnection().setAutoCommit(true);
+
+                    // bd.jcbConfiguraties.remove(bd.jcbConfiguraties.getSelectedIndex());
+                    bd.updateDropdown();
+                    // db.delete("configuratie", "WHERE configuratie_id = " + id, new Object[] { id
+                    // });
+                    // db.delete("configuratie_onderdeel", "WHERE configuratie_id = " + id, new
+                    // Object[] { id });
+                } catch (SQLException ex) {
+                    db.getConnection().rollback();
+
+                }
+
+            } catch (Exception err) {
+
+                err.printStackTrace();
+            }
 
         }
+
         bewerkGegevens();
     }
 
