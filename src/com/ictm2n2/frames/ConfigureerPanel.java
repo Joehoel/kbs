@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 
 import com.ictm2n2.resources.Component;
@@ -19,6 +20,7 @@ import com.ictm2n2.resources.Webserver;
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
 import com.ictm2n2.resources.dragdrop.DragDropComponent;
+import com.ictm2n2.resources.dragdrop.VerbindingComponent;
 
 public class ConfigureerPanel extends JPanel implements ActionListener {
 
@@ -40,9 +42,10 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
     private JButton jbOpslaan;
     private JButton jbBeheer;
 
+    private JButton jbMaakLeeg;
+
     private Configuratie configuratie;
     private Componenten componenten;
-    private static int primaryKey = 0;
 
     private TekenPanel tp;
     private BeheerDialoog bd;
@@ -78,6 +81,8 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbOpslaan = new JButton("Opslaan");
         jbBeheer = new JButton("Beheer");
 
+        jbMaakLeeg = new JButton("Leeg maken");
+
         jcbWebServers.setBounds(10, 10, 200, 30);
         jcbDbServers.setBounds(10, 45, 200, 30);
         jcbFirewalls.setBounds(10, 80, 200, 30);
@@ -86,15 +91,17 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         jbDbVoegToe.setBounds(220, 45, 45, 30);
         jbFwVoegToe.setBounds(220, 80, 45, 30);
 
-        jlTotaleBeschikbaarheid.setBounds(10, 180, 200, 30);
-        jlTotalePrijs.setBounds(10, 200, 200, 30);
+        jlTotaleBeschikbaarheid.setBounds(10, 180 + 180, 200, 30);
+        jlTotalePrijs.setBounds(10, 200 + 180, 200, 30);
 
-        jlPercentage.setBounds(10, 240, 130, 30);
-        jtPercentage.setBounds(10, 270, 45, 25);
-        jbOptimaliseer.setBounds(65, 270, 200, 25);
+        jlPercentage.setBounds(10, 240 + 180, 130, 30);
+        jtPercentage.setBounds(10, 270 + 180, 45, 25);
+        jbOptimaliseer.setBounds(65, 270 + 180, 200, 25);
 
         jbOpslaan.setBounds(10, 495, 122, 30);
         jbBeheer.setBounds(142, 495, 122, 30);
+
+        jbMaakLeeg.setBounds(165, 115, 100, 30);
 
         int width = 605;
         int height = 515;
@@ -118,6 +125,8 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         add(jlTotaleBeschikbaarheid);
         add(jlTotalePrijs);
 
+        add(jbMaakLeeg);
+
         add(jbOpslaan);
         add(jbBeheer);
         add(tp);
@@ -133,6 +142,8 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
         bd.jbOpenen.addActionListener(this);
         bd.jbVerwijder.addActionListener(this);
+
+        jbMaakLeeg.addActionListener(this);
     }
 
     public void bewerkGegevens() {
@@ -198,7 +209,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                     java.util.Date date = new java.util.Date();
 
                     java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                    System.out.println(sqlDate);
                     String naamConfiguratie = JOptionPane.showInputDialog(this, "Geef deze configuratie een naam",
                             null);
                     ArrayList<DragDropComponent> componenten = tp.getComponenten();
@@ -209,7 +219,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                             .values(new Object[] { String.valueOf(configuratie.berekenBeschikbaarheid()),
                                     naamConfiguratie, String.valueOf(configuratie.berekenTotalePrijsDouble()) });
 
-                    System.out.println(insertQuery.getQuery());
                     PreparedStatement ps = db.getConnection().prepareStatement(insertQuery.getQuery());
                     ps.setDouble(1, configuratie.berekenBeschikbaarheid());
                     ps.setString(2, naamConfiguratie);
@@ -223,7 +232,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                     while (rs.next()) {
                         id = rs.getInt("configuratie_id");
                     }
-                    System.out.println("Last id " + id);
 
                     for (DragDropComponent dragDropComponent : componenten) {
                         int componentId = dragDropComponent.getComponent().getId();
@@ -234,8 +242,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                         q1.insert("configuratie_onderdeel")
                                 .columns(new Object[] { "configuratie_id", "type_id", "positie_x", "positie_y" })
                                 .values(new Object[] { id, componentId, x, y });
-                        // db.update(q1);
-                        System.out.println(q1.getQuery());
                         PreparedStatement ps1 = db.getConnection().prepareStatement(q1.getQuery());
                         ps1.setInt(1, id);
                         ps1.setInt(2, componentId);
@@ -314,7 +320,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 try {
 
                     int id = bd.geselecteerdeConfiguratieId;
-                    System.out.println(id);
                     db.getConnection().setAutoCommit(false);
                     Query deleteQuery1 = new Query();
                     deleteQuery1.delete("configuratie_onderdeel").where("configuratie_id = " + id);
@@ -348,6 +353,16 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
         }
 
+        if (e.getSource() == jbMaakLeeg) {
+            // for (DragDropComponent dragDropComponent : tp.getComponenten()) {
+            // tp.verwijderComponent(dragDropComponent);
+
+            // }
+            for (int i = (tp.getComponenten().size() - 1); i >= 0; i--) {
+                tp.verwijderComponent(tp.getComponenten().get(i));
+                // tp.getComponenten().remove(tp.getComponenten().get(i));
+            }
+        }
         bewerkGegevens();
     }
 
