@@ -29,7 +29,7 @@ public class DragDropComponent extends JLabel implements ActionListener {
     private JPopupMenu popUpMenu = new JPopupMenu();
     private JMenuItem verwijder = new JMenuItem("Verwijder");
     private JMenuItem verbinden = new JMenuItem("Verbinden");
-    private JMenuItem configureer = new JMenuItem("configureer");
+    private JMenuItem configureer = new JMenuItem("Configureer");
     private DragDropDialoog dialoog;
 
 
