@@ -1,5 +1,8 @@
 package com.ictm2n2.frames;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -51,6 +54,14 @@ public class App extends JFrame implements ActionListener {
         add(jtpTabbedPane);
 
         setVisible(true);
+        centerWindow(this);
+    }
+
+    public static void centerWindow(Window frame) {
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+        frame.setLocation(x, y);
     }
 
     @Override
