@@ -473,9 +473,24 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 message = "<html><p style=\"color:red\">&#10060; Database1</p>";
             }
             if (isBereikbaarDb2) {
-                message = "<p style=\"color:green\">&#x2714; Database1</p>";
+                message += "<p style=\"color:green\">&#x2714; Database2</p>";
             } else {
-                message = "<p style=\"color:red\">&#10060; Database1</p>";
+                message += "<p style=\"color:red\">&#10060; Database2</p>";
+            }
+            if (isBereikbaarWb1) {
+                message += "<p style=\"color:green\">&#x2714; Webserver1</p>";
+            } else {
+                message += "<p style=\"color:red\">&#10060; Webserver1</p>";
+            }
+            if (isBereikbaarWb2) {
+                message += "<p style=\"color:green\">&#x2714; Webserver2</p>";
+            } else {
+                message += "<p style=\"color:red\">&#10060; Webserver2</p>";
+            }
+            if (isBereikbaarPfS) {
+                message += "<p style=\"color:green\">&#x2714; PfSense</p></html>";
+            } else {
+                message += "<p style=\"color:red\">&#10060; PfSense</p></html>";
             }
             JOptionPane.showMessageDialog(this, message,"aids", 1);
         }
