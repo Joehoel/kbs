@@ -496,7 +496,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
             } else {
                 message += "<p style=\"color:red\">&#10060; PfSense</p></html>";
             }
-            JOptionPane.showMessageDialog(this, message,"aids", 1);
+            JOptionPane.showMessageDialog(this, message,"Status componenten", 1);
         }
     }
 }
