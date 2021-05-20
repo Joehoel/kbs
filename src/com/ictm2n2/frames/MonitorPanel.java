@@ -2,6 +2,8 @@ package com.ictm2n2.frames;
 
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
@@ -261,6 +263,16 @@ public class MonitorPanel extends JPanel {
         LbList.setFixedCellWidth(270);
         LbList.setFixedCellHeight(80);
         add(LbList);
+
+        try {
+            BufferedImage image1 = ImageIO.read(new File("src/com/ictm2n2/assets/KBS.png"));
+            JLabel label1 = new JLabel(new ImageIcon(image1));
+            add(label1);
+            label1.setBounds(585, 150, 270, 550);
+        } catch (IOException io) {
+            System.out.println("err");
+            System.exit(1);
+        }
 
         add(jlPfS);
         jlPfS.setBounds(585, 150, 270, 20);
