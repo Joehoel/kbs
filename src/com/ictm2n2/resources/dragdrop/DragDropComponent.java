@@ -32,13 +32,13 @@ public class DragDropComponent extends JLabel implements ActionListener {
     private JMenuItem configureer = new JMenuItem("Configureer");
     private DragDropDialoog dialoog;
 
-
-    public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte, TekenPanel tekenPanel) {
+    public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte,
+            TekenPanel tekenPanel) {
         this(component, imageCorner, plaatje, panelGrootte, tekenPanel, "", "", "");
     }
 
     public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte,
-                             TekenPanel tekenPanel, String ipv4Adres, String ipv4Subnet, String ipv4Gateway) {
+            TekenPanel tekenPanel, String ipv4Adres, String ipv4Subnet, String ipv4Gateway) {
         this.component = component;
         this.imageCorner = imageCorner;
         this.plaatje = plaatje;
