@@ -166,7 +166,7 @@ public class Query {
 
     public Query DbMonitorPanelQuery () {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.tijdstip " +
                 "FROM component c " +
                 "JOIN status s " +
                 "ON c.component_id=s.component_id WHERE c.type_id IN (3,4,5)" +
@@ -177,7 +177,7 @@ public class Query {
 
     public Query WbMonitorPanelQuery () {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.tijdstip " +
                 "FROM component c " +
                 "JOIN status s " +
                 "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)" +
@@ -188,7 +188,7 @@ public class Query {
 
     public Query LbMonitorPanelQuery () {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.tijdstip " +
                 "FROM component c " +
                 "JOIN status s " +
                 "ON c.component_id=s.component_id WHERE c.type_id IN (2)" +
@@ -199,7 +199,7 @@ public class Query {
 
     public Query PfSMonitorPanelQuery () {
         query = new StringBuilder();
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.tijdstip " +
                 "FROM component c " +
                 "JOIN status s " +
                 "ON c.component_id=s.component_id WHERE c.type_id IN (1)" +
