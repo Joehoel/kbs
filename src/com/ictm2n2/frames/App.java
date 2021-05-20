@@ -1,5 +1,8 @@
 package com.ictm2n2.frames;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -11,7 +14,7 @@ import javax.swing.JTabbedPane;
 
 public class App extends JFrame implements ActionListener {
     private JTabbedPane jtpTabbedPane = new JTabbedPane();
-    private ConfigureerPanel configureerPanel = new ConfigureerPanel();
+    private ConfigureerPanel configureerPanel = new ConfigureerPanel(this);
     private MonitorPanel monitorPanel = new MonitorPanel();
     private InstellingenPanel instellingenPanel = new InstellingenPanel();
 
@@ -33,6 +36,7 @@ public class App extends JFrame implements ActionListener {
             setTitle("NerdyGadgets | ICTm2n2");
             setResizable(false);
             setLayout(null);
+            setAutoRequestFocus(true);
 
             jtpTabbedPane.setBounds(0, 0, 900, 600);
             jtpTabbedPane.add("Configureer", configureerPanel);
@@ -50,6 +54,14 @@ public class App extends JFrame implements ActionListener {
         add(jtpTabbedPane);
 
         setVisible(true);
+        centerWindow(this);
+    }
+
+    public static void centerWindow(Window frame) {
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+        frame.setLocation(x, y);
     }
 
     @Override

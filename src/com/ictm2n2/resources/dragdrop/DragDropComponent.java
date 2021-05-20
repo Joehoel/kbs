@@ -29,16 +29,29 @@ public class DragDropComponent extends JLabel implements ActionListener {
     private JPopupMenu popUpMenu = new JPopupMenu();
     private JMenuItem verwijder = new JMenuItem("Verwijder");
     private JMenuItem verbinden = new JMenuItem("Verbinden");
+    private JMenuItem configureer = new JMenuItem("Configureer");
+    private DragDropDialoog dialoog;
 
-    public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte, TekenPanel tekenPanel) {
+    public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte,
+            TekenPanel tekenPanel) {
+        this(component, imageCorner, plaatje, panelGrootte, tekenPanel, "", "", "");
+    }
+
+    public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte,
+            TekenPanel tekenPanel, String ipv4Adres, String ipv4Subnet, String ipv4Gateway) {
         this.component = component;
         this.imageCorner = imageCorner;
         this.plaatje = plaatje;
         this.panelGrootte = panelGrootte;
         this.tekenPanel = tekenPanel;
 
+        this.dialoog = new DragDropDialoog(tekenPanel, this);
+        this.dialoog.setIPv4Adres(ipv4Adres);
+        this.dialoog.setIPv4Subnet(ipv4Subnet);
+        this.dialoog.setIPv4Gateway(ipv4Gateway);
+
         setIcon(plaatje);
-        setText(component.getNaam());
+        setText("<html>" + component.getNaam() + "<br>" + dialoog.getIPv4Adres() + "</html>");
 
         setVerticalAlignment(SwingConstants.CENTER);
         setHorizontalAlignment(SwingConstants.CENTER);
@@ -50,12 +63,15 @@ public class DragDropComponent extends JLabel implements ActionListener {
 
         verwijder.setActionCommand("verwijder");
         verbinden.setActionCommand("verbinden");
+        configureer.setActionCommand("configureer");
 
         verwijder.addActionListener(this);
         verbinden.addActionListener(this);
+        configureer.addActionListener(this);
 
         popUpMenu.add(verwijder);
         popUpMenu.add(verbinden);
+        popUpMenu.add(configureer);
 
         add(popUpMenu);
 
@@ -70,6 +86,10 @@ public class DragDropComponent extends JLabel implements ActionListener {
         return this.component;
     }
 
+    public void setLabel() {
+        this.setText("<html>" + component.getNaam() + "<br>" + dialoog.getIPv4Adres() + "</html>");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("verwijder")) {
@@ -82,6 +102,9 @@ public class DragDropComponent extends JLabel implements ActionListener {
             } else {
                 tekenPanel.voegToeVerbinding(this);
             }
+        }
+        if (e.getActionCommand().equals("configureer")) {
+            dialoog.setVisible(true);
         }
     }
 

@@ -1,8 +1,7 @@
 package com.ictm2n2.frames;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
@@ -11,23 +10,24 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.html.ImageView;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
-import com.ictm2n2.resources.database.SendPingRequest;
 
 public class MonitorPanel extends JPanel {
     private JLabel jlDb;
     private JLabel jlWb;
+    private JLabel jlLb;
     private JLabel jlPfS;
-    private JLabel jlStatus;
-    private JLabel jlStatusIcon;
     private JLabel jlDetailOverzicht;
-
-    private JButton jbStatus;
 
     private JLabel jlDetailOverzichtWaarden;
     private JPanel jpDetailOverzichtWaarden;
@@ -44,6 +44,12 @@ public class MonitorPanel extends JPanel {
     private ArrayList<String> WbAangesloten = new ArrayList<String>();
     private Timestamp WbTijdstip;
 
+    private ArrayList<String> LbHostnames = new ArrayList<String>();
+    private ArrayList<String> LbCpu = new ArrayList<String>();
+    private ArrayList<String> LbOpslag = new ArrayList<String>();
+    private ArrayList<String> LbAangesloten = new ArrayList<String>();
+    private Timestamp LbTijdstip;
+
     private ArrayList<String> PfSHostnames = new ArrayList<String>();
     private ArrayList<String> PfSCpu = new ArrayList<String>();
     private ArrayList<String> PfSOpslag = new ArrayList<String>();
@@ -51,24 +57,6 @@ public class MonitorPanel extends JPanel {
     private Timestamp PfSTijdstip;
 
     Timestamp localTime = new Timestamp(System.currentTimeMillis());
-
-    byte[] ipDb1 = {(byte) 172, 16, 1, 2};
-    byte[] ipDb2 = {(byte) 172, 16, 1, 3};
-    byte[] ipWb1 = {(byte) 172, 16, 0, 2};
-    byte[] ipWb2 = {(byte) 172, 16, 0, 3};
-    byte[] ipPfS = {(byte) 172, 16, 0, 1};
-
-    SendPingRequest sprDb1 = new SendPingRequest("Database 1", ipDb1);
-    SendPingRequest sprDb2 = new SendPingRequest("Database 2", ipDb2);
-    SendPingRequest sprWb1 = new SendPingRequest("Webserver 1", ipWb1);
-    SendPingRequest sprWb2 = new SendPingRequest("Webserver 2", ipWb2);
-    SendPingRequest sprPfS = new SendPingRequest("PfSense", ipPfS);
-
-    boolean isBereikbaarDb1 = false;
-    boolean isBereikbaarDb2 = false;
-    boolean isBereikbaarWb1 = false;
-    boolean isBereikbaarWb2 = false;
-    boolean isBereikbaarPfS = false;
 
     private String detailOverzichtWaarden = "";
 
@@ -86,21 +74,18 @@ public class MonitorPanel extends JPanel {
         WbList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         WbList.setLayoutOrientation(JList.VERTICAL_WRAP);
 
+        DefaultListModel<String> dlLbModel = new DefaultListModel<>();
+        JList LbList = new JList<>(dlLbModel);
+        LbList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        LbList.setLayoutOrientation(JList.VERTICAL_WRAP);
+
         DefaultListModel<String> dlPfSModel = new DefaultListModel<>();
         JList PfSList = new JList<>(dlPfSModel);
         PfSList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         PfSList.setLayoutOrientation(JList.VERTICAL_WRAP);
 
-        jlStatusIcon = new JLabel();
-        try {
-            BufferedImage image = ImageIO.read(new File("Rood-kruisje.png"));
-            jlStatusIcon = new JLabel(new ImageIcon(image));
-        } catch (IOException k) {
-            System.out.println(k);
-            System.exit(0);
-        }
-
-//        timer toevoegen die moet zorgen dat de list altijd up-to-date blijft (iedere 60 seconden)
+        // timer toevoegen die moet zorgen dat de list altijd up-to-date blijft (iedere
+        // 60 seconden)
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
                            @Override
@@ -175,12 +160,48 @@ public class MonitorPanel extends JPanel {
                                }
                                System.out.println(WbHostnames.size() + " " + WbCpu.size() + " " + WbOpslag.size());
 
-                               // pfsense ophalen en in array stoppen
-                               try {
-                                   Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
-                                   Query q = new Query();
-                                   q = q.PfSMonitorPanelQuery();
-                                   ResultSet rs = db.preparedQuery(q);
+                // loadbalancer ophalen en in array stoppen
+                try {
+                    Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+                    Query q = new Query();
+                    q = q.LbMonitorPanelQuery();
+                    ResultSet rs = db.preparedQuery(q);
+
+                    try {
+                        // eerst alle arraylists leegmaken indien deze al eens gevuld zijn door een
+                        // query
+                        LbHostnames.clear();
+                        LbCpu.clear();
+                        LbOpslag.clear();
+                        LbAangesloten.clear();
+
+                        while (rs.next()) {
+                            LbHostnames.add(rs.getString("c.hostname"));
+                            LbCpu.add(String.valueOf(rs.getDouble("c.cpu")));
+                            LbOpslag.add(String.valueOf(rs.getDouble("c.opslag")));
+                            LbTijdstip = (rs.getTimestamp("s.tijdstip"));
+                            System.out.println(localTime.getTime() - LbTijdstip.getTime());
+
+                            if ((localTime.getTime() - LbTijdstip.getTime()) > 5000000) {
+                                LbAangesloten.add("niet aangesloten");
+                            } else {
+                                LbAangesloten.add("aangesloten");
+                            }
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                } catch (Exception a) {
+                    a.printStackTrace();
+                }
+                System.out.println(LbHostnames.size() + " " + LbCpu.size() + " " + LbOpslag.size());
+
+                // pfsense ophalen en in array stoppen
+                try {
+                    Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+                    Query q = new Query();
+                    q = q.PfSMonitorPanelQuery();
+                    ResultSet rs = db.preparedQuery(q);
 
                                    try {
                                        // eerst alle arraylists leegmaken indien deze al eens gevuld zijn door een query
@@ -237,14 +258,32 @@ public class MonitorPanel extends JPanel {
                                    String element = "<html><strong>Hostname: " + String.format(WbHostnames.get(i)) + " </strong><br>"
                                            + WbCpu.get(i) + " GHz <br>" + WbOpslag.get(i) + " GB<br>";
 
-                                   if (WbAangesloten.get(i).equals("aangesloten")) {
-                                       element += "<i> <p style =\"color:green\">" + WbAangesloten.get(i) + "</p></i></html>";
-                                   } else {
-                                       element += "<i> <p style =\"color:red\">" + WbAangesloten.get(i) + "</p></i></html>";
-                                   }
-                                   dlWbModel.addElement(element);
-                                   i++;
-                               }
+                    if (WbAangesloten.get(i).equals("aangesloten")) {
+                        element += "<i> <p style =\"color:green\">" + WbAangesloten.get(i) + "</p></i></html>";
+                    } else {
+                        element += "<i> <p style =\"color:red\">" + WbAangesloten.get(i) + "</p></i></html>";
+                    }
+                    dlWbModel.addElement(element);
+                    i++;
+                }
+
+                // eerst zorgen dat de defaultlistmodel leeg is
+                dlLbModel.clear();
+
+                // loadbalancer toevoegen aan jlist
+                i = 0;
+                while (i < LbHostnames.size()) {
+                    String element = "<html><strong>Hostname: " + String.format(LbHostnames.get(i)) + " </strong><br>"
+                            + LbCpu.get(i) + " GHz <br>" + LbOpslag.get(i) + " GB<br>";
+
+                    if (LbAangesloten.get(i).equals("aangesloten")) {
+                        element += "<i> <p style =\"color:green\">" + LbAangesloten.get(i) + "</p></i></html>";
+                    } else {
+                        element += "<i> <p style =\"color:red\">" + LbAangesloten.get(i) + "</p></i></html>";
+                    }
+                    dlLbModel.addElement(element);
+                    i++;
+                }
 
                                 //eerst zorgen dat de defaultlistmodel leeg is
                                 dlPfSModel.clear();
@@ -265,22 +304,23 @@ public class MonitorPanel extends JPanel {
                                }
 
                                //zorgen dat alle componenten gepingt worden voor troubleshooting
-                               try {
-                                   isBereikbaarDb1 = sprDb1.sendPingRequest();
-                                   isBereikbaarDb2 = sprDb2.sendPingRequest();
-                                   isBereikbaarWb1 = sprWb1.sendPingRequest();
-                                   isBereikbaarWb2 = sprWb2.sendPingRequest();
-                                   isBereikbaarPfS = sprPfS.sendPingRequest();
-                               }  catch (UnknownHostException e) {
-                                   e.printStackTrace();
-                               } catch (IOException e) {
-                                   e.printStackTrace();
-                               }
+//                               try {
+//                                   isBereikbaarDb1 = sprDb1.sendPingRequest();
+//                                   isBereikbaarDb2 = sprDb2.sendPingRequest();
+//                                   isBereikbaarWb1 = sprWb1.sendPingRequest();
+//                                   isBereikbaarWb2 = sprWb2.sendPingRequest();
+//                                   isBereikbaarPfS = sprPfS.sendPingRequest();
+//                               }  catch (UnknownHostException e) {
+//                                   e.printStackTrace();
+//                               } catch (IOException e) {
+//                                   e.printStackTrace();
+//                               }
                            }
                        }, 0, 5000);
 
         jlDb = new JLabel("Databases");
         jlWb = new JLabel("Webservers");
+        jlLb = new JLabel("Load-Balancer");
         jlPfS = new JLabel("PfSense");
         jlDetailOverzicht = new JLabel("Gedetailleerd Overzicht");
         jlDetailOverzichtWaarden = new JLabel(detailOverzichtWaarden);
@@ -300,17 +340,19 @@ public class MonitorPanel extends JPanel {
         WbList.setFixedCellHeight(80);
         add(WbList);
 
+        add(jlLb);
+        jlLb.setBounds(585, 20, 270, 20);
+        LbList.setBounds(585, 50, 270, 80);
+        LbList.setFixedCellWidth(270);
+        LbList.setFixedCellHeight(80);
+        add(LbList);
+
         add(jlPfS);
-        jlPfS.setBounds(585, 20, 270, 20);
-        PfSList.setBounds(585, 50, 270, 80);
+        jlPfS.setBounds(585, 150, 270, 20);
+        PfSList.setBounds(585, 180, 270, 80);
         PfSList.setFixedCellWidth(270);
         PfSList.setFixedCellHeight(80);
         add(PfSList);
-
-        add(jlStatusIcon);
-        jlStatusIcon.setBounds(585, 150, 270, 20);
-        jbStatus.setBounds(585, 180, 270, 80);
-        add(jbStatus);
 
         add(jlDetailOverzicht);
         jlDetailOverzicht.setBounds(585, 280, 270, 20);
@@ -416,6 +458,54 @@ public class MonitorPanel extends JPanel {
             }
         });
 
+        // selectionlistener voor loadbalancer
+        LbList.getSelectionModel().addListSelectionListener(e -> {
+            if (LbList.getValueIsAdjusting()) {
+                // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
+                // formaat
+                Object selectedComponentLb = LbList.getSelectedValue();
+                String selectedComponentMinHTMLLb = String.valueOf(selectedComponentLb).replaceAll("\\<.*?\\>", "");
+                System.out.println(selectedComponentMinHTMLLb);
+                String[] selectedComponentSplitLb = selectedComponentMinHTMLLb.split(" ");
+                String hostnameLb = selectedComponentSplitLb[1];
+                System.out.println(hostnameLb);
+
+                // gedetaileerde informatie over component wordt opgevraagd uit database
+                try {
+                    Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+                    Query q = new Query();
+                    q = q.DetailOverzichtMonitorPanelQuery(hostnameLb);
+                    ResultSet rs = db.preparedQuery(q);
+
+                    // en natuurlijk opgeslagen om het vervolgens te kunnen weergeven in de GUI :)
+                    try {
+                        while (rs.next()) {
+                            double processor = rs.getDouble("c.cpu");
+                            double processorBelasting = rs.getDouble("s.processor_belasting");
+                            double opslag = rs.getDouble("c.opslag");
+                            double opslagVerbruik = rs.getDouble("s.opslag_verbruik");
+                            int beschikbaarLengte = (int) rs.getDouble("beschikbaar_lengte");
+                            String tijdstip = rs.getString("s.tijdstip");
+                            // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
+
+                            detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameLb + "</strong><br><br>"
+                                    + processor + " GHz kloksnelheid<br>" + processorBelasting
+                                    + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
+                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte / 60)
+                                    + " minuten in bedrijf<br>afgelezen op " + tijdstip + "</html>";
+                            jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
+                            LbList.setSelectedValue(null, true);
+                            LbList.getSelectionModel().clearSelection();
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                } catch (Exception a) {
+                    a.printStackTrace();
+                }
+            }
+        });
+
         // selectionlistener voor firewall
         PfSList.getSelectionModel().addListSelectionListener(e -> {
             if (PfSList.getValueIsAdjusting()) {
@@ -451,7 +541,9 @@ public class MonitorPanel extends JPanel {
                                     + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte / 60) + " minuten in bedrijf<br>afgelezen op "
                                     + tijdstip + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
-                            PfSList.setSelectedValue(null,true);
+                            // PfSList.setSelectionInterval(-1, -1);
+                            // PfSList.setEnabled(false);
+                            PfSList.setSelectedValue(null, true);
                             PfSList.getSelectionModel().clearSelection();
                         }
                     } catch (SQLException throwables) {
