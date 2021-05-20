@@ -1,5 +1,7 @@
 package com.ictm2n2.frames;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.swing.*;
 
 import com.ictm2n2.resources.database.Database;
@@ -88,7 +91,8 @@ public class MonitorPanel extends JPanel implements ActionListener {
         PfSList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         PfSList.setLayoutOrientation(JList.VERTICAL_WRAP);
 
-//        timer toevoegen die moet zorgen dat de list altijd up-to-date blijft (iedere 60 seconden)
+        // timer toevoegen die moet zorgen dat de list altijd up-to-date blijft (iedere
+        // 60 seconden)
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
                            @Override

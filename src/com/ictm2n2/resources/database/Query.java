@@ -160,7 +160,8 @@ public class Query {
     public Query groupBy(String column) {
         query = new StringBuilder();
         query.append(" GROUP BY ");
-        query.append(column);;
+        query.append(column);
+        ;
         return this;
     }
 

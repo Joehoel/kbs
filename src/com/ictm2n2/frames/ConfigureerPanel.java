@@ -1,12 +1,5 @@
 package com.ictm2n2.frames;
 
-import com.ictm2n2.resources.Component;
-import com.ictm2n2.resources.*;
-import com.ictm2n2.resources.database.Database;
-import com.ictm2n2.resources.database.Query;
-import com.ictm2n2.resources.dragdrop.DragDropComponent;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +7,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.sound.sampled.SourceDataLine;
+import javax.swing.*;
+
+import com.ictm2n2.resources.Component;
+import com.ictm2n2.resources.Componenten;
+import com.ictm2n2.resources.Configuratie;
+import com.ictm2n2.resources.DatabaseServer;
+import com.ictm2n2.resources.Firewall;
+import com.ictm2n2.resources.Webserver;
+import com.ictm2n2.resources.database.Database;
+import com.ictm2n2.resources.database.Query;
+import com.ictm2n2.resources.dragdrop.DragDropComponent;
+import com.ictm2n2.resources.dragdrop.VerbindingComponent;
 
 public class ConfigureerPanel extends JPanel implements ActionListener {
 
