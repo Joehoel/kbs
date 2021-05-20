@@ -1,8 +1,8 @@
 package com.ictm2n2.frames;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
@@ -11,20 +11,17 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.html.ImageView;
 
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
 import com.ictm2n2.resources.database.SendPingRequest;
 
-public class MonitorPanel extends JPanel {
+public class MonitorPanel extends JPanel implements ActionListener {
     private JLabel jlDb;
     private JLabel jlWb;
     private JLabel jlPfS;
     private JLabel jlStatus;
-    private JLabel jlStatusIcon;
     private JLabel jlDetailOverzicht;
 
     private JButton jbStatus;
@@ -50,25 +47,25 @@ public class MonitorPanel extends JPanel {
     private ArrayList<String> PfSAangesloten = new ArrayList<String>();
     private Timestamp PfSTijdstip;
 
-    Timestamp localTime = new Timestamp(System.currentTimeMillis());
+    private Timestamp localTime = new Timestamp(System.currentTimeMillis());
 
-    byte[] ipDb1 = {(byte) 172, 16, 1, 2};
-    byte[] ipDb2 = {(byte) 172, 16, 1, 3};
-    byte[] ipWb1 = {(byte) 172, 16, 0, 2};
-    byte[] ipWb2 = {(byte) 172, 16, 0, 3};
-    byte[] ipPfS = {(byte) 172, 16, 0, 1};
+    private byte[] ipDb1 = {(byte) 172, 16, 1, 2};
+    private byte[] ipDb2 = {(byte) 172, 16, 1, 3};
+    private byte[] ipWb1 = {(byte) 172, 16, 0, 2};
+    private byte[] ipWb2 = {(byte) 172, 16, 0, 3};
+    private byte[] ipPfS = {(byte) 172, 16, 0, 1};
 
-    SendPingRequest sprDb1 = new SendPingRequest("Database 1", ipDb1);
-    SendPingRequest sprDb2 = new SendPingRequest("Database 2", ipDb2);
-    SendPingRequest sprWb1 = new SendPingRequest("Webserver 1", ipWb1);
-    SendPingRequest sprWb2 = new SendPingRequest("Webserver 2", ipWb2);
-    SendPingRequest sprPfS = new SendPingRequest("PfSense", ipPfS);
+    private SendPingRequest sprDb1 = new SendPingRequest("Database 1", ipDb1);
+    private SendPingRequest sprDb2 = new SendPingRequest("Database 2", ipDb2);
+    private SendPingRequest sprWb1 = new SendPingRequest("Webserver 1", ipWb1);
+    private SendPingRequest sprWb2 = new SendPingRequest("Webserver 2", ipWb2);
+    private SendPingRequest sprPfS = new SendPingRequest("PfSense", ipPfS);
 
-    boolean isBereikbaarDb1 = false;
-    boolean isBereikbaarDb2 = false;
-    boolean isBereikbaarWb1 = false;
-    boolean isBereikbaarWb2 = false;
-    boolean isBereikbaarPfS = false;
+    private boolean isBereikbaarDb1 = false;
+    private boolean isBereikbaarDb2 = false;
+    private boolean isBereikbaarWb1 = false;
+    private boolean isBereikbaarWb2 = false;
+    private boolean isBereikbaarPfS = false;
 
     private String detailOverzichtWaarden = "";
 
@@ -90,15 +87,6 @@ public class MonitorPanel extends JPanel {
         JList PfSList = new JList<>(dlPfSModel);
         PfSList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         PfSList.setLayoutOrientation(JList.VERTICAL_WRAP);
-
-        jlStatusIcon = new JLabel();
-        try {
-            BufferedImage image = ImageIO.read(new File("Rood-kruisje.png"));
-            jlStatusIcon = new JLabel(new ImageIcon(image));
-        } catch (IOException k) {
-            System.out.println(k);
-            System.exit(0);
-        }
 
 //        timer toevoegen die moet zorgen dat de list altijd up-to-date blijft (iedere 60 seconden)
         Timer timer = new Timer();
@@ -276,15 +264,24 @@ public class MonitorPanel extends JPanel {
                                } catch (IOException e) {
                                    e.printStackTrace();
                                }
+
+                               if (isBereikbaarDb1 && isBereikbaarDb2 && isBereikbaarWb1 && isBereikbaarWb2 && isBereikbaarPfS) {
+                                   jlStatus.setText("<html><p style=\"color:green\">&#x2714; Status bereikbaarheid</p></html>");
+                               } else {
+                                   jlStatus.setText("<html><p style=\"color:red\">&#10060; Status bereikbaarheid</p></html>");
+                               }
                            }
                        }, 0, 5000);
 
         jlDb = new JLabel("Databases");
         jlWb = new JLabel("Webservers");
         jlPfS = new JLabel("PfSense");
+        jlStatus = new JLabel("<html><p style=\"color:red\">&#10060; Status bereikbaarheid</p></html>");
         jlDetailOverzicht = new JLabel("Gedetailleerd Overzicht");
         jlDetailOverzichtWaarden = new JLabel(detailOverzichtWaarden);
         jpDetailOverzichtWaarden = new JPanel();
+
+        jbStatus = new JButton("Bekijk status per component");
 
         add(jlDb);
         jlDb.setBounds(25, 20, 270, 20);
@@ -307,10 +304,11 @@ public class MonitorPanel extends JPanel {
         PfSList.setFixedCellHeight(80);
         add(PfSList);
 
-        add(jlStatusIcon);
-        jlStatusIcon.setBounds(585, 150, 270, 20);
+        add(jlStatus);
+        jlStatus.setBounds(585, 150, 270, 20);
         jbStatus.setBounds(585, 180, 270, 80);
         add(jbStatus);
+        jbStatus.addActionListener(this);
 
         add(jlDetailOverzicht);
         jlDetailOverzicht.setBounds(585, 280, 270, 20);
@@ -462,5 +460,24 @@ public class MonitorPanel extends JPanel {
                 }
             }
         });
+    }
+
+    //actionlistener aan jbstatus toevoegen
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == jbStatus) {
+            String message = "";
+            if (isBereikbaarDb1) {
+                message = "<html><p style=\"color:green\">&#x2714; Database1</p>";
+            } else {
+                message = "<html><p style=\"color:red\">&#10060; Database1</p>";
+            }
+            if (isBereikbaarDb2) {
+                message = "<p style=\"color:green\">&#x2714; Database1</p>";
+            } else {
+                message = "<p style=\"color:red\">&#10060; Database1</p>";
+            }
+            JOptionPane.showMessageDialog(this, message,"aids", 1);
+        }
     }
 }
