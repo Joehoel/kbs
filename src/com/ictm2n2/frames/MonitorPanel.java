@@ -265,7 +265,7 @@ public class MonitorPanel extends JPanel {
         add(LbList);
 
         try {
-            BufferedImage image1 = ImageIO.read(new File("src/com/ictm2n2/assets/KBS.png"));
+            BufferedImage image1 = ImageIO.read(new File("src/com/ictm2n2/assets/Rood-kruisje.png"));
             JLabel label1 = new JLabel(new ImageIcon(image1));
             add(label1);
             label1.setBounds(585, 150, 270, 550);
