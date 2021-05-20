@@ -9,7 +9,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import com.formdev.flatlaf.FlatLaf;
 
@@ -32,6 +31,8 @@ public class InstellingenPanel extends JPanel implements ActionListener {
             themes.put("Moonlight", "com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMoonlightIJTheme");
             themes.put("Dracula", "com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatDraculaIJTheme");
             themes.put("Github", "com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubIJTheme");
+            themes.put("Solarized Dark",
+                    "com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatSolarizedDarkIJTheme");
 
             Object[] themeData = new Object[themes.size()];
 
@@ -69,22 +70,5 @@ public class InstellingenPanel extends JPanel implements ActionListener {
                 System.err.println(error);
             }
         }
-    }
-
-    /**
-     * Returns the class name of the installed LookAndFeel with a name containing
-     * the name snippet or null if none found.
-     *
-     * @param nameSnippet a snippet contained in the Laf's name
-     * @return the class name if installed, or null
-     */
-    public static String getLookAndFeelClassName(String nameSnippet) {
-        LookAndFeelInfo[] plafs = UIManager.getInstalledLookAndFeels();
-        for (LookAndFeelInfo info : plafs) {
-            if (info.getName().contains(nameSnippet)) {
-                return info.getClassName();
-            }
-        }
-        return null;
     }
 }
