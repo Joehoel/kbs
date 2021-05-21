@@ -176,7 +176,7 @@ public class Backtracking {
         }
     }
 
-    private int hoeveelVan(Component component, Configuratie configuratie) {
+    public int hoeveelVan(Component component, Configuratie configuratie) {
         // Bereken hoeveel er van een component al in de configuratie zitten.
 
         int counter = 0;
