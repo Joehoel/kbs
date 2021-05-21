@@ -17,11 +17,25 @@ public class DragDropDialoog extends JDialog implements ActionListener {
     private JLabel jlIPv4Adres = new JLabel("IPv4 adres");
     private JLabel jlIPv4Subnet = new JLabel("Subnetmasker");
     private JLabel jlIPv4Gateway = new JLabel("Standaardgateway");
+    private JLabel jlIPv4DNSServer = new JLabel("DNS server");
+
+    private JLabel jlIPv6Configuratie = new JLabel("IPv6 configuratie");
+    private JLabel jlIPv6Adres = new JLabel("IPv6 adres");
+    private JLabel jlIPv6LinkLocal = new JLabel("Link local adres");
+    private JLabel jlIPv6Gateway = new JLabel("Standaardgateway");
+    private JLabel jlIPv6DNSServer = new JLabel("DNS server");
+
     private JLabel jlError = new JLabel();
 
     private JTextField jtIPv4Adres = new JTextField();
     private JTextField jtIPv4Subnet = new JTextField();
     private JTextField jtIpv4Gateway = new JTextField();
+    private JTextField jtIPv4DNSServer = new JTextField();
+
+    private JTextField jtIPv6Adres = new JTextField();
+    private JTextField jtIPv6LinkLocal = new JTextField();
+    private JTextField jtIPv6Gateway = new JTextField();
+    private JTextField jtIPv6DNSServer = new JTextField();
 
     private JButton jbAnnuleer = new JButton("Annuleer");
     private JButton jbOpslaan = new JButton("Opslaan");
@@ -31,7 +45,7 @@ public class DragDropDialoog extends JDialog implements ActionListener {
         this.dragDropComponent = dragDropComponent;
 
         setLayout(null);
-        setSize(300, 400);
+        setSize(450, 460);
         setLocationRelativeTo(tekenPanel.getFrame());
         setTitle("Configureer IP");
 
@@ -39,14 +53,28 @@ public class DragDropDialoog extends JDialog implements ActionListener {
         jlIPv4Adres.setBounds(20, 40, 100, 25);
         jlIPv4Subnet.setBounds(20, 70, 100, 25);
         jlIPv4Gateway.setBounds(20, 100, 100, 25);
-        jlError.setBounds(10, 285, 275, 25);
+        jlIPv4DNSServer.setBounds(20, 130, 100, 25);
 
-        jtIPv4Adres.setBounds(150, 40, 120, 25);
-        jtIPv4Subnet.setBounds(150, 70, 120, 25);
-        jtIpv4Gateway.setBounds(150, 100, 120, 25);
+        jlIPv6Configuratie.setBounds(10, 180, 100, 25);
+        jlIPv6Adres.setBounds(20, 210, 100, 25);
+        jlIPv6LinkLocal.setBounds(20, 240, 100, 25);
+        jlIPv6Gateway.setBounds(20, 270, 100, 25);
+        jlIPv6DNSServer.setBounds(20, 300, 100, 25);
 
-        jbAnnuleer.setBounds(10, 325, 125, 25);
-        jbOpslaan.setBounds(150, 325, 125, 25);
+        jlError.setBounds(10, 355, 275, 25);
+
+        jtIPv4Adres.setBounds(150, 40, 270, 25);
+        jtIPv4Subnet.setBounds(150, 70, 270, 25);
+        jtIpv4Gateway.setBounds(150, 100, 270, 25);
+        jtIPv4DNSServer.setBounds(150, 130, 270, 25);
+
+        jtIPv6Adres.setBounds(150, 210, 270, 25);
+        jtIPv6LinkLocal.setBounds(150, 240, 270, 25);
+        jtIPv6Gateway.setBounds(150, 270, 270, 25);
+        jtIPv6DNSServer.setBounds(150, 300, 270, 25);
+
+        jbAnnuleer.setBounds(160, 385, 125, 25);
+        jbOpslaan.setBounds(300, 385, 125, 25);
 
         jbAnnuleer.addActionListener(this);
         jbOpslaan.addActionListener(this);
@@ -58,11 +86,25 @@ public class DragDropDialoog extends JDialog implements ActionListener {
         add(jlIPv4Adres);
         add(jlIPv4Subnet);
         add(jlIPv4Gateway);
+        add(jlIPv4DNSServer);
+
+        add(jlIPv6Configuratie);
+        add(jlIPv6Adres);
+        add(jlIPv6LinkLocal);
+        add(jlIPv6Gateway);
+        add(jlIPv6DNSServer);
+
         add(jlError);
 
         add(jtIPv4Adres);
         add(jtIPv4Subnet);
         add(jtIpv4Gateway);
+        add(jtIPv4DNSServer);
+
+        add(jtIPv6Adres);
+        add(jtIPv6LinkLocal);
+        add(jtIPv6Gateway);
+        add(jtIPv6DNSServer);
 
         add(jbAnnuleer);
         add(jbOpslaan);
@@ -74,11 +116,13 @@ public class DragDropDialoog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbAnnuleer) {
             setVisible(false);
+            this.jlError.setVisible(false);
         }
 
         if (e.getSource() == jbOpslaan) {
             if (jtIPv4Adres.getText().equals("")) {
                 setVisible(false);
+                this.jlError.setVisible(false);
             }
             else {
                 String regex = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
