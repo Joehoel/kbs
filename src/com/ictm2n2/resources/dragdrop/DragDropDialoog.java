@@ -154,6 +154,26 @@ public class DragDropDialoog extends JDialog implements ActionListener {
         this.jtIpv4Gateway.setText(ipv4Gateway);
     }
 
+    public void setIPv4DNSServer(String ipv4DNSServer) {
+        this.jtIPv4DNSServer.setText(ipv4DNSServer);
+    }
+
+    public void setIPv6Adres(String ipv6Adres) {
+        this.jtIPv6Adres.setText(ipv6Adres);
+    }
+
+    public void setIPv6LinkLocal(String ipv6LinkLocal) {
+        this.jtIPv6LinkLocal.setText(ipv6LinkLocal);
+    }
+
+    public void setIPv6Gateway(String ipv6Gateway) {
+        this.jtIPv6Gateway.setText(ipv6Gateway);
+    }
+
+    public void setIPv6DNSServer(String ipv6DNSServer) {
+        this.jtIPv6DNSServer.setText(ipv6DNSServer);
+    }
+
     public String getIPv4Adres() {
         return this.jtIPv4Adres.getText();
     }
@@ -172,5 +192,17 @@ public class DragDropDialoog extends JDialog implements ActionListener {
 
     public String getIPv6Adres() {
         return this.jtIPv6Adres.getText();
+    }
+
+    public String getIPv6LinkLocal() {
+        return this.jtIPv6LinkLocal.getText();
+    }
+
+    public String getIPv6Gateway() {
+        return this.jtIPv6Gateway.getText();
+    }
+
+    public String getIPv6DNSServer() {
+        return this.jtIPv6DNSServer.getText();
     }
 }
