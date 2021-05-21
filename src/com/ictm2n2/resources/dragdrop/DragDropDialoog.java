@@ -120,30 +120,25 @@ public class DragDropDialoog extends JDialog implements ActionListener {
         }
 
         if (e.getSource() == jbOpslaan) {
-            if (jtIPv4Adres.getText().equals("")) {
+            String regexIPv4 = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
+            if (!jtIPv4Adres.getText().matches(regexIPv4) && !jtIPv4Adres.getText().equals("")) {
+                this.jlError.setText("Geen geldig IPv4 adres opgegeven!");
+                this.jlError.setVisible(true);
+            }
+            else if (!jtIPv4Subnet.getText().matches(regexIPv4) && !jtIPv4Subnet.getText().equals("")) {
+                this.jlError.setText("Geen geldig IPv4 subnet opgegeven!");
+                this.jlError.setVisible(true);
+            }
+            else if (!jtIpv4Gateway.getText().matches(regexIPv4) && !jtIpv4Gateway.getText().equals("")) {
+                this.jlError.setText("Geen geldig IPv4 gateway opgegeven!");
+                this.jlError.setVisible(true);
+            }
+            else {
+                dragDropComponent.setLabel();
                 setVisible(false);
                 this.jlError.setVisible(false);
             }
-            else {
-                String regex = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
-                if (!jtIPv4Adres.getText().matches(regex)) {
-                    this.jlError.setText("Geen geldig IPv4 adres opgegeven!");
-                    this.jlError.setVisible(true);
-                }
-                else if (!jtIPv4Subnet.getText().matches(regex) && !jtIPv4Subnet.getText().equals("")) {
-                    this.jlError.setText("Geen geldig IPv4 subnet opgegeven!");
-                    this.jlError.setVisible(true);
-                }
-                else if (!jtIpv4Gateway.getText().matches(regex) && !jtIpv4Gateway.getText().equals("")) {
-                    this.jlError.setText("Geen geldig IPv4 gateway opgegeven!");
-                    this.jlError.setVisible(true);
-                }
-                else {
-                    dragDropComponent.setLabel();
-                    setVisible(false);
-                    this.jlError.setVisible(false);
-                }
-            }
+
         }
     }
 
@@ -169,5 +164,13 @@ public class DragDropDialoog extends JDialog implements ActionListener {
 
     public String getIPv4Gateway() {
         return jtIpv4Gateway.getText();
+    }
+
+    public String getIPv4DNSServer() {
+        return jtIPv4DNSServer.getText();
+    }
+
+    public String getIPv6Adres() {
+        return this.jtIPv6Adres.getText();
     }
 }
