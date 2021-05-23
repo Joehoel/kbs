@@ -80,6 +80,10 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
         this.vanComponent = null;
     }
 
+    public void annuleerVerbinding() {
+        this.vanComponent = null;
+    }
+
     public void verwijderVerbinding() {
         int beginPositieX = (int) beginPositie.getX();
         int beginPositieY = (int) beginPositie.getY();

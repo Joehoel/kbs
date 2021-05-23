@@ -155,6 +155,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        tp.annuleerVerbinding();
         if (e.getSource() == jbDbVoegToe) {
             Object selectedIndex = jcbDbServers.getSelectedIndex();
             DatabaseServer c = componenten.getDbServers().get((int) selectedIndex);

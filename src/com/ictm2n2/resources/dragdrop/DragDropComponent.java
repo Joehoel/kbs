@@ -51,7 +51,7 @@ public class DragDropComponent extends JLabel implements ActionListener {
         this.dialoog.setIPv4Gateway(ipv4Gateway);
 
         setIcon(plaatje);
-        setText("<html>" + component.getNaam() + "<br>" + dialoog.getIPv4Adres() + "</html>");
+        setLabel();
 
         setVerticalAlignment(SwingConstants.CENTER);
         setHorizontalAlignment(SwingConstants.CENTER);
@@ -87,7 +87,8 @@ public class DragDropComponent extends JLabel implements ActionListener {
     }
 
     public void setLabel() {
-        this.setText("<html>" + component.getNaam() + "<br>" + dialoog.getIPv4Adres() + "</html>");
+        this.setText("<html>" + component.getNaam() + "<br>" + dialoog.getIPv4Adres()
+                + (dialoog.getIPv4Adres().equals("") ? "" : "<br>") + dialoog.getIPv6Adres() + "</html>");
     }
 
     @Override
