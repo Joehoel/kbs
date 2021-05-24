@@ -233,6 +233,7 @@ public class Query {
         return this;
     }
 
+
     public Query SelectOnderdeel(int configuratieId) {
         query = new StringBuilder();
         query.append(
@@ -241,4 +242,4 @@ public class Query {
         return this;
     }
 
-}
+
