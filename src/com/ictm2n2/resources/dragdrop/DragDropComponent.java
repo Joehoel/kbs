@@ -34,11 +34,12 @@ public class DragDropComponent extends JLabel implements ActionListener {
 
     public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte,
             TekenPanel tekenPanel) {
-        this(component, imageCorner, plaatje, panelGrootte, tekenPanel, "", "", "");
+        this(component, imageCorner, plaatje, panelGrootte, tekenPanel, "", "", "", "", "", "", "", "");
     }
 
     public DragDropComponent(Component component, Point imageCorner, ImageIcon plaatje, Dimension panelGrootte,
-            TekenPanel tekenPanel, String ipv4Adres, String ipv4Subnet, String ipv4Gateway) {
+            TekenPanel tekenPanel, String ipv4Adres, String ipv4Subnet, String ipv4Gateway, String ipv4Dns,
+            String ipv6Adres, String ipv6LinkLocal, String ipv6Gateway, String ipv6Dns) {
         this.component = component;
         this.imageCorner = imageCorner;
         this.plaatje = plaatje;
@@ -49,9 +50,15 @@ public class DragDropComponent extends JLabel implements ActionListener {
         this.dialoog.setIPv4Adres(ipv4Adres);
         this.dialoog.setIPv4Subnet(ipv4Subnet);
         this.dialoog.setIPv4Gateway(ipv4Gateway);
+        this.dialoog.setIPv4DNSServer(ipv4Dns);
+
+        this.dialoog.setIPv6Adres(ipv6Adres);
+        this.dialoog.setIPv6DNSServer(ipv6Dns);
+        this.dialoog.setIPv6Gateway(ipv6Gateway);
+        this.dialoog.setIPv6LinkLocal(ipv6LinkLocal);
 
         setIcon(plaatje);
-        setText("<html>" + component.getNaam() + "<br>" + dialoog.getIPv4Adres() + "</html>");
+        setLabel();
 
         setVerticalAlignment(SwingConstants.CENTER);
         setHorizontalAlignment(SwingConstants.CENTER);
@@ -87,7 +94,8 @@ public class DragDropComponent extends JLabel implements ActionListener {
     }
 
     public void setLabel() {
-        this.setText("<html>" + component.getNaam() + "<br>" + dialoog.getIPv4Adres() + "</html>");
+        this.setText("<html>" + component.getNaam() + "<br>" + dialoog.getIPv4Adres()
+                + (dialoog.getIPv4Adres().equals("") ? "" : "<br>") + dialoog.getIPv6Adres() + "</html>");
     }
 
     @Override
@@ -132,4 +140,13 @@ public class DragDropComponent extends JLabel implements ActionListener {
             }
         }
     }
+
+    public DragDropDialoog getDialoog() {
+        return dialoog;
+    }
+
+    public void setDialoog(DragDropDialoog dialoog) {
+        this.dialoog = dialoog;
+    }
+
 }
