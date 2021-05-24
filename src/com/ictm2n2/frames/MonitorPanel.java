@@ -275,7 +275,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                                    jlStatus.setText("<html><p style=\"color:red\">&#10060; Status bereikbaarheid</p></html>");
                                }
                            }
-                       }, 0, 1000);
+                       }, 0, 5000);
 
         jlDb = new JLabel("Databases");
         jlWb = new JLabel("Webservers");
