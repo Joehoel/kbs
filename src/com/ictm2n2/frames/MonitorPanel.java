@@ -118,7 +118,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                                            DbTijdstip = (rs.getTimestamp("s.tijdstip"));
                                            System.out.println(localTime.getTime()-DbTijdstip.getTime());
 
-                                           if ((localTime.getTime()-DbTijdstip.getTime()) > 9000) {
+                                           if ((localTime.getTime()-DbTijdstip.getTime()) > 15000) {
                                                DbAangesloten.add("niet aangesloten");
                                            } else {
                                                DbAangesloten.add("aangesloten");
@@ -153,7 +153,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                                            WbTijdstip = (rs.getTimestamp("s.tijdstip"));
                                            System.out.println(localTime.getTime()-WbTijdstip.getTime());
 
-                                           if ((localTime.getTime()-WbTijdstip.getTime()) > 9000) {
+                                           if ((localTime.getTime()-WbTijdstip.getTime()) > 15000) {
                                                WbAangesloten.add("niet aangesloten");
                                            } else {
                                                WbAangesloten.add("aangesloten");
@@ -188,7 +188,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                                            PfSTijdstip = (rs.getTimestamp("s.tijdstip"));
                                            System.out.println(localTime.getTime()-PfSTijdstip.getTime());
 
-                                           if ((localTime.getTime()-PfSTijdstip.getTime()) > 9000) {
+                                           if ((localTime.getTime()-PfSTijdstip.getTime()) > 15000) {
                                                PfSAangesloten.add("niet aangesloten");
                                            } else {
                                                PfSAangesloten.add("aangesloten");
@@ -275,7 +275,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                                    jlStatus.setText("<html><p style=\"color:red\">&#10060; Status bereikbaarheid</p></html>");
                                }
                            }
-                       }, 0, 5000);
+                       }, 0, 1000);
 
         jlDb = new JLabel("Databases");
         jlWb = new JLabel("Webservers");
