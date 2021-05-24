@@ -178,6 +178,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         // Check if optimaliseer button has been pressed for backtracking
         if (e.getSource() == jbOptimaliseer) {
             try {
+                emptyPanel();
                 double gewenstPercentage;
                 // If string contains comma, convert to dot
                 if (jtPercentage.getText().contains(",")) {
@@ -309,6 +310,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         }
         if (e.getSource() == bd.jbOpenen) {
             try {
+                emptyPanel();
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
                 Query yeet = new Query().SelectOnderdeel(bd.geselecteerdeConfiguratieId);
@@ -423,16 +425,14 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         }
 
         if (e.getSource() == jbMaakLeeg) {
-            // for (DragDropComponent dragDropComponent : tp.getComponenten()) {
-            // tp.verwijderComponent(dragDropComponent);
-
-            // }
-            for (int i = (tp.getComponenten().size() - 1); i >= 0; i--) {
-                tp.verwijderComponent(tp.getComponenten().get(i));
-                // tp.getComponenten().remove(tp.getComponenten().get(i));
-            }
+            emptyPanel();
         }
         bewerkGegevens();
     }
 
+    private void emptyPanel() {
+        for (int i = (tp.getComponenten().size() - 1); i >= 0; i--) {
+            tp.verwijderComponent(tp.getComponenten().get(i));
+        }
+    }
 }
