@@ -20,6 +20,7 @@ import com.ictm2n2.resources.Webserver;
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
 import com.ictm2n2.resources.dragdrop.DragDropComponent;
+import com.ictm2n2.resources.dragdrop.DragDropDialoog;
 import com.ictm2n2.resources.dragdrop.VerbindingComponent;
 
 public class ConfigureerPanel extends JPanel implements ActionListener {
@@ -206,58 +207,78 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         if (e.getSource() == jbOpslaan) {
             try {
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
-                try {
-                    java.util.Date date = new java.util.Date();
 
-                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-                    String naamConfiguratie = JOptionPane.showInputDialog(this, "Geef deze configuratie een naam",
-                            null);
-                    ArrayList<DragDropComponent> componenten = tp.getComponenten();
+                String naamConfiguratie = JOptionPane.showInputDialog(this, "Geef deze configuratie een naam", null);
+                ArrayList<DragDropComponent> componenten = tp.getComponenten();
 
-                    Query insertQuery = new Query();
-                    insertQuery.insert("configuratie")
-                            .columns(new Object[] { "beschikbaarheids_percentage", "naam", "prijs" })
-                            .values(new Object[] { String.valueOf(configuratie.berekenBeschikbaarheid()),
-                                    naamConfiguratie, String.valueOf(configuratie.berekenTotalePrijsDouble()) });
+                Query insertQuery = new Query();
+                insertQuery.insert("configuratie")
+                        .columns(new Object[] { "beschikbaarheids_percentage", "naam", "prijs" })
+                        .values(new Object[] { String.valueOf(configuratie.berekenBeschikbaarheid()), naamConfiguratie,
+                                String.valueOf(configuratie.berekenTotalePrijsDouble()) });
 
-                    PreparedStatement ps = db.getConnection().prepareStatement(insertQuery.getQuery());
-                    ps.setDouble(1, configuratie.berekenBeschikbaarheid());
-                    ps.setString(2, naamConfiguratie);
-                    ps.setDouble(3, configuratie.berekenTotalePrijsDouble());
-                    ps.executeUpdate();
+                PreparedStatement ps = db.getConnection().prepareStatement(insertQuery.getQuery());
+                ps.setDouble(1, configuratie.berekenBeschikbaarheid());
+                ps.setString(2, naamConfiguratie);
+                ps.setDouble(3, configuratie.berekenTotalePrijsDouble());
+                ps.executeUpdate();
 
-                    Query q = new Query().LastInsertedId();
-                    ResultSet rs = db.select(q);
+                Query q = new Query().LastInsertedIdConfiguratie();
+                ResultSet rs = db.select(q);
 
-                    int id = 0;
-                    while (rs.next()) {
-                        id = rs.getInt("configuratie_id");
+                int id = 0;
+                while (rs.next()) {
+                    id = rs.getInt("configuratie_id");
+                }
+
+                for (DragDropComponent dragDropComponent : componenten) {
+                    int componentId = dragDropComponent.getComponent().getId();
+                    double x = dragDropComponent.getImageCorner().getX();
+                    double y = dragDropComponent.getImageCorner().getY();
+
+                    Query q1 = new Query();
+                    q1.insert("configuratie_onderdeel")
+                            .columns(new Object[] { "configuratie_id", "type_id", "positie_x", "positie_y" })
+                            .values(new Object[] { id, componentId, x, y });
+                    PreparedStatement ps1 = db.getConnection().prepareStatement(q1.getQuery());
+                    ps1.setInt(1, id);
+                    ps1.setInt(2, componentId);
+                    ps1.setInt(3, (int) x);
+                    ps1.setInt(4, (int) y);
+                    ps1.executeUpdate();
+
+                    Query idQuery = new Query().LastInsertedIdOnderdeel();
+                    ResultSet rs1 = db.select(idQuery);
+                    int onderdeel_id = 0;
+                    while (rs1.next()) {
+                        onderdeel_id = rs1.getInt("onderdeel_id");
                     }
 
-                    for (DragDropComponent dragDropComponent : componenten) {
-                        int componentId = dragDropComponent.getComponent().getId();
-                        double x = dragDropComponent.getImageCorner().getX();
-                        double y = dragDropComponent.getImageCorner().getY();
-
-                        Query q1 = new Query();
-                        q1.insert("configuratie_onderdeel")
-                                .columns(new Object[] { "configuratie_id", "type_id", "positie_x", "positie_y" })
-                                .values(new Object[] { id, componentId, x, y });
-                        PreparedStatement ps1 = db.getConnection().prepareStatement(q1.getQuery());
-                        ps1.setInt(1, id);
-                        ps1.setInt(2, componentId);
-                        ps1.setInt(3, (int) x);
-                        ps1.setInt(4, (int) y);
-                        ps1.executeUpdate();
-
+                    if (dragDropComponent.getDialoog().checkContent()) {
+                        DragDropDialoog d = dragDropComponent.getDialoog();
+                        Query q2 = new Query();
+                        Object[] columns = new Object[] { "onderdeel_id", "IPv4_adres", "IPv4_subnet", "IPv4_gateway",
+                                "IPv4_dns", "IPv6_adres", "IPv6_linklocal", "IPv6_gateway", "IPv6_dns", };
+                        q2.insert("configuratie_eigenschap").columns(columns).values(columns);
+                        System.out.println(q2.getQuery());
+                        PreparedStatement ps2 = db.getConnection().prepareStatement(q2.getQuery());
+                        ps2.setInt(1, onderdeel_id);
+                        ps2.setString(2, d.getIPv4Adres());
+                        ps2.setString(3, d.getIPv4Subnet());
+                        ps2.setString(4, d.getIPv4Gateway());
+                        ps2.setString(5, d.getIPv4DNSServer());
+                        ps2.setString(6, d.getIPv6Adres());
+                        ps2.setString(7, d.getIPv6LinkLocal());
+                        ps2.setString(8, d.getIPv6Gateway());
+                        ps2.setString(9, d.getIPv6DNSServer());
+                        ps2.executeUpdate();
                     }
-                } catch (SQLException oopsie) {
-                    db.getConnection().rollback();
+
                 }
 
             } catch (Exception a) {
                 System.err.println("Fout met opslaan van configuratie");
-                // a.printStackTrace();
+                a.printStackTrace();
             }
 
         }
@@ -276,14 +297,72 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             try {
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
-                Query query = new Query();
-                query.select(null).from("configuratie_onderdeel")
-                        .where("configuratie_id = " + bd.geselecteerdeConfiguratieId);
-                ResultSet rs = db.select(query);
-                while (rs.next()) {
-                    int x = rs.getInt("positie_x");
-                    int y = rs.getInt("positie_y");
-                    int typeId = rs.getInt("type_id");
+                // Query query = new Query();
+                // query.select(null).from("configuratie_onderdeel")
+                // .where("configuratie_id = " + bd.geselecteerdeConfiguratieId);
+                // ResultSet rs = db.select(query);
+                // while (rs.next()) {
+                // int onderdeel_id = rs.getInt("onderdeel_id");
+                // int x = rs.getInt("positie_x");
+                // int y = rs.getInt("positie_y");
+                // int typeId = rs.getInt("type_id");
+
+                // Query typeQuery = new Query();
+                // typeQuery.select(null).from("component_type").where("type_id = " + typeId);
+                // ResultSet rs1 = db.select(typeQuery);
+                // while (rs1.next()) {
+                // String naam = rs1.getString("type_naam");
+                // double beschikbaarheid = rs1.getDouble("type_beschikbaarheid");
+                // double prijs = rs1.getDouble("type_prijs");
+                // String soort = rs1.getString("type_soort").toLowerCase();
+
+                // Component c = null;
+
+                // if (soort.equals("dbserver")) {
+                // c = new DatabaseServer(typeId, naam, soort, prijs, beschikbaarheid);
+                // } else if (soort.equals("webserver")) {
+                // c = new Webserver(typeId, naam, soort, prijs, beschikbaarheid);
+                // } else if (soort.equals("firewall")) {
+                // c = new Firewall(typeId, naam, soort, prijs, beschikbaarheid);
+                // }
+                // if (c != null) {
+                // configuratie.voegToeComponent(c);
+                // tp.voegToeComponent(new Point(x, y), soort, c);
+                // }
+
+                // }
+
+                // // Query getEigenschappen = new
+                // // Query().select(null).from("configuratie_eigenschap")
+                // // .where("onderdeel_id = " + onderdeel_id);
+                // // ResultSet rs2 = db.select(getEigenschappen);
+                // // while (rs2.next()) {
+                // // String ipv4Adres = rs2.getString("IPv4_adres");
+                // // String ipv4Subnet = rs2.getString("IPv4_subnet");
+                // // String ipv4Gateway = rs2.getString("IPv4_gateway");
+                // // String ipv4Dns = rs2.getString("IPv4_dns");
+                // // String ipv6Adres = rs2.getString("IPv6_adres");
+                // // String ipv6LinkLocal = rs2.getString("IPv6_linklocal");
+                // // String ipv6Gateway = rs2.getString("IPv6_gateway");
+                // // String ipv6Dns = rs2.getString("IPv6_dns");
+                // // }
+                // }
+
+                Query yeet = new Query().SelectOnderdeel(bd.geselecteerdeConfiguratieId);
+                ResultSet rs2 = db.select(yeet);
+                while (rs2.next()) {
+                    String ipv4Adres = rs2.getString("IPv4_adres");
+                    String ipv4Subnet = rs2.getString("IPv4_subnet");
+                    String ipv4Gateway = rs2.getString("IPv4_gateway");
+                    String ipv4Dns = rs2.getString("IPv4_dns");
+                    String ipv6Adres = rs2.getString("IPv6_adres");
+                    String ipv6LinkLocal = rs2.getString("IPv6_linklocal");
+                    String ipv6Gateway = rs2.getString("IPv6_gateway");
+                    String ipv6Dns = rs2.getString("IPv6_dns");
+
+                    int x = rs2.getInt("positie_x");
+                    int y = rs2.getInt("positie_y");
+                    int typeId = rs2.getInt("type_id");
 
                     Query typeQuery = new Query();
                     typeQuery.select(null).from("component_type").where("type_id = " + typeId);
@@ -304,10 +383,16 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                             c = new Firewall(typeId, naam, soort, prijs, beschikbaarheid);
                         }
                         if (c != null) {
+                            Point location = new Point(x, y);
                             configuratie.voegToeComponent(c);
-                            tp.voegToeComponent(new Point(x, y), soort, c);
-                        }
+                            // tp.voegToeComponent(location, soort, c);
+                            ImageIcon plaatje = new ImageIcon("src/com/ictm2n2/assets/" + soort + ".png");
 
+                            DragDropComponent ddc = new DragDropComponent(c, location, plaatje, tp.getSize(), tp,
+                                    ipv4Adres, ipv4Subnet, ipv4Gateway, ipv4Dns, ipv6Adres, ipv6LinkLocal, ipv6Gateway,
+                                    ipv6Dns);
+                            tp.voegToeComponent(ddc);
+                        }
                     }
                 }
             } catch (Exception error) {

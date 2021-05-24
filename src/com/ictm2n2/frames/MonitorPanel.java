@@ -205,10 +205,10 @@ public class MonitorPanel extends JPanel implements ActionListener {
                             }
                         }
                     } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                        // throwables.printStackTrace();
                     }
                 } catch (Exception a) {
-                    a.printStackTrace();
+                    // a.printStackTrace();
                 }
                 // System.out.println(PfSHostnames.size() + " " + PfSCpu.size() + " " +
                 // PfSOpslag.size());

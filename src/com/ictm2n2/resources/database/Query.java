@@ -168,12 +168,9 @@ public class Query {
     public Query DbMonitorPanelQuery() {
         query = new StringBuilder();
 
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
-                "FROM component c " +
-                "JOIN status s " +
-                "ON c.component_id=s.component_id WHERE c.type_id IN (3,4,5)" +
-                "GROUP BY c.component_id " +
-                "HAVING max(tijdstip);");
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " + "FROM component c "
+                + "JOIN status s " + "ON c.component_id=s.component_id WHERE c.type_id IN (3,4,5)"
+                + "GROUP BY c.component_id " + "HAVING max(tijdstip);");
 
         return this;
     }
@@ -181,12 +178,9 @@ public class Query {
     public Query WbMonitorPanelQuery() {
         query = new StringBuilder();
 
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
-                "FROM component c " +
-                "JOIN status s " +
-                "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)" +
-                "GROUP BY c.component_id " +
-                "HAVING max(tijdstip);");
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " + "FROM component c "
+                + "JOIN status s " + "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)"
+                + "GROUP BY c.component_id " + "HAVING max(tijdstip);");
 
         return this;
     }
@@ -194,12 +188,9 @@ public class Query {
     public Query LbMonitorPanelQuery() {
         query = new StringBuilder();
 
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
-                "FROM component c " +
-                "JOIN status s " +
-                "ON c.component_id=s.component_id WHERE c.type_id IN (2)" +
-                "GROUP BY c.component_id " +
-                "HAVING max(tijdstip);");
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " + "FROM component c "
+                + "JOIN status s " + "ON c.component_id=s.component_id WHERE c.type_id IN (2)"
+                + "GROUP BY c.component_id " + "HAVING max(tijdstip);");
 
         return this;
     }
@@ -207,12 +198,9 @@ public class Query {
     public Query PfSMonitorPanelQuery() {
         query = new StringBuilder();
 
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
-                "FROM component c " +
-                "JOIN status s " +
-                "ON c.component_id=s.component_id WHERE c.type_id IN (1)" +
-                "GROUP BY c.component_id " +
-                "HAVING max(tijdstip);");
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " + "FROM component c "
+                + "JOIN status s " + "ON c.component_id=s.component_id WHERE c.type_id IN (1)"
+                + "GROUP BY c.component_id " + "HAVING max(tijdstip);");
 
         return this;
     }
@@ -227,15 +215,29 @@ public class Query {
         return this;
     }
 
-    public Query LastInsertedId() {
+    public Query LastInsertedIdConfiguratie() {
         query = new StringBuilder();
         query.append("SELECT configuratie_id FROM configuratie ORDER BY datum DESC LIMIT 1");
+        return this;
+    }
+
+    public Query LastInsertedIdOnderdeel() {
+        query = new StringBuilder();
+        query.append("SELECT onderdeel_id FROM configuratie_onderdeel ORDER BY onderdeel_id DESC LIMIT 1");
         return this;
     }
 
     public Query InsertOnderdeel(String table) {
         query = new StringBuilder();
         query.append("INSERT INTO " + table);
+        return this;
+    }
+
+    public Query SelectOnderdeel(int configuratieId) {
+        query = new StringBuilder();
+        query.append(
+                "SELECT * FROM configuratie_onderdeel AS o LEFT JOIN configuratie_eigenschap AS e ON e.onderdeel_id = o.onderdeel_id WHERE o.configuratie_id = "
+                        + configuratieId);
         return this;
     }
 
