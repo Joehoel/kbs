@@ -1,14 +1,15 @@
 package com.ictm2n2.resources.dragdrop;
 
-import com.ictm2n2.frames.TekenPanel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.util.regex.Pattern;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import com.ictm2n2.frames.TekenPanel;
 
 public class DragDropDialoog extends JDialog implements ActionListener {
     private DragDropComponent dragDropComponent;
@@ -124,16 +125,13 @@ public class DragDropDialoog extends JDialog implements ActionListener {
             if (!jtIPv4Adres.getText().matches(regexIPv4) && !jtIPv4Adres.getText().equals("")) {
                 this.jlError.setText("Geen geldig IPv4 adres opgegeven!");
                 this.jlError.setVisible(true);
-            }
-            else if (!jtIPv4Subnet.getText().matches(regexIPv4) && !jtIPv4Subnet.getText().equals("")) {
+            } else if (!jtIPv4Subnet.getText().matches(regexIPv4) && !jtIPv4Subnet.getText().equals("")) {
                 this.jlError.setText("Geen geldig IPv4 subnet opgegeven!");
                 this.jlError.setVisible(true);
-            }
-            else if (!jtIpv4Gateway.getText().matches(regexIPv4) && !jtIpv4Gateway.getText().equals("")) {
+            } else if (!jtIpv4Gateway.getText().matches(regexIPv4) && !jtIpv4Gateway.getText().equals("")) {
                 this.jlError.setText("Geen geldig IPv4 gateway opgegeven!");
                 this.jlError.setVisible(true);
-            }
-            else {
+            } else {
                 dragDropComponent.setLabel();
                 setVisible(false);
                 this.jlError.setVisible(false);
