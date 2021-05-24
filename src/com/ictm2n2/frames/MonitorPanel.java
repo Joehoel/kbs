@@ -110,8 +110,9 @@ public class MonitorPanel extends JPanel implements ActionListener {
                        DbCpu.clear();
                        DbOpslag.clear();
                        DbAangesloten.clear();
-
+                        int dbNummer = 1;
                        while (rs.next()) {
+                           System.out.println("Database "+dbNummer);
                            DbHostnames.add(rs.getString("c.hostname"));
                            DbCpu.add(String.valueOf(rs.getDouble("c.cpu")));
                            DbOpslag.add(String.valueOf(rs.getDouble("c.opslag")));
@@ -123,6 +124,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                            } else {
                                DbAangesloten.add("aangesloten");
                            }
+                           dbNummer++;
                        }
                    } catch (SQLException throwables) {
                        throwables.printStackTrace();
@@ -131,7 +133,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                    a.printStackTrace();
                }
                System.out.println("Aantal gevonden databases: (hostname|cpu|opslag) "+DbHostnames.size() + " " + DbCpu.size() + " " + DbOpslag.size());
-
+               System.out.println("======================================================");
                // webservers ophalen en in array stoppen
                try {
                    Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
