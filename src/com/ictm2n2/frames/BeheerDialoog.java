@@ -2,6 +2,7 @@ package com.ictm2n2.frames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -58,6 +59,9 @@ public class BeheerDialoog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        for (Integer id : ids) {
+            System.out.println(id);
+        }
         try {
             geselecteerdeConfiguratie = (String) jcbConfiguraties.getSelectedItem();
             geselecteerdeConfiguratieId = (int) ids.get(jcbConfiguraties.getSelectedIndex());
@@ -65,7 +69,42 @@ public class BeheerDialoog extends JDialog implements ActionListener {
                 dispose();
             }
             if (e.getSource() == jbVerwijder) {
+                try {
+                    Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
+                    try {
+
+                        db.getConnection().setAutoCommit(false);
+                        Query deleteQuery1 = new Query();
+                        deleteQuery1.delete("configuratie_onderdeel").where("configuratie_id = " + geselecteerdeConfiguratieId);
+                        PreparedStatement ps1 = db.getConnection().prepareStatement(deleteQuery1.getQuery());
+                        ps1.executeUpdate();
+                        db.getConnection().commit();
+
+                        Query deleteQuery = new Query();
+                        deleteQuery.delete("configuratie").where("configuratie_id = " + geselecteerdeConfiguratieId);
+                        PreparedStatement ps = db.getConnection().prepareStatement(deleteQuery.getQuery());
+                        ps.executeUpdate();
+                        db.getConnection().commit();
+
+                        db.getConnection().setAutoCommit(true);
+
+                        // bd.jcbConfiguraties.remove(bd.jcbConfiguraties.getSelectedIndex());
+                        updateDropdown();
+                        // db.delete("configuratie", "WHERE configuratie_id = " + id, new Object[] { id
+                        // });
+                        // db.delete("configuratie_onderdeel", "WHERE configuratie_id = " + id, new
+                        // Object[] { id });
+                    } catch (SQLException ex) {
+                        db.getConnection().rollback();
+
+                    }
+
+                } catch (Exception err) {
+
+                    err.printStackTrace();
+                }
+Ó
             }
         } catch (ArrayIndexOutOfBoundsException err) {
             System.err.println("Bestaat niet meer");
@@ -98,7 +137,6 @@ public class BeheerDialoog extends JDialog implements ActionListener {
             namen.add(rs.getString("naam"));
             ids.add(rs.getInt("configuratie_id"));
         }
-
         for (String string : namen) {
             jcbConfiguraties.addItem(string);
         }

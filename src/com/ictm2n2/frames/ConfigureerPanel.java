@@ -386,42 +386,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
             }
         }
         if (e.getSource() == bd.jbVerwijder) {
-            try {
-                Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
-
-                try {
-
-                    int id = bd.geselecteerdeConfiguratieId;
-                    db.getConnection().setAutoCommit(false);
-                    Query deleteQuery1 = new Query();
-                    deleteQuery1.delete("configuratie_onderdeel").where("configuratie_id = " + id);
-                    PreparedStatement ps1 = db.getConnection().prepareStatement(deleteQuery1.getQuery());
-                    ps1.executeUpdate();
-                    db.getConnection().commit();
-
-                    Query deleteQuery = new Query();
-                    deleteQuery.delete("configuratie").where("configuratie_id = " + id);
-                    PreparedStatement ps = db.getConnection().prepareStatement(deleteQuery.getQuery());
-                    ps.executeUpdate();
-                    db.getConnection().commit();
-
-                    db.getConnection().setAutoCommit(true);
-
-                    // bd.jcbConfiguraties.remove(bd.jcbConfiguraties.getSelectedIndex());
-                    bd.updateDropdown();
-                    // db.delete("configuratie", "WHERE configuratie_id = " + id, new Object[] { id
-                    // });
-                    // db.delete("configuratie_onderdeel", "WHERE configuratie_id = " + id, new
-                    // Object[] { id });
-                } catch (SQLException ex) {
-                    db.getConnection().rollback();
-
-                }
-
-            } catch (Exception err) {
-
-                err.printStackTrace();
-            }
 
         }
 
