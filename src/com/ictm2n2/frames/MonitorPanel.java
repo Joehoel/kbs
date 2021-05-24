@@ -20,6 +20,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
@@ -331,7 +332,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
         jpDetailOverzichtWaarden.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpDetailOverzichtWaarden.add(jlDetailOverzichtWaarden);
         jlDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
-        jpDetailOverzichtWaarden.setBackground(Color.white);
+        jpDetailOverzichtWaarden.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
         jpDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
         add(jpDetailOverzichtWaarden);
 

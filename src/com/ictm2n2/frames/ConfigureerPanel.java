@@ -276,6 +276,11 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
 
                 }
 
+                for (VerbindingComponent verbindingComponent : tp.getVerbindingen()) {
+                    System.out.println(verbindingComponent.getBeginPositie().getX());
+                    System.out.println(verbindingComponent.getBeginPositie().getY());
+                }
+
             } catch (Exception a) {
                 System.err.println("Fout met opslaan van configuratie");
                 a.printStackTrace();
@@ -296,57 +301,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         if (e.getSource() == bd.jbOpenen) {
             try {
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
-
-                // Query query = new Query();
-                // query.select(null).from("configuratie_onderdeel")
-                // .where("configuratie_id = " + bd.geselecteerdeConfiguratieId);
-                // ResultSet rs = db.select(query);
-                // while (rs.next()) {
-                // int onderdeel_id = rs.getInt("onderdeel_id");
-                // int x = rs.getInt("positie_x");
-                // int y = rs.getInt("positie_y");
-                // int typeId = rs.getInt("type_id");
-
-                // Query typeQuery = new Query();
-                // typeQuery.select(null).from("component_type").where("type_id = " + typeId);
-                // ResultSet rs1 = db.select(typeQuery);
-                // while (rs1.next()) {
-                // String naam = rs1.getString("type_naam");
-                // double beschikbaarheid = rs1.getDouble("type_beschikbaarheid");
-                // double prijs = rs1.getDouble("type_prijs");
-                // String soort = rs1.getString("type_soort").toLowerCase();
-
-                // Component c = null;
-
-                // if (soort.equals("dbserver")) {
-                // c = new DatabaseServer(typeId, naam, soort, prijs, beschikbaarheid);
-                // } else if (soort.equals("webserver")) {
-                // c = new Webserver(typeId, naam, soort, prijs, beschikbaarheid);
-                // } else if (soort.equals("firewall")) {
-                // c = new Firewall(typeId, naam, soort, prijs, beschikbaarheid);
-                // }
-                // if (c != null) {
-                // configuratie.voegToeComponent(c);
-                // tp.voegToeComponent(new Point(x, y), soort, c);
-                // }
-
-                // }
-
-                // // Query getEigenschappen = new
-                // // Query().select(null).from("configuratie_eigenschap")
-                // // .where("onderdeel_id = " + onderdeel_id);
-                // // ResultSet rs2 = db.select(getEigenschappen);
-                // // while (rs2.next()) {
-                // // String ipv4Adres = rs2.getString("IPv4_adres");
-                // // String ipv4Subnet = rs2.getString("IPv4_subnet");
-                // // String ipv4Gateway = rs2.getString("IPv4_gateway");
-                // // String ipv4Dns = rs2.getString("IPv4_dns");
-                // // String ipv6Adres = rs2.getString("IPv6_adres");
-                // // String ipv6LinkLocal = rs2.getString("IPv6_linklocal");
-                // // String ipv6Gateway = rs2.getString("IPv6_gateway");
-                // // String ipv6Dns = rs2.getString("IPv6_dns");
-                // // }
-                // }
 
                 Query yeet = new Query().SelectOnderdeel(bd.geselecteerdeConfiguratieId);
                 ResultSet rs2 = db.select(yeet);
