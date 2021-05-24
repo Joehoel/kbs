@@ -2,7 +2,6 @@ package com.ictm2n2.frames;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -14,7 +13,14 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
@@ -52,11 +58,11 @@ public class MonitorPanel extends JPanel implements ActionListener {
 
     private Timestamp localTime = new Timestamp(System.currentTimeMillis());
 
-    private byte[] ipDb1 = {(byte) 172, 16, 1, 2};
-    private byte[] ipDb2 = {(byte) 172, 16, 1, 3};
-    private byte[] ipWb1 = {(byte) 172, 16, 0, 2};
-    private byte[] ipWb2 = {(byte) 172, 16, 0, 3};
-    private byte[] ipPfS = {(byte) 172, 16, 0, 1};
+    private byte[] ipDb1 = { (byte) 172, 16, 1, 2 };
+    private byte[] ipDb2 = { (byte) 172, 16, 1, 3 };
+    private byte[] ipWb1 = { (byte) 172, 16, 0, 2 };
+    private byte[] ipWb2 = { (byte) 172, 16, 0, 3 };
+    private byte[] ipPfS = { (byte) 172, 16, 0, 1 };
 
     private SendPingRequest sprDb1 = new SendPingRequest("Database 1", ipDb1);
     private SendPingRequest sprDb2 = new SendPingRequest("Database 2", ipDb2);
@@ -95,6 +101,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
         // 60 seconden)
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
+
                            @Override
                            public void run() {
  //                               databaseservers ophalen en in array stoppen
@@ -277,6 +284,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                            }
                        }, 0, 1000);
 
+
         jlDb = new JLabel("Databases");
         jlWb = new JLabel("Webservers");
         jlPfS = new JLabel("PfSense");
@@ -320,7 +328,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
         jpDetailOverzichtWaarden.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpDetailOverzichtWaarden.add(jlDetailOverzichtWaarden);
         jlDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
-        jpDetailOverzichtWaarden.setBackground(Color.white);
+        jpDetailOverzichtWaarden.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
         jpDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
         add(jpDetailOverzichtWaarden);
 
@@ -331,10 +339,10 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 // formaat
                 Object selectedComponentDb = DbList.getSelectedValue();
                 String selectedComponentMinHTMLDb = String.valueOf(selectedComponentDb).replaceAll("\\<.*?\\>", "");
-                System.out.println(selectedComponentMinHTMLDb);
+                // System.out.println(selectedComponentMinHTMLDb);
                 String[] selectedComponentSplitDb = selectedComponentMinHTMLDb.split(" ");
                 String hostnameDb = selectedComponentSplitDb[1];
-                System.out.println(hostnameDb);
+                // System.out.println(hostnameDb);
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
@@ -355,11 +363,13 @@ public class MonitorPanel extends JPanel implements ActionListener {
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameDb + "</strong><br><br>"
+
                                     + processor + " GHz kloksnelheid<br>" + processorBelasting + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
                                     + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte) + " minuten in bedrijf<br>afgelezen op "
                                     + tijdstip + "</html>";
+
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
-                            DbList.setSelectedValue(null,true);
+                            DbList.setSelectedValue(null, true);
                             DbList.getSelectionModel().clearSelection();
                         }
                     } catch (SQLException throwables) {
@@ -374,17 +384,17 @@ public class MonitorPanel extends JPanel implements ActionListener {
         // selectionlistener voor webservercomponenten
         WbList.getSelectionModel().addListSelectionListener(e -> {
             if (WbList.getValueIsAdjusting()) {
-                // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
-                // formaat
-                Object selectedComponentWb = WbList.getSelectedValue();
-                String selectedComponentMinHTMLWb = String.valueOf(selectedComponentWb).replaceAll("\\<.*?\\>", "");
-                System.out.println(selectedComponentMinHTMLWb);
-                String[] selectedComponentSplitWb = selectedComponentMinHTMLWb.split(" ");
-                String hostnameWb = selectedComponentSplitWb[1];
-                System.out.println(hostnameWb);
-
-                // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
+                    // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
+                    // formaat
+                    Object selectedComponentWb = WbList.getSelectedValue();
+                    String selectedComponentMinHTMLWb = String.valueOf(selectedComponentWb).replaceAll("\\<.*?\\>", "");
+                    // System.out.println(selectedComponentMinHTMLWb);
+                    String[] selectedComponentSplitWb = selectedComponentMinHTMLWb.split(" ");
+                    String hostnameWb = selectedComponentSplitWb[1];
+                    // System.out.println(hostnameWb);
+
+                    // gedetaileerde informatie over component wordt opgevraagd uit database
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
                     q = q.DetailOverzichtMonitorPanelQuery(hostnameWb);
@@ -402,11 +412,13 @@ public class MonitorPanel extends JPanel implements ActionListener {
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameWb + "</strong><br><br>"
+
                                     + processor + " GHz kloksnelheid<br>" + processorBelasting + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
                                     + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte) + " minuten in bedrijf<br>afgelezen op "
                                     + tijdstip + "</html>";
+
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
-                            WbList.setSelectedValue(null,true);
+                            WbList.setSelectedValue(null, true);
                             WbList.getSelectionModel().clearSelection();
                         }
                     } catch (SQLException throwables) {
@@ -425,10 +437,10 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 // formaat
                 Object selectedComponentPfS = PfSList.getSelectedValue();
                 String selectedComponentMinHTMLPfS = String.valueOf(selectedComponentPfS).replaceAll("\\<.*?\\>", "");
-                System.out.println(selectedComponentMinHTMLPfS);
+                // System.out.println(selectedComponentMinHTMLPfS);
                 String[] selectedComponentSplitPfS = selectedComponentMinHTMLPfS.split(" ");
                 String hostnamePfS = selectedComponentSplitPfS[1];
-                System.out.println(hostnamePfS);
+                // System.out.println(hostnamePfS);
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
@@ -449,11 +461,13 @@ public class MonitorPanel extends JPanel implements ActionListener {
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostnamePfS + "</strong><br><br>"
+
                                     + processor + " GHz kloksnelheid<br>" + processorBelasting + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
                                     + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte) + " minuten in bedrijf<br>afgelezen op "
                                     + tijdstip + "</html>";
+
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
-                            PfSList.setSelectedValue(null,true);
+                            PfSList.setSelectedValue(null, true);
                             PfSList.getSelectionModel().clearSelection();
                         }
                     } catch (SQLException throwables) {
@@ -466,7 +480,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
         });
     }
 
-    //actionlistener aan jbstatus toevoegen
+    // actionlistener aan jbstatus toevoegen
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbStatus) {
@@ -496,7 +510,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
             } else {
                 message += "<p style=\"color:red\">&#10060; PfSense</p></html>";
             }
-            JOptionPane.showMessageDialog(this, message,"Status componenten", 1);
+            JOptionPane.showMessageDialog(this, message, "Status componenten", 1);
         }
     }
 }
