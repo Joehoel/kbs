@@ -119,7 +119,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                        DbTijdstip = (rs.getTimestamp("s.tijdstip"));
                        System.out.println("Aantal secondes verschil database (localtime - dbtime)\n"+(localTime.getTime()-DbTijdstip.getTime() / 1000));
 
-                       if ((localTime.getTime()-DbTijdstip.getTime()) > 5000000) {
+                       if ((localTime.getTime()-DbTijdstip.getTime()) > 10000) {
                            DbAangesloten.add("niet aangesloten");
                        } else {
                            DbAangesloten.add("aangesloten");
@@ -155,7 +155,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                        WbTijdstip = (rs.getTimestamp("s.tijdstip"));
                        //System.out.println(localTime.getTime()-WbTijdstip.getTime());
 
-                       if ((localTime.getTime()-WbTijdstip.getTime()) > 5000000) {
+                       if ((localTime.getTime()-WbTijdstip.getTime()) > 10000) {
                            WbAangesloten.add("niet aangesloten");
                        } else {
                            WbAangesloten.add("aangesloten");
@@ -190,7 +190,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                        PfSTijdstip = (rs.getTimestamp("s.tijdstip"));
                        //System.out.println(localTime.getTime()-PfSTijdstip.getTime());
 
-                       if ((localTime.getTime()-PfSTijdstip.getTime()) > 5000000) {
+                       if ((localTime.getTime()-PfSTijdstip.getTime()) > 10000) {
                            PfSAangesloten.add("niet aangesloten");
                        } else {
                            PfSAangesloten.add("aangesloten");
@@ -340,10 +340,10 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 try {
                     hostnameDb = selectedComponentSplitDb[1];
                 } catch (ArrayIndexOutOfBoundsException array) {
-                    System.out.println("******************************************\n" +
-                            "Geselecteerde component: "+hostnameDb+
-                            "\n******************************************");
                 }
+                System.out.println("******************************************\n" +
+                        "Geselecteerde component: "+hostnameDb+
+                        "\n******************************************");
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
@@ -393,10 +393,10 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 try {
                     hostnameWb = selectedComponentSplitWb[1];
                 } catch (ArrayIndexOutOfBoundsException array) {
-                    System.out.println("******************************************\n" +
-                            "Geselecteerde component: "+hostnameWb+
-                            "\n******************************************");
                 }
+                System.out.println("******************************************\n" +
+                        "Geselecteerde component: "+hostnameWb+
+                        "\n******************************************");
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
@@ -446,10 +446,10 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 try {
                     hostnamePfS = selectedComponentSplitPfS[1];
                 } catch (ArrayIndexOutOfBoundsException array) {
-                    System.out.println("******************************************\n" +
-                            "Geselecteerde component: "+hostnamePfS+
-                            "\n******************************************");
                 }
+                System.out.println("******************************************\n" +
+                        "Geselecteerde component: "+hostnamePfS+
+                        "\n******************************************");
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
