@@ -205,4 +205,16 @@ public class DragDropDialoog extends JDialog implements ActionListener {
     public String getIPv6DNSServer() {
         return this.jtIPv6DNSServer.getText();
     }
+
+    public boolean checkContent() {
+        if (!jtIPv4Adres.getText().isEmpty() || !jtIPv4Subnet.getText().isEmpty() || !jtIpv4Gateway.getText().isEmpty()
+                || !jtIPv4DNSServer.getText().isEmpty() || !jtIPv6Adres.getText().isEmpty()
+                || !jtIPv6LinkLocal.getText().isEmpty() || !jtIPv6Gateway.getText().isEmpty()
+                || !jtIPv6DNSServer.getText().isEmpty()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
