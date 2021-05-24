@@ -118,7 +118,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                                            DbTijdstip = (rs.getTimestamp("s.tijdstip"));
                                            System.out.println(localTime.getTime()-DbTijdstip.getTime());
 
-                                           if ((localTime.getTime()-DbTijdstip.getTime()) > 5000000) {
+                                           if ((localTime.getTime()-DbTijdstip.getTime()) > 9000) {
                                                DbAangesloten.add("niet aangesloten");
                                            } else {
                                                DbAangesloten.add("aangesloten");
@@ -153,7 +153,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                                            WbTijdstip = (rs.getTimestamp("s.tijdstip"));
                                            System.out.println(localTime.getTime()-WbTijdstip.getTime());
 
-                                           if ((localTime.getTime()-WbTijdstip.getTime()) > 5000000) {
+                                           if ((localTime.getTime()-WbTijdstip.getTime()) > 9000) {
                                                WbAangesloten.add("niet aangesloten");
                                            } else {
                                                WbAangesloten.add("aangesloten");
@@ -188,7 +188,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                                            PfSTijdstip = (rs.getTimestamp("s.tijdstip"));
                                            System.out.println(localTime.getTime()-PfSTijdstip.getTime());
 
-                                           if ((localTime.getTime()-PfSTijdstip.getTime()) > 5000000) {
+                                           if ((localTime.getTime()-PfSTijdstip.getTime()) > 9000) {
                                                PfSAangesloten.add("niet aangesloten");
                                            } else {
                                                PfSAangesloten.add("aangesloten");
@@ -356,7 +356,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameDb + "</strong><br><br>"
                                     + processor + " GHz kloksnelheid<br>" + processorBelasting + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
-                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte / 60) + " minuten in bedrijf<br>afgelezen op "
+                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte) + " minuten in bedrijf<br>afgelezen op "
                                     + tijdstip + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                             DbList.setSelectedValue(null,true);
@@ -403,7 +403,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameWb + "</strong><br><br>"
                                     + processor + " GHz kloksnelheid<br>" + processorBelasting + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
-                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte / 60) + " minuten in bedrijf<br>afgelezen op "
+                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte) + " minuten in bedrijf<br>afgelezen op "
                                     + tijdstip + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                             WbList.setSelectedValue(null,true);
@@ -450,7 +450,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostnamePfS + "</strong><br><br>"
                                     + processor + " GHz kloksnelheid<br>" + processorBelasting + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
-                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte / 60) + " minuten in bedrijf<br>afgelezen op "
+                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte) + " minuten in bedrijf<br>afgelezen op "
                                     + tijdstip + "</html>";
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
                             PfSList.setSelectedValue(null,true);

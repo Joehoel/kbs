@@ -238,5 +238,4 @@ public class Query {
         query.append("INSERT INTO " + table);
         return this;
     }
-
 }
