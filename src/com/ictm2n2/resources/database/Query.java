@@ -181,9 +181,9 @@ public class Query {
     public Query PfSMonitorPanelQuery() {
         query = new StringBuilder();
 
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip FROM component c \n" +
-                "JOIN status s ON c.component_id=s.component_id WHERE c.type_id IN (1)\n" +
-                "GROUP BY c.component_id HAVING max(tijdstip);");
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip FROM component c \n"
+                + "JOIN status s ON c.component_id=s.component_id WHERE c.type_id IN (1)\n"
+                + "GROUP BY c.component_id HAVING max(tijdstip);");
 
         return this;
     }
@@ -216,7 +216,6 @@ public class Query {
         return this;
     }
 
-
     public Query SelectOnderdeel(int configuratieId) {
         query = new StringBuilder();
         query.append(
@@ -225,5 +224,3 @@ public class Query {
         return this;
     }
 }
-
-

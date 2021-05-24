@@ -292,8 +292,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 }
 
             } catch (Exception a) {
-                System.err.println("Fout met opslaan van configuratie");
-                a.printStackTrace();
+                System.err.println("Je moet een naam invullen");
             }
 
         }
@@ -390,17 +389,17 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
                 try {
-
-                    int id = bd.geselecteerdeConfiguratieId;
+                    System.out.println("Deleting configuratie_id = " + bd.geselecteerdeConfiguratieId);
                     db.getConnection().setAutoCommit(false);
                     Query deleteQuery1 = new Query();
-                    deleteQuery1.delete("configuratie_onderdeel").where("configuratie_id = " + id);
+                    deleteQuery1.delete("configuratie_onderdeel")
+                            .where("configuratie_id = " + bd.geselecteerdeConfiguratieId);
                     PreparedStatement ps1 = db.getConnection().prepareStatement(deleteQuery1.getQuery());
                     ps1.executeUpdate();
                     db.getConnection().commit();
 
                     Query deleteQuery = new Query();
-                    deleteQuery.delete("configuratie").where("configuratie_id = " + id);
+                    deleteQuery.delete("configuratie").where("configuratie_id = " + bd.geselecteerdeConfiguratieId);
                     PreparedStatement ps = db.getConnection().prepareStatement(deleteQuery.getQuery());
                     ps.executeUpdate();
                     db.getConnection().commit();
@@ -419,10 +418,8 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 }
 
             } catch (Exception err) {
-
                 err.printStackTrace();
             }
-
         }
 
         if (e.getSource() == jbMaakLeeg) {
