@@ -4,7 +4,6 @@ public class Query {
     private StringBuilder query;
 
     /**
-     *
      * @param table
      * @return
      */
@@ -28,7 +27,6 @@ public class Query {
     }
 
     /**
-     *
      * @param table
      * @return
      */
@@ -39,7 +37,6 @@ public class Query {
     }
 
     /**
-     *
      * @param table
      * @return
      */
@@ -72,7 +69,6 @@ public class Query {
     }
 
     /**
-     *
      * @param table
      * @return
      */
@@ -84,7 +80,6 @@ public class Query {
     }
 
     /**
-     *
      * @param params
      * @return
      */
@@ -106,7 +101,6 @@ public class Query {
     }
 
     /**
-     *
      * @param columns
      * @return
      */
@@ -127,7 +121,6 @@ public class Query {
     }
 
     /**
-     *
      * @param columns
      * @return
      */
@@ -241,5 +234,6 @@ public class Query {
                         + configuratieId);
         return this;
     }
+}
 
 
