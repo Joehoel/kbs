@@ -17,13 +17,13 @@ public class SendPingRequest {
             throws UnknownHostException, IOException
     {
         InetAddress geek = InetAddress.getByAddress(this.ipAddress);
-        System.out.println("Sending Ping Request to " + this.ipAddress);
+        //System.out.println("Sending Ping Request to " + this.ipAddress);
         if (geek.isReachable(5000)) {
-            System.out.println(this.naam+" reachable");
+            //System.out.println(this.naam+" reachable");
             return true;
         }
         else {
-            System.out.println(this.naam+" unreachable");
+            //System.out.println(this.naam+" unreachable");
             return false;
         }
     }
