@@ -180,7 +180,7 @@ public class Query {
 
         query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " + "FROM component c "
                 + "JOIN status s " + "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)"
-                + "GROUP BY c.component_id " + "HAVING max(tijdstip);");
+                + "GROUP BY c.component_id ORDER BY s.tijdstip DESC LIMIT 1");
 
         return this;
     }
@@ -190,7 +190,7 @@ public class Query {
 
         query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " + "FROM component c "
                 + "JOIN status s " + "ON c.component_id=s.component_id WHERE c.type_id IN (2)"
-                + "GROUP BY c.component_id " + "HAVING max(tijdstip);");
+                + "GROUP BY c.component_id ORDER BY s.tijdstip DESC LIMIT 1");
 
         return this;
     }
@@ -200,7 +200,7 @@ public class Query {
 
         query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " + "FROM component c "
                 + "JOIN status s " + "ON c.component_id=s.component_id WHERE c.type_id IN (1)"
-                + "GROUP BY c.component_id " + "HAVING max(tijdstip);");
+                + "GROUP BY c.component_id ORDER BY s.tijdstip DESC LIMIT 1");
 
         return this;
     }
@@ -211,7 +211,7 @@ public class Query {
                 "SELECT c.hostname, c.cpu, s.processor_belasting, c.opslag, s.opslag_verbruik, s.beschikbaar_lengte, s.tijdstip\n"
                         + "FROM component c\n" + "JOIN status s\n"
                         + "ON c.component_id = s.component_id WHERE c.hostname = \"" + hostname + "\"\n"
-                        + "GROUP BY c.component_id\n" + "HAVING max(tijdstip);");
+                        + "GROUP BY c.component_id\nORDER BY s.tijdstip DESC LIMIT 1");
         return this;
     }
 

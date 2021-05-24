@@ -260,7 +260,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                         Object[] columns = new Object[] { "onderdeel_id", "IPv4_adres", "IPv4_subnet", "IPv4_gateway",
                                 "IPv4_dns", "IPv6_adres", "IPv6_linklocal", "IPv6_gateway", "IPv6_dns", };
                         q2.insert("configuratie_eigenschap").columns(columns).values(columns);
-                        System.out.println(q2.getQuery());
                         PreparedStatement ps2 = db.getConnection().prepareStatement(q2.getQuery());
                         ps2.setInt(1, onderdeel_id);
                         ps2.setString(2, d.getIPv4Adres());
@@ -277,8 +276,18 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 }
 
                 for (VerbindingComponent verbindingComponent : tp.getVerbindingen()) {
-                    System.out.println(verbindingComponent.getBeginPositie().getX());
-                    System.out.println(verbindingComponent.getBeginPositie().getY());
+                    Query verbindingQuery = new Query();
+                    Object[] verbindingColumns = new Object[] { "configuratie_id", "begin_positie_x", "begin_positie_y",
+                            "eind_positie_x", "eind_positie_y", };
+                    verbindingQuery.insert("configuratie_positie").columns(verbindingColumns).values(verbindingColumns);
+                    PreparedStatement ps3 = db.getConnection().prepareStatement(verbindingQuery.getQuery());
+                    ps3.setInt(1, bd.geselecteerdeConfiguratieId);
+                    ps3.setInt(2, (int) verbindingComponent.getBeginPositie().getX());
+                    ps3.setInt(3, (int) verbindingComponent.getBeginPositie().getY());
+                    ps3.setInt(4, (int) verbindingComponent.getEindPositie().getX());
+                    ps3.setInt(5, (int) verbindingComponent.getEindPositie().getY());
+                    ps3.executeUpdate();
+
                 }
 
             } catch (Exception a) {
@@ -348,6 +357,28 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                             tp.voegToeComponent(ddc);
                         }
                     }
+                }
+                Query positiesQuery = new Query();
+                positiesQuery.select(null).from("configuratie_positie")
+                        .where("configuratie_id = " + bd.geselecteerdeConfiguratieId);
+                ResultSet rs3 = db.select(positiesQuery);
+                while (rs3.next()) {
+                    DragDropComponent beginComponent = null;
+                    DragDropComponent eindComponent = null;
+                    for (DragDropComponent dragDropComponent : tp.getComponenten()) {
+                        if ((int) dragDropComponent.getImageCorner().getX() == rs3.getInt("begin_positie_x") - 50
+                                && (int) dragDropComponent.getImageCorner().getY() == rs3.getInt("begin_positie_y")
+                                        - 50) {
+                            beginComponent = dragDropComponent;
+                        }
+                        if ((int) dragDropComponent.getImageCorner().getX() == rs3.getInt("eind_positie_x") - 50
+                                && (int) dragDropComponent.getImageCorner().getY() == rs3.getInt("eind_positie_y")
+                                        - 50) {
+                            eindComponent = dragDropComponent;
+                        }
+                    }
+                    tp.setVanComponent(beginComponent);
+                    tp.voegToeVerbinding(eindComponent);
                 }
             } catch (Exception error) {
                 error.printStackTrace();
