@@ -24,7 +24,7 @@ public class BeheerDialoog extends JDialog implements ActionListener {
     ArrayList<String> namen = new ArrayList<String>();
     ArrayList<Integer> ids = new ArrayList<Integer>();
     String geselecteerdeConfiguratie;
-    int geselecteerdeConfiguratieId;
+    int geselecteerdeConfiguratieId = 0;
 
     public BeheerDialoog() {
         setTitle("Beheer");
@@ -59,55 +59,22 @@ public class BeheerDialoog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        int i = 0;
         for (Integer id : ids) {
-            System.out.println(id);
+            System.out.println(i + " -> " + id);
+            i++;
         }
         try {
             geselecteerdeConfiguratie = (String) jcbConfiguraties.getSelectedItem();
             geselecteerdeConfiguratieId = (int) ids.get(jcbConfiguraties.getSelectedIndex());
+            System.out.println(namen.size());
+            // System.out.println(jcbConfiguraties.getSelectedIndex());
             if (e.getSource() == jbOpenen) {
                 dispose();
             }
-            if (e.getSource() == jbVerwijder) {
-                try {
-                    Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
-                    try {
-
-                        db.getConnection().setAutoCommit(false);
-                        Query deleteQuery1 = new Query();
-                        deleteQuery1.delete("configuratie_onderdeel").where("configuratie_id = " + geselecteerdeConfiguratieId);
-                        PreparedStatement ps1 = db.getConnection().prepareStatement(deleteQuery1.getQuery());
-                        ps1.executeUpdate();
-                        db.getConnection().commit();
-
-                        Query deleteQuery = new Query();
-                        deleteQuery.delete("configuratie").where("configuratie_id = " + geselecteerdeConfiguratieId);
-                        PreparedStatement ps = db.getConnection().prepareStatement(deleteQuery.getQuery());
-                        ps.executeUpdate();
-                        db.getConnection().commit();
-
-                        db.getConnection().setAutoCommit(true);
-
-                        // bd.jcbConfiguraties.remove(bd.jcbConfiguraties.getSelectedIndex());
-                        updateDropdown();
-                        // db.delete("configuratie", "WHERE configuratie_id = " + id, new Object[] { id
-                        // });
-                        // db.delete("configuratie_onderdeel", "WHERE configuratie_id = " + id, new
-                        // Object[] { id });
-                    } catch (SQLException ex) {
-                        db.getConnection().rollback();
-
-                    }
-
-                } catch (Exception err) {
-
-                    err.printStackTrace();
-                }
-Ó
-            }
         } catch (ArrayIndexOutOfBoundsException err) {
-            System.err.println("Bestaat niet meer");
+            geselecteerdeConfiguratieId = 0;
         }
 
     }

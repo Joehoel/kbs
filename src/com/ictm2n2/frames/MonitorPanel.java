@@ -120,13 +120,13 @@ public class MonitorPanel extends JPanel implements ActionListener {
                         DbAangesloten.clear();
                         int dbNummer = 1;
                         while (rs.next()) {
-                            System.out.println("Database " + dbNummer);
+                            // System.out.println("Database " + dbNummer);
                             DbHostnames.add(rs.getString("c.hostname"));
                             DbCpu.add(String.valueOf(rs.getDouble("c.cpu")));
                             DbOpslag.add(String.valueOf(rs.getDouble("c.opslag")));
                             DbTijdstip = (rs.getTimestamp("s.tijdstip"));
-                            System.out.println("Aantal secondes verschil database (localtime - dbtime)\n"
-                                    + (localTime.getTime() - DbTijdstip.getTime() / 1000));
+                            // System.out.println("Aantal secondes verschil database (localtime - dbtime)\n"
+                            // + (localTime.getTime() - DbTijdstip.getTime() / 1000));
 
                             if ((localTime.getTime() - DbTijdstip.getTime()) > 10000) {
                                 DbAangesloten.add("niet aangesloten");
@@ -141,8 +141,9 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 } catch (Exception a) {
                     a.printStackTrace();
                 }
-                System.out.println("Aantal databases (hostname | Cpu | Opslag): " + DbHostnames.size() + " "
-                        + DbCpu.size() + " " + DbOpslag.size());
+                // System.out.println("Aantal databases (hostname | Cpu | Opslag): " +
+                // DbHostnames.size() + " "
+                // + DbCpu.size() + " " + DbOpslag.size());
 
                 // webservers ophalen en in array stoppen
                 try {
@@ -290,7 +291,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 } else {
                     jlStatus.setText("<html><p style=\"color:red\">&#10060; Status bereikbaarheid</p></html>");
                 }
-                System.out.println("==================================================================");
+                // System.out.println("==================================================================");
             }
         }, 0, 5000);
 
@@ -355,8 +356,9 @@ public class MonitorPanel extends JPanel implements ActionListener {
                     hostnameDb = selectedComponentSplitDb[1];
                 } catch (ArrayIndexOutOfBoundsException array) {
                 }
-                System.out.println("******************************************\n" + "Geselecteerde component: "
-                        + hostnameDb + "\n******************************************");
+                // System.out.println("******************************************\n" +
+                // "Geselecteerde component: "
+                // + hostnameDb + "\n******************************************");
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
@@ -410,8 +412,9 @@ public class MonitorPanel extends JPanel implements ActionListener {
                     hostnameWb = selectedComponentSplitWb[1];
                 } catch (ArrayIndexOutOfBoundsException array) {
                 }
-                System.out.println("******************************************\n" + "Geselecteerde component: "
-                        + hostnameWb + "\n******************************************");
+                // System.out.println("******************************************\n" +
+                // "Geselecteerde component: "
+                // + hostnameWb + "\n******************************************");
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
@@ -476,8 +479,9 @@ public class MonitorPanel extends JPanel implements ActionListener {
                     hostnamePfS = selectedComponentSplitPfS[1];
                 } catch (ArrayIndexOutOfBoundsException array) {
                 }
-                System.out.println("******************************************\n" + "Geselecteerde component: "
-                        + hostnamePfS + "\n******************************************");
+                // System.out.println("******************************************\n" +
+                // "Geselecteerde component: "
+                // + hostnamePfS + "\n******************************************");
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
