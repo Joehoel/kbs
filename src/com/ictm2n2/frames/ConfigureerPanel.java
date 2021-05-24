@@ -175,6 +175,10 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
         }
         // Check if optimaliseer button has been pressed for backtracking
         if (e.getSource() == jbOptimaliseer) {
+            for (int i = (tp.getComponenten().size() - 1); i >= 0; i--) {
+                tp.verwijderComponent(tp.getComponenten().get(i));
+                // tp.getComponenten().remove(tp.getComponenten().get(i));
+            }
             try {
                 double gewenstPercentage;
                 // If string contains comma, convert to dot
