@@ -280,8 +280,9 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                     Object[] verbindingColumns = new Object[] { "configuratie_id", "begin_positie_x", "begin_positie_y",
                             "eind_positie_x", "eind_positie_y", };
                     verbindingQuery.insert("configuratie_positie").columns(verbindingColumns).values(verbindingColumns);
+                    System.out.println(verbindingQuery.getQuery());
                     PreparedStatement ps3 = db.getConnection().prepareStatement(verbindingQuery.getQuery());
-                    ps3.setInt(1, bd.geselecteerdeConfiguratieId);
+                    ps3.setInt(1, id);
                     ps3.setInt(2, (int) verbindingComponent.getBeginPositie().getX());
                     ps3.setInt(3, (int) verbindingComponent.getBeginPositie().getY());
                     ps3.setInt(4, (int) verbindingComponent.getEindPositie().getX());
