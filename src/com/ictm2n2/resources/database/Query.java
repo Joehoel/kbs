@@ -4,7 +4,6 @@ public class Query {
     private StringBuilder query;
 
     /**
-     *
      * @param table
      * @return
      */
@@ -28,7 +27,6 @@ public class Query {
     }
 
     /**
-     *
      * @param table
      * @return
      */
@@ -39,7 +37,6 @@ public class Query {
     }
 
     /**
-     *
      * @param table
      * @return
      */
@@ -72,7 +69,6 @@ public class Query {
     }
 
     /**
-     *
      * @param table
      * @return
      */
@@ -84,7 +80,6 @@ public class Query {
     }
 
     /**
-     *
      * @param params
      * @return
      */
@@ -106,7 +101,6 @@ public class Query {
     }
 
     /**
-     *
      * @param columns
      * @return
      */
@@ -127,7 +121,6 @@ public class Query {
     }
 
     /**
-     *
      * @param columns
      * @return
      */
@@ -168,12 +161,9 @@ public class Query {
     public Query DbMonitorPanelQuery() {
         query = new StringBuilder();
 
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
-                "FROM component c " +
-                "JOIN status s " +
-                "ON c.component_id=s.component_id WHERE c.type_id IN (3,4,5)" +
-                "GROUP BY c.component_id " +
-                "HAVING max(tijdstip);");
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " + "FROM component c "
+                + "JOIN status s " + "ON c.component_id=s.component_id WHERE c.type_id IN (3,4,5)"
+                + "GROUP BY c.component_id " + "HAVING max(tijdstip);");
 
         return this;
     }
@@ -181,25 +171,9 @@ public class Query {
     public Query WbMonitorPanelQuery() {
         query = new StringBuilder();
 
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
-                "FROM component c " +
-                "JOIN status s " +
-                "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)" +
-                "GROUP BY c.component_id " +
-                "HAVING max(tijdstip);");
-
-        return this;
-    }
-
-    public Query LbMonitorPanelQuery() {
-        query = new StringBuilder();
-
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
-                "FROM component c " +
-                "JOIN status s " +
-                "ON c.component_id=s.component_id WHERE c.type_id IN (2)" +
-                "GROUP BY c.component_id " +
-                "HAVING max(tijdstip);");
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " + "FROM component c "
+                + "JOIN status s " + "ON c.component_id=s.component_id WHERE c.type_id IN (6,7,8)"
+                + "GROUP BY c.component_id ORDER BY s.tijdstip;");
 
         return this;
     }
@@ -207,12 +181,9 @@ public class Query {
     public Query PfSMonitorPanelQuery() {
         query = new StringBuilder();
 
-        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip " +
-                "FROM component c " +
-                "JOIN status s " +
-                "ON c.component_id=s.component_id WHERE c.type_id IN (1)" +
-                "GROUP BY c.component_id " +
-                "HAVING max(tijdstip);");
+        query.append("SELECT c.hostname, c.cpu, c.opslag, s.beschikbaar, s.tijdstip FROM component c \n"
+                + "JOIN status s ON c.component_id=s.component_id WHERE c.type_id IN (1)\n"
+                + "GROUP BY c.component_id HAVING max(tijdstip);");
 
         return this;
     }
@@ -223,13 +194,19 @@ public class Query {
                 "SELECT c.hostname, c.cpu, s.processor_belasting, c.opslag, s.opslag_verbruik, s.beschikbaar_lengte, s.tijdstip\n"
                         + "FROM component c\n" + "JOIN status s\n"
                         + "ON c.component_id = s.component_id WHERE c.hostname = \"" + hostname + "\"\n"
-                        + "GROUP BY c.component_id\n" + "HAVING max(tijdstip);");
+                        + "GROUP BY c.component_id\nORDER BY s.tijdstip DESC LIMIT 1");
         return this;
     }
 
-    public Query LastInsertedId() {
+    public Query LastInsertedIdConfiguratie() {
         query = new StringBuilder();
         query.append("SELECT configuratie_id FROM configuratie ORDER BY datum DESC LIMIT 1");
+        return this;
+    }
+
+    public Query LastInsertedIdOnderdeel() {
+        query = new StringBuilder();
+        query.append("SELECT onderdeel_id FROM configuratie_onderdeel ORDER BY onderdeel_id DESC LIMIT 1");
         return this;
     }
 
@@ -239,4 +216,11 @@ public class Query {
         return this;
     }
 
+    public Query SelectOnderdeel(int configuratieId) {
+        query = new StringBuilder();
+        query.append(
+                "SELECT * FROM configuratie_onderdeel AS o LEFT JOIN configuratie_eigenschap AS e ON e.onderdeel_id = o.onderdeel_id WHERE o.configuratie_id = "
+                        + configuratieId);
+        return this;
+    }
 }

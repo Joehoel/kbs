@@ -2,6 +2,7 @@ package com.ictm2n2.frames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class BeheerDialoog extends JDialog implements ActionListener {
     ArrayList<String> namen = new ArrayList<String>();
     ArrayList<Integer> ids = new ArrayList<Integer>();
     String geselecteerdeConfiguratie;
-    int geselecteerdeConfiguratieId;
+    int geselecteerdeConfiguratieId = 0;
 
     public BeheerDialoog() {
         setTitle("Beheer");
@@ -58,17 +59,22 @@ public class BeheerDialoog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        int i = 0;
+        for (Integer id : ids) {
+            System.out.println(i + " -> " + id);
+            i++;
+        }
         try {
             geselecteerdeConfiguratie = (String) jcbConfiguraties.getSelectedItem();
             geselecteerdeConfiguratieId = (int) ids.get(jcbConfiguraties.getSelectedIndex());
+            System.out.println(namen.size());
+            // System.out.println(jcbConfiguraties.getSelectedIndex());
             if (e.getSource() == jbOpenen) {
                 dispose();
             }
-            if (e.getSource() == jbVerwijder) {
 
-            }
         } catch (ArrayIndexOutOfBoundsException err) {
-            System.err.println("Bestaat niet meer");
+            geselecteerdeConfiguratieId = 0;
         }
 
     }
@@ -98,7 +104,6 @@ public class BeheerDialoog extends JDialog implements ActionListener {
             namen.add(rs.getString("naam"));
             ids.add(rs.getInt("configuratie_id"));
         }
-
         for (String string : namen) {
             jcbConfiguraties.addItem(string);
         }
