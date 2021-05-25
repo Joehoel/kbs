@@ -2,7 +2,6 @@ package com.ictm2n2.frames;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -14,7 +13,14 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 
 import com.ictm2n2.resources.database.Database;
 import com.ictm2n2.resources.database.Query;
@@ -50,13 +56,13 @@ public class MonitorPanel extends JPanel implements ActionListener {
     private ArrayList<String> PfSAangesloten = new ArrayList<String>();
     private Timestamp PfSTijdstip;
 
-    private Timestamp localTime = new Timestamp(System.currentTimeMillis());
+    private Timestamp localTime;
 
-    private byte[] ipDb1 = {(byte) 172, 16, 1, 2};
-    private byte[] ipDb2 = {(byte) 172, 16, 1, 3};
-    private byte[] ipWb1 = {(byte) 172, 16, 0, 2};
-    private byte[] ipWb2 = {(byte) 172, 16, 0, 3};
-    private byte[] ipPfS = {(byte) 172, 16, 0, 1};
+    private byte[] ipDb1 = { (byte) 172, 16, 1, 2 };
+    private byte[] ipDb2 = { (byte) 172, 16, 1, 3 };
+    private byte[] ipWb1 = { (byte) 172, 16, 0, 2 };
+    private byte[] ipWb2 = { (byte) 172, 16, 0, 3 };
+    private byte[] ipPfS = { (byte) 172, 16, 0, 1 };
 
     private SendPingRequest sprDb1 = new SendPingRequest("Database 1", ipDb1);
     private SendPingRequest sprDb2 = new SendPingRequest("Database 2", ipDb2);
@@ -92,192 +98,203 @@ public class MonitorPanel extends JPanel implements ActionListener {
         PfSList.setLayoutOrientation(JList.VERTICAL_WRAP);
 
         // timer toevoegen die moet zorgen dat de list altijd up-to-date blijft (iedere
-        // 60 seconden)
+        // seconde)
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
-           @Override
-           public void run() {
-//                               databaseservers ophalen en in array stoppen
-               try {
-                   Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
-                   Query q = new Query();
-                   q = q.DbMonitorPanelQuery();
-                   ResultSet rs = db.preparedQuery(q);
 
-                   try {
-                       // eerst alle arraylists leegmaken indien deze al eens gevuld zijn door een query
-                       DbHostnames.clear();
-                       DbCpu.clear();
-                       DbOpslag.clear();
-                       DbAangesloten.clear();
+            @Override
+            public void run() {
+                localTime = new Timestamp(System.currentTimeMillis());
+                // databaseservers ophalen en in array stoppen
+                try {
+                    Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+                    Query q = new Query();
+                    q = q.DbMonitorPanelQuery();
+                    ResultSet rs = db.preparedQuery(q);
+
+                    try {
+                        // eerst alle arraylists leegmaken indien deze al eens gevuld zijn door een
+                        // query
+                        DbHostnames.clear();
+                        DbCpu.clear();
+                        DbOpslag.clear();
+                        DbAangesloten.clear();
                         int dbNummer = 1;
-                       while (rs.next()) {
-                           System.out.println("Database "+dbNummer);
-                           DbHostnames.add(rs.getString("c.hostname"));
-                           DbCpu.add(String.valueOf(rs.getDouble("c.cpu")));
-                           DbOpslag.add(String.valueOf(rs.getDouble("c.opslag")));
-                           DbTijdstip = (rs.getTimestamp("s.tijdstip"));
-                           System.out.println("Verschil in seconden: (localtime - dbtime) "+((localTime.getTime()-DbTijdstip.getTime())/1000000)+" seconden");
+                        while (rs.next()) {
+                            // System.out.println("Database " + dbNummer);
+                            DbHostnames.add(rs.getString("c.hostname"));
+                            DbCpu.add(String.valueOf(rs.getDouble("c.cpu")));
+                            DbOpslag.add(String.valueOf(rs.getDouble("c.opslag")));
+                            DbTijdstip = (rs.getTimestamp("s.tijdstip"));
+                            //System.out.println("Aantal secondes verschil database (localtime - dbtime)\n");
+                            // + (localTime.getTime() - DbTijdstip.getTime() / 1000));
 
-                           if ((localTime.getTime()-DbTijdstip.getTime()) > 10000) {
-                               DbAangesloten.add("niet aangesloten");
-                           } else {
-                               DbAangesloten.add("aangesloten");
-                           }
-                           dbNummer++;
-                       }
-                   } catch (SQLException throwables) {
-                       throwables.printStackTrace();
-                   }
-               } catch (Exception a) {
-                   a.printStackTrace();
-               }
-               System.out.println("Aantal gevonden databases: (hostname|cpu|opslag) "+DbHostnames.size() + " " + DbCpu.size() + " " + DbOpslag.size());
-               System.out.println("======================================================");
-               // webservers ophalen en in array stoppen
-               try {
-                   Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
-                   Query q = new Query();
-                   q = q.WbMonitorPanelQuery();
-                   ResultSet rs = db.preparedQuery(q);
+                            if ((localTime.getTime() - DbTijdstip.getTime()) > 8000) {
+                                DbAangesloten.add("niet aangesloten");
+                            } else {
+                                DbAangesloten.add("aangesloten");
+                            }
+                            dbNummer++;
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                } catch (Exception a) {
+                    a.printStackTrace();
+                }
+                // System.out.println("Aantal databases (hostname | Cpu | Opslag): " +
+                // DbHostnames.size() + " "
+                // + DbCpu.size() + " " + DbOpslag.size());
 
-                   try {
-                       // eerst alle arraylists leegmaken indien deze al eens gevuld zijn door een query
-                       WbHostnames.clear();
-                       WbCpu.clear();
-                       WbOpslag.clear();
-                       WbAangesloten.clear();
+                // webservers ophalen en in array stoppen
+                try {
+                    Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+                    Query q = new Query();
+                    q = q.WbMonitorPanelQuery();
+                    ResultSet rs = db.preparedQuery(q);
 
-                       while (rs.next()) {
-                           WbHostnames.add(rs.getString("c.hostname"));
-                           WbCpu.add(String.valueOf(rs.getDouble("c.cpu")));
-                           WbOpslag.add(String.valueOf(rs.getDouble("c.opslag")));
-                           WbTijdstip = (rs.getTimestamp("s.tijdstip"));
-                           //System.out.println(localTime.getTime()-WbTijdstip.getTime());
+                    try {
+                        // eerst alle arraylists leegmaken indien deze al eens gevuld zijn door een
+                        // query
+                        WbHostnames.clear();
+                        WbCpu.clear();
+                        WbOpslag.clear();
+                        WbAangesloten.clear();
 
-                           if ((localTime.getTime()-WbTijdstip.getTime()) > 10000) {
-                               WbAangesloten.add("niet aangesloten");
-                           } else {
-                               WbAangesloten.add("aangesloten");
-                           }
-                       }
-                   } catch (SQLException throwables) {
-                       throwables.printStackTrace();
-                   }
-               } catch (Exception a) {
-                   a.printStackTrace();
-               }
-               //System.out.println(WbHostnames.size() + " " + WbCpu.size() + " " + WbOpslag.size());
+                        while (rs.next()) {
+                            WbHostnames.add(rs.getString("c.hostname"));
+                            WbCpu.add(String.valueOf(rs.getDouble("c.cpu")));
+                            WbOpslag.add(String.valueOf(rs.getDouble("c.opslag")));
+                            WbTijdstip = (rs.getTimestamp("s.tijdstip"));
+                            // System.out.println(localTime.getTime()-WbTijdstip.getTime());
 
-               // pfsense ophalen en in array stoppen
-               try {
-                   Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
-                   Query q = new Query();
-                   q = q.PfSMonitorPanelQuery();
-                   ResultSet rs = db.preparedQuery(q);
+                            if ((localTime.getTime() - WbTijdstip.getTime()) > 8000) {
+                                WbAangesloten.add("niet aangesloten");
+                            } else {
+                                WbAangesloten.add("aangesloten");
+                            }
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                } catch (Exception a) {
+                    a.printStackTrace();
+                }
+                // System.out.println(WbHostnames.size() + " " + WbCpu.size() + " " +
+                // WbOpslag.size());
 
-                   try {
-                       // eerst alle arraylists leegmaken indien deze al eens gevuld zijn door een query
-                       PfSHostnames.clear();
-                       PfSCpu.clear();
-                       PfSOpslag.clear();
-                       PfSAangesloten.clear();
+                // pfsense ophalen en in array stoppen
+                try {
+                    Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
+                    Query q = new Query();
+                    q = q.PfSMonitorPanelQuery();
+                    ResultSet rs = db.preparedQuery(q);
 
-                       while (rs.next()) {
-                           PfSHostnames.add(rs.getString("c.hostname"));
-                           PfSCpu.add(String.valueOf(rs.getDouble("c.cpu")));
-                           PfSOpslag.add(String.valueOf(rs.getDouble("c.opslag")));
-                           PfSTijdstip = (rs.getTimestamp("s.tijdstip"));
-                           //System.out.println(localTime.getTime()-PfSTijdstip.getTime());
+                    try {
+                        // eerst alle arraylists leegmaken indien deze al eens gevuld zijn door een
+                        // query
+                        PfSHostnames.clear();
+                        PfSCpu.clear();
+                        PfSOpslag.clear();
+                        PfSAangesloten.clear();
 
-                           if ((localTime.getTime()-PfSTijdstip.getTime()) > 10000) {
-                               PfSAangesloten.add("niet aangesloten");
-                           } else {
-                               PfSAangesloten.add("aangesloten");
-                           }
-                       }
-                   } catch (SQLException throwables) {
-                       throwables.printStackTrace();
-                   }
-               } catch (Exception a) {
-                   a.printStackTrace();
-               }
-               //System.out.println(PfSHostnames.size() + " " + PfSCpu.size() + " " + PfSOpslag.size());
+                        while (rs.next()) {
+                            PfSHostnames.add(rs.getString("c.hostname"));
+                            PfSCpu.add(String.valueOf(rs.getDouble("c.cpu")));
+                            PfSOpslag.add(String.valueOf(rs.getDouble("c.opslag")));
+                            PfSTijdstip = (rs.getTimestamp("s.tijdstip"));
+                            // System.out.println(localTime.getTime()-PfSTijdstip.getTime());
 
-               //eerst zorgen dat de defaultlistmodel leeg is
+                            if ((localTime.getTime() - PfSTijdstip.getTime()) > 8000) {
+                                PfSAangesloten.add("niet aangesloten");
+                            } else {
+                                PfSAangesloten.add("aangesloten");
+                            }
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                } catch (Exception a) {
+                    a.printStackTrace();
+                }
+                // System.out.println(PfSHostnames.size() + " " + PfSCpu.size() + " " +
+                // PfSOpslag.size());
+
+                // eerst zorgen dat de defaultlistmodel leeg is
                 dlDbModel.clear();
 
-               // database servers toevoegen aan jlist
-               int i = 0;
-               while (i < DbHostnames.size()) {
-                   String element = "<html><strong>Hostname: " + String.format(DbHostnames.get(i)) + " </strong><br>"
-                           + DbCpu.get(i) + " GHz <br>" + DbOpslag.get(i) + " GB <br>";
+                // database servers toevoegen aan jlist
+                int i = 0;
+                while (i < DbHostnames.size()) {
+                    String element = "<html><strong>Hostname: " + String.format(DbHostnames.get(i)) + " </strong><br>"
+                            + DbCpu.get(i) + " GHz <br>" + DbOpslag.get(i) + " GB <br>";
 
-                   if (DbAangesloten.get(i).equals("aangesloten")) {
-                       element += "<i> <p style =\"color:green\">" + DbAangesloten.get(i) + " </p></i></html>";
-                   } else {
-                       element += "<i> <p style =\"color:red\">" + DbAangesloten.get(i) + " </p></i></html>";
-                   }
-                   dlDbModel.addElement(element);
-                   i++;
-               }
+                    if (DbAangesloten.get(i).equals("aangesloten")) {
+                        element += "<i> <p style =\"color:green\">" + DbAangesloten.get(i) + " </p></i></html>";
+                    } else {
+                        element += "<i> <p style =\"color:red\">" + DbAangesloten.get(i) + " </p></i></html>";
+                    }
+                    dlDbModel.addElement(element);
+                    i++;
+                }
 
-               //eerst zorgen dat de defaultlistmodel leeg is
+                // eerst zorgen dat de defaultlistmodel leeg is
                 dlWbModel.clear();
 
-               // webservers toevoegen aan jlist
-               i = 0;
-               while (i < WbHostnames.size()) {
-                   String element = "<html><strong>Hostname: " + String.format(WbHostnames.get(i)) + " </strong><br>"
-                           + WbCpu.get(i) + " GHz <br>" + WbOpslag.get(i) + " GB<br>";
+                // webservers toevoegen aan jlist
+                i = 0;
+                while (i < WbHostnames.size()) {
+                    String element = "<html><strong>Hostname: " + String.format(WbHostnames.get(i)) + " </strong><br>"
+                            + WbCpu.get(i) + " GHz <br>" + WbOpslag.get(i) + " GB<br>";
 
-                   if (WbAangesloten.get(i).equals("aangesloten")) {
-                       element += "<i> <p style =\"color:green\">" + WbAangesloten.get(i) + "</p></i></html>";
-                   } else {
-                       element += "<i> <p style =\"color:red\">" + WbAangesloten.get(i) + "</p></i></html>";
-                   }
-                   dlWbModel.addElement(element);
-                   i++;
-               }
+                    if (WbAangesloten.get(i).equals("aangesloten")) {
+                        element += "<i> <p style =\"color:green\">" + WbAangesloten.get(i) + "</p></i></html>";
+                    } else {
+                        element += "<i> <p style =\"color:red\">" + WbAangesloten.get(i) + "</p></i></html>";
+                    }
+                    dlWbModel.addElement(element);
+                    i++;
+                }
 
-                //eerst zorgen dat de defaultlistmodel leeg is
+                // eerst zorgen dat de defaultlistmodel leeg is
                 dlPfSModel.clear();
 
-               // pfsense toevoegen aan jlist
-               i = 0;
-               while (i < PfSHostnames.size()) {
-                   String element = "<html><strong>Hostname: " + String.format(PfSHostnames.get(i)) + " </strong><br>"
-                           + PfSCpu.get(i) + " GHz <br>" + PfSOpslag.get(i) + " GB<br>";
+                // pfsense toevoegen aan jlist
+                i = 0;
+                while (i < PfSHostnames.size()) {
+                    String element = "<html><strong>Hostname: " + String.format(PfSHostnames.get(i)) + " </strong><br>"
+                            + PfSCpu.get(i) + " GHz <br>" + PfSOpslag.get(i) + " GB<br>";
 
-                   if (PfSAangesloten.get(i).equals("aangesloten")) {
-                       element += "<i> <p style =\"color:green\">" + PfSAangesloten.get(i) + "</p></i></html>";
-                   } else {
-                       element += "<i> <p style =\"color:red\">" + PfSAangesloten.get(i) + "</p></i></html>";
-                   }
-                   dlPfSModel.addElement(element);
-                   i++;
-               }
+                    if (PfSAangesloten.get(i).equals("aangesloten")) {
+                        element += "<i> <p style =\"color:green\">" + PfSAangesloten.get(i) + "</p></i></html>";
+                    } else {
+                        element += "<i> <p style =\"color:red\">" + PfSAangesloten.get(i) + "</p></i></html>";
+                    }
+                    dlPfSModel.addElement(element);
+                    i++;
+                }
 
-               //zorgen dat alle componenten gepingt worden voor troubleshooting
-               try {
-                   isBereikbaarDb1 = sprDb1.sendPingRequest();
-                   isBereikbaarDb2 = sprDb2.sendPingRequest();
-                   isBereikbaarWb1 = sprWb1.sendPingRequest();
-                   isBereikbaarWb2 = sprWb2.sendPingRequest();
-                   isBereikbaarPfS = sprPfS.sendPingRequest();
-               }  catch (UnknownHostException e) {
-                   e.printStackTrace();
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
+                // zorgen dat alle componenten gepingt worden voor troubleshooting
+                try {
+                    isBereikbaarDb1 = sprDb1.sendPingRequest();
+                    isBereikbaarDb2 = sprDb2.sendPingRequest();
+                    isBereikbaarWb1 = sprWb1.sendPingRequest();
+                    isBereikbaarWb2 = sprWb2.sendPingRequest();
+                    isBereikbaarPfS = sprPfS.sendPingRequest();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-               if (isBereikbaarDb1 && isBereikbaarDb2 && isBereikbaarWb1 && isBereikbaarWb2 && isBereikbaarPfS) {
-                   jlStatus.setText("<html><p style=\"color:green\">&#x2714; Status bereikbaarheid</p></html>");
-               } else {
-                   jlStatus.setText("<html><p style=\"color:red\">&#10060; Status bereikbaarheid</p></html>");
-               }
-           }
-       }, 0, 5000);
+                if (isBereikbaarDb1 && isBereikbaarDb2 && isBereikbaarWb1 && isBereikbaarWb2 && isBereikbaarPfS) {
+                    jlStatus.setText("<html><p style=\"color:green\">&#x2714; Status bereikbaarheid</p></html>");
+                } else {
+                    jlStatus.setText("<html><p style=\"color:red\">&#10060; Status bereikbaarheid</p></html>");
+                }
+                // System.out.println("==================================================================");
+            }
+        }, 0, 5000);
 
         jlDb = new JLabel("Databases");
         jlWb = new JLabel("Webservers");
@@ -322,7 +339,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
         jpDetailOverzichtWaarden.setLayout(new FlowLayout(FlowLayout.LEFT));
         jpDetailOverzichtWaarden.add(jlDetailOverzichtWaarden);
         jlDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
-        jpDetailOverzichtWaarden.setBackground(Color.white);
+        jpDetailOverzichtWaarden.setBackground(UIManager.getColor("ComboBox.buttonBackground"));
         jpDetailOverzichtWaarden.setBounds(585, 310, 270, 205);
         add(jpDetailOverzichtWaarden);
 
@@ -333,14 +350,16 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 // formaat
                 Object selectedComponentDb = DbList.getSelectedValue();
                 String selectedComponentMinHTMLDb = String.valueOf(selectedComponentDb).replaceAll("\\<.*?\\>", "");
-                //System.out.println(selectedComponentMinHTMLDb);
+                // System.out.println(selectedComponentMinHTMLDb);
                 String[] selectedComponentSplitDb = selectedComponentMinHTMLDb.split(" ");
-                String hostnameDb = "niet gevonden";
+                String hostnameDb = "hostname not found";
                 try {
                     hostnameDb = selectedComponentSplitDb[1];
-                } catch (IndexOutOfBoundsException outOfBoundsException) {
+                } catch (ArrayIndexOutOfBoundsException array) {
                 }
-                System.out.println("\nGeselecteerde component: "+hostnameDb+"\n");
+                // System.out.println("******************************************\n" +
+                // "Geselecteerde component: "
+                // + hostnameDb + "\n******************************************");
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
@@ -361,11 +380,14 @@ public class MonitorPanel extends JPanel implements ActionListener {
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameDb + "</strong><br><br>"
-                                    + processor + " GHz kloksnelheid<br>" + processorBelasting + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
-                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte / 60) + " minuten in bedrijf<br>afgelezen op "
-                                    + tijdstip + "</html>";
+
+                                    + processor + " GHz kloksnelheid<br>" + processorBelasting
+                                    + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
+                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte)
+                                    + " minuten in bedrijf<br>afgelezen op " + tijdstip + "</html>";
+
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
-                            DbList.setSelectedValue(null,true);
+                            DbList.setSelectedValue(null, true);
                             DbList.getSelectionModel().clearSelection();
                         }
                     } catch (SQLException throwables) {
@@ -384,17 +406,30 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 // formaat
                 Object selectedComponentWb = WbList.getSelectedValue();
                 String selectedComponentMinHTMLWb = String.valueOf(selectedComponentWb).replaceAll("\\<.*?\\>", "");
-                //System.out.println(selectedComponentMinHTMLWb);
+                // System.out.println(selectedComponentMinHTMLWb);
                 String[] selectedComponentSplitWb = selectedComponentMinHTMLWb.split(" ");
-                String hostnameWb = "niet gevonden";
+                String hostnameWb = "hostname not found";
                 try {
                     hostnameWb = selectedComponentSplitWb[1];
-                } catch (IndexOutOfBoundsException outOfBoundsException) {
+                } catch (ArrayIndexOutOfBoundsException array) {
                 }
-                System.out.println("Hostname: "+hostnameWb);
+                // System.out.println("******************************************\n" +
+                // "Geselecteerde component: "
+                // + hostnameWb + "\n******************************************");
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
+                    // geselecteerde component wordt in geheugen opgeslagen en vervormt tot juiste
+                    // formaat
+                    // Object selectedComponentWb = WbList.getSelectedValue();
+                    // String selectedComponentMinHTMLWb =
+                    // String.valueOf(selectedComponentWb).replaceAll("\\<.*?\\>", "");
+                    // // System.out.println(selectedComponentMinHTMLWb);
+                    // String[] selectedComponentSplitWb = selectedComponentMinHTMLWb.split(" ");
+                    // String hostnameWb = selectedComponentSplitWb[1];
+                    // System.out.println(hostnameWb);
+
+                    // gedetaileerde informatie over component wordt opgevraagd uit database
                     Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
                     Query q = new Query();
                     q = q.DetailOverzichtMonitorPanelQuery(hostnameWb);
@@ -412,11 +447,14 @@ public class MonitorPanel extends JPanel implements ActionListener {
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostnameWb + "</strong><br><br>"
-                                    + processor + " GHz kloksnelheid<br>" + processorBelasting + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
-                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte) + " minuten in bedrijf<br>afgelezen op "
-                                    + tijdstip + "</html>";
+
+                                    + processor + " GHz kloksnelheid<br>" + processorBelasting
+                                    + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
+                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte)
+                                    + " minuten in bedrijf<br>afgelezen op " + tijdstip + "</html>";
+
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
-                            WbList.setSelectedValue(null,true);
+                            WbList.setSelectedValue(null, true);
                             WbList.getSelectionModel().clearSelection();
                         }
                     } catch (SQLException throwables) {
@@ -435,14 +473,16 @@ public class MonitorPanel extends JPanel implements ActionListener {
                 // formaat
                 Object selectedComponentPfS = PfSList.getSelectedValue();
                 String selectedComponentMinHTMLPfS = String.valueOf(selectedComponentPfS).replaceAll("\\<.*?\\>", "");
-                //System.out.println(selectedComponentMinHTMLPfS);
+                // System.out.println(selectedComponentMinHTMLPfS);
                 String[] selectedComponentSplitPfS = selectedComponentMinHTMLPfS.split(" ");
-                String hostnamePfS = "niet gevonden";
+                String hostnamePfS = "hostname not found";
                 try {
                     hostnamePfS = selectedComponentSplitPfS[1];
-                } catch (IndexOutOfBoundsException outOfBoundsException) {
+                } catch (ArrayIndexOutOfBoundsException array) {
                 }
-                System.out.println("Hostname: "+hostnamePfS);
+                // System.out.println("******************************************\n" +
+                // "Geselecteerde component: "
+                // + hostnamePfS + "\n******************************************");
 
                 // gedetaileerde informatie over component wordt opgevraagd uit database
                 try {
@@ -463,11 +503,14 @@ public class MonitorPanel extends JPanel implements ActionListener {
                             // System.out.println(opslag+"\n"+opslagVerbruik+"\n"+beschikbaarLengte+"\n"+tijdstip);
 
                             detailOverzichtWaarden = "<html><strong>Hostname: " + hostnamePfS + "</strong><br><br>"
-                                    + processor + " GHz kloksnelheid<br>" + processorBelasting + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
-                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte) + " minuten in bedrijf<br>afgelezen op "
-                                    + tijdstip + "</html>";
+
+                                    + processor + " GHz kloksnelheid<br>" + processorBelasting
+                                    + " GHz op het moment<br><br>" + opslag + " GB capaciteit waarvan<br>"
+                                    + opslagVerbruik + " GB gebruikt<br><br>" + (beschikbaarLengte)
+                                    + " minuten in bedrijf<br>afgelezen op " + tijdstip + "</html>";
+
                             jlDetailOverzichtWaarden.setText(detailOverzichtWaarden);
-                            PfSList.setSelectedValue(null,true);
+                            PfSList.setSelectedValue(null, true);
                             PfSList.getSelectionModel().clearSelection();
                         }
                     } catch (SQLException throwables) {
@@ -480,7 +523,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
         });
     }
 
-    //actionlistener aan jbstatus toevoegen
+    // actionlistener aan jbstatus toevoegen
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == jbStatus) {
@@ -510,7 +553,7 @@ public class MonitorPanel extends JPanel implements ActionListener {
             } else {
                 message += "<p style=\"color:red\">&#10060; PfSense</p></html>";
             }
-            JOptionPane.showMessageDialog(this, message,"Status componenten", 1);
+            JOptionPane.showMessageDialog(this, message, "Status componenten", 1);
         }
     }
 }
