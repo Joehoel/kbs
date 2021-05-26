@@ -1,6 +1,6 @@
 package com.ictm2n2.frames;
 
-import java.awt.*;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -8,8 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.sound.sampled.SourceDataLine;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import com.ictm2n2.resources.Component;
 import com.ictm2n2.resources.Componenten;
@@ -210,7 +216,6 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                 Database db = new Database("nerdygadgets", "monitoring", "Iloveberrit3!$");
 
                 String naamConfiguratie = JOptionPane.showInputDialog(this, "Geef deze configuratie een naam", null);
-                ArrayList<DragDropComponent> componenten = tp.getComponenten();
 
                 Query insertQuery = new Query();
                 insertQuery.insert("configuratie")
@@ -232,6 +237,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                     id = rs.getInt("configuratie_id");
                 }
 
+                ArrayList<DragDropComponent> componenten = tp.getComponenten();
                 for (DragDropComponent dragDropComponent : componenten) {
                     int componentId = dragDropComponent.getComponent().getId();
                     double x = dragDropComponent.getImageCorner().getX();
@@ -351,7 +357,7 @@ public class ConfigureerPanel extends JPanel implements ActionListener {
                             Point location = new Point(x, y);
                             configuratie.voegToeComponent(c);
                             // tp.voegToeComponent(location, soort, c);
-                            ImageIcon plaatje = new ImageIcon("src/com/ictm2n2/assets/" + soort + ".png");
+                            ImageIcon plaatje = new ImageIcon(getClass().getResource("/com/ictm2n2/assets/images/" + soort + ".png"));
 
                             DragDropComponent ddc = new DragDropComponent(c, location, plaatje, tp.getSize(), tp,
                                     ipv4Adres, ipv4Subnet, ipv4Gateway, ipv4Dns, ipv6Adres, ipv6LinkLocal, ipv6Gateway,

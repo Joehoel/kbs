@@ -42,7 +42,8 @@ public class TekenPanel extends JPanel implements MouseMotionListener, MouseInpu
     }
 
     public void voegToeComponent(Point imageCorner, String type, Component component) {
-        ImageIcon plaatje = new ImageIcon("src/com/ictm2n2/assets/" + type + ".png");
+        System.out.println(getClass().getResource("src/com/ictm2n2/assets/images/" + "dbserver" + ".png"));
+        ImageIcon plaatje = new ImageIcon(getClass().getResource("/com/ictm2n2/assets/images/" + type + ".png"));
         this.componenten.add(new DragDropComponent(component, imageCorner, plaatje, getSize(), this));
 
         setLayout(new BorderLayout());

@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.print.attribute.standard.Media;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
@@ -27,9 +28,9 @@ public class App extends JFrame implements ActionListener {
         setLayout(null);
 
         try {
-            URL resource = getClass().getResource("../assets/KBS.png");
-            BufferedImage image = ImageIO.read(resource);
-            setIconImage(image);
+//            URL resource = getClass().getResource("../assets/KBS.png");
+//            BufferedImage image = ImageIO.read(resource);
+//            setIconImage(image);
 
             setSize(900, 600);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
