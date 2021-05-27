@@ -36,15 +36,10 @@ public class App extends JFrame implements ActionListener {
             add(jtpTabbedPane);
 
             setVisible(true);
-
+            centerWindow(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        add(jtpTabbedPane);
-
-        setVisible(true);
-        centerWindow(this);
     }
 
     public static void centerWindow(Window frame) {
